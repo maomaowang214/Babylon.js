@@ -33,24 +33,24 @@ export class PointLightPropertyGridComponent extends React.Component<IPointLight
                     light={light}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="SETUP" selection={this.props.globalState}>
+                <LineContainerComponent title="布设" selection={this.props.globalState}>
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Diffuse"
+                        label="扩散"
                         target={light}
                         propertyName="diffuse"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Specular"
+                        label="镜面"
                         target={light}
                         propertyName="specular"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Position"
+                        label="坐标"
                         target={light}
                         propertyName="position"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}

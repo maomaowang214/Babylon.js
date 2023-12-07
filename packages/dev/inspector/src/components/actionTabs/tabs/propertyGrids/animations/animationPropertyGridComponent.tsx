@@ -173,7 +173,7 @@ export class AnimationGridComponent extends React.Component<IAnimationGridCompon
         return (
             <>
                 {this._ranges.length > 0 && (
-                    <LineContainerComponent title="ANIMATION RANGES" selection={this.props.globalState}>
+                    <LineContainerComponent title="动画范围" selection={this.props.globalState}>
                         {this._ranges.map((range, i) => {
                             return (
                                 <ButtonLineComponent
@@ -190,19 +190,19 @@ export class AnimationGridComponent extends React.Component<IAnimationGridCompon
                 )}
                 {animations && (
                     <>
-                        <LineContainerComponent title="ANIMATIONS" selection={this.props.globalState}>
-                            <TextLineComponent label="Count" value={animations.length.toString()} />
+                        <LineContainerComponent title="动画" selection={this.props.globalState}>
+                            <TextLineComponent label="计数" value={animations.length.toString()} />
                             {animations.map((anim, i) => {
                                 return <TextLineComponent key={anim.targetProperty + i} label={"#" + i + " >"} value={anim.targetProperty} />;
                             })}
                             <AnimationCurveEditorComponent globalState={this.props.globalState} context={this._animationCurveEditorContext} />
                         </LineContainerComponent>
                         {animations.length > 0 && (
-                            <LineContainerComponent title="ANIMATION GENERAL CONTROL" selection={this.props.globalState}>
+                            <LineContainerComponent title="动画常规控件" selection={this.props.globalState}>
                                 <FloatLineComponent
                                     lockObject={this.props.lockObject}
                                     isInteger={true}
-                                    label="From"
+                                    label="开始"
                                     target={this._animationControl}
                                     propertyName="from"
                                     onChange={() => this.onChangeFromOrTo()}
@@ -210,13 +210,13 @@ export class AnimationGridComponent extends React.Component<IAnimationGridCompon
                                 <FloatLineComponent
                                     lockObject={this.props.lockObject}
                                     isInteger={true}
-                                    label="To"
+                                    label="结束"
                                     target={this._animationControl}
                                     propertyName="to"
                                     onChange={() => this.onChangeFromOrTo()}
                                 />
                                 <CheckBoxLineComponent
-                                    label="Loop"
+                                    label="循环"
                                     onSelect={(value) => {
                                         this._animationControl.loop = value;
 
@@ -230,7 +230,7 @@ export class AnimationGridComponent extends React.Component<IAnimationGridCompon
                                     <SliderLineComponent
                                         lockObject={this.props.lockObject}
                                         ref={this._timelineRef}
-                                        label="Current frame"
+                                        label="当前帧"
                                         minimum={this._animationControl.from}
                                         maximum={this._animationControl.to}
                                         step={(this._animationControl.to - this._animationControl.from) / 1000.0}
@@ -242,7 +242,7 @@ export class AnimationGridComponent extends React.Component<IAnimationGridCompon
                                 {(this._ranges.length > 0 || (this._animations && this._animations.length > 0)) && (
                                     <>
                                         <CheckBoxLineComponent
-                                            label="Enable override"
+                                            label="启用覆盖"
                                             onSelect={(value) => {
                                                 if (value) {
                                                     animatableAsAny.animationPropertiesOverride = new AnimationPropertiesOverride();
@@ -258,14 +258,14 @@ export class AnimationGridComponent extends React.Component<IAnimationGridCompon
                                         {animatableAsAny.animationPropertiesOverride != null && (
                                             <div>
                                                 <CheckBoxLineComponent
-                                                    label="Enable blending"
+                                                    label="启用混合"
                                                     target={animatableAsAny.animationPropertiesOverride}
                                                     propertyName="enableBlending"
                                                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                                                 />
                                                 <SliderLineComponent
                                                     lockObject={this.props.lockObject}
-                                                    label="Blending speed"
+                                                    label="混合速度"
                                                     target={animatableAsAny.animationPropertiesOverride}
                                                     propertyName="blendingSpeed"
                                                     minimum={0}

@@ -33,9 +33,9 @@ export class PBRMetallicRoughnessMaterialPropertyGridComponent extends React.Com
         const onDebugSelectionChangeObservable = this._onDebugSelectionChangeObservable;
 
         return (
-            <LineContainerComponent title="TEXTURES" selection={this.props.globalState}>
+            <LineContainerComponent title="纹理" selection={this.props.globalState}>
                 <TextureLinkLineComponent
-                    label="Base"
+                    label="基础"
                     texture={material.baseTexture}
                     propertyName="baseTexture"
                     material={material}
@@ -43,7 +43,7 @@ export class PBRMetallicRoughnessMaterialPropertyGridComponent extends React.Com
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <TextureLinkLineComponent
-                    label="Metallic roughness"
+                    label="金属粗糙度"
                     texture={material.metallicRoughnessTexture}
                     propertyName="metallicRoughnessTexture"
                     material={material}
@@ -51,7 +51,7 @@ export class PBRMetallicRoughnessMaterialPropertyGridComponent extends React.Com
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <TextureLinkLineComponent
-                    label="Normal"
+                    label="标准"
                     texture={material.normalTexture}
                     propertyName="normalTexture"
                     material={material}
@@ -59,7 +59,7 @@ export class PBRMetallicRoughnessMaterialPropertyGridComponent extends React.Com
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <TextureLinkLineComponent
-                    label="Environment"
+                    label="环境"
                     texture={material.environmentTexture}
                     propertyName="environmentTexture"
                     material={material}
@@ -67,7 +67,7 @@ export class PBRMetallicRoughnessMaterialPropertyGridComponent extends React.Com
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <TextureLinkLineComponent
-                    label="Emissive"
+                    label="发射"
                     texture={material.emissiveTexture}
                     propertyName="emissiveTexture"
                     material={material}
@@ -75,7 +75,7 @@ export class PBRMetallicRoughnessMaterialPropertyGridComponent extends React.Com
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <TextureLinkLineComponent
-                    label="Lightmap"
+                    label="光线映射"
                     texture={material.lightmapTexture}
                     propertyName="lightmapTexture"
                     material={material}
@@ -98,10 +98,10 @@ export class PBRMetallicRoughnessMaterialPropertyGridComponent extends React.Com
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
                 {this.renderTextures()}
-                <LineContainerComponent title="LIGHTING & COLORS" selection={this.props.globalState}>
+                <LineContainerComponent title="灯光 & 颜色" selection={this.props.globalState}>
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Base"
+                        label="标准"
                         target={material}
                         propertyName="baseColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -109,17 +109,17 @@ export class PBRMetallicRoughnessMaterialPropertyGridComponent extends React.Com
                     />
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Emissive"
+                        label="发射"
                         target={material}
                         propertyName="emissiveColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         isLinear={true}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="LEVELS" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="标准" closed={true} selection={this.props.globalState}>
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Metallic"
+                        label="金属"
                         target={material}
                         propertyName="metallic"
                         minimum={0}
@@ -129,7 +129,7 @@ export class PBRMetallicRoughnessMaterialPropertyGridComponent extends React.Com
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Roughness"
+                        label="粗糙度"
                         target={material}
                         propertyName="roughness"
                         minimum={0}
@@ -138,15 +138,15 @@ export class PBRMetallicRoughnessMaterialPropertyGridComponent extends React.Com
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="NORMAL MAP" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="法线贴图" closed={true} selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="Invert X axis"
+                        label="反转X轴"
                         target={material}
                         propertyName="invertNormalMapX"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="Invert Y axis"
+                        label="反转Y轴"
                         target={material}
                         propertyName="invertNormalMapY"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}

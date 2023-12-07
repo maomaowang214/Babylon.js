@@ -110,7 +110,7 @@ export class AnimationCurveEditorComponent extends React.Component<IAnimationCur
         return (
             <>
                 <ButtonLineComponent
-                    label="Edit"
+                    label="编辑"
                     onClick={() => {
                         this.setState({ isOpen: true });
                     }}
@@ -118,7 +118,7 @@ export class AnimationCurveEditorComponent extends React.Component<IAnimationCur
                 {this.state.isOpen && (
                     <PopupComponent
                         id="curve-editor"
-                        title="Animation Curve Editor"
+                        title="动画曲线编辑器"
                         size={{ width: 1024, height: 512 }}
                         onResize={() => this.props.context.onHostWindowResized.notifyObservers()}
                         onClose={(window: Window) => this.onCloseAnimationCurveEditor(window)}

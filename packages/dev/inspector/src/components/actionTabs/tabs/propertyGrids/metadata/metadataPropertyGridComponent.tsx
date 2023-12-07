@@ -45,7 +45,7 @@ export class MetadataGridComponent extends React.Component<
             prettyJson: false,
             preventObjCorruption: true,
             metadataPropType: MetadataTypes.UNDEFINED,
-            statusMessage: "ready to pick",
+            statusMessage: "准备选择",
             isValidJson: false,
         };
         this._textAreaHost = React.createRef();
@@ -83,7 +83,7 @@ export class MetadataGridComponent extends React.Component<
             this.setTextAreaDisabled(this.state.preventObjCorruption && metadataPropType === MetadataTypes.OBJECT);
         } else {
             this.setState({
-                statusMessage: "could not find entity, please pick again",
+                statusMessage: "找不到实体，请重新选择",
                 selectedEntityMetadata: "",
                 metadataPropType: MetadataTypes.UNDEFINED,
                 isValidJson: false,
@@ -155,7 +155,7 @@ export class MetadataGridComponent extends React.Component<
             this.setState({ statusMessage: null });
             return JSON.parse(string);
         } catch (error) {
-            this.setState({ statusMessage: "invalid JSON: " + error.message });
+            this.setState({ statusMessage: "无效 JSON: " + error.message });
             return null;
         }
     }
@@ -252,7 +252,7 @@ export class MetadataGridComponent extends React.Component<
                     if (Object.prototype.hasOwnProperty.call(parsedJson, "gltf")) {
                         if (Object.prototype.hasOwnProperty.call(parsedJson.gltf, "extras")) {
                             this.setState({
-                                statusMessage: "metadata.gltf.extras property already exists",
+                                statusMessage: "metadata.gltf.extras 属性已存在",
                             });
                         } else {
                             parsedJson.gltf.extras = {};
@@ -260,7 +260,7 @@ export class MetadataGridComponent extends React.Component<
                                 dirty: true,
                                 prettyJson: false,
                                 selectedEntityMetadata: this.parseMetaObject(this.state.isValidJson, parsedJson),
-                                statusMessage: "metadata.gltf.extras property inserted, don't forget to Update!",
+                                statusMessage: "metadata.gltf.extras 属性插入, 别忘了更新!",
                             });
                         }
                     } else {
@@ -271,7 +271,7 @@ export class MetadataGridComponent extends React.Component<
                             dirty: true,
                             prettyJson: false,
                             selectedEntityMetadata: this.parseMetaObject(this.state.isValidJson, parsedJson),
-                            statusMessage: "metadata.gltf property inserted, don't forget to Update!",
+                            statusMessage: "metadata.gltf 属性插入, 别忘了更新!",
                         });
                     }
                 }
@@ -287,10 +287,10 @@ export class MetadataGridComponent extends React.Component<
     render() {
         const protectObj = this.state.preventObjCorruption && this.state.metadataPropType === MetadataTypes.OBJECT;
         return (
-            <LineContainerComponent title="METADATA" closed={true} selection={this.props.globalState}>
-                <TextLineComponent label="Property type" value={this.state.metadataPropType} />
+            <LineContainerComponent title="元数据" closed={true} selection={this.props.globalState}>
+                <TextLineComponent label="属性类型" value={this.state.metadataPropType} />
                 <CheckBoxLineComponent
-                    label="Prevent Object corruption"
+                    label="防止对象损坏"
                     disabled={false}
                     isSelected={() => this.state.preventObjCorruption}
                     onSelect={(value) => {
@@ -299,7 +299,7 @@ export class MetadataGridComponent extends React.Component<
                     }}
                 />
                 <CheckBoxLineComponent
-                    label="Pretty JSON"
+                    label="JSON格式化"
                     disabled={false}
                     isSelected={() => this.state.prettyJson}
                     onSelect={(value) => {
@@ -350,28 +350,28 @@ export class MetadataGridComponent extends React.Component<
                     />
                 </div>
                 <div className="copy-root">
-                    <div className="copy-container" onClick={() => this.copyToClipboard()} title="Copy to clipboard">
+                    <div className="copy-container" onClick={() => this.copyToClipboard()} title="复制到剪贴板">
                         <img src={copyIcon} alt="Copy" />
                     </div>
                 </div>
-                <ButtonLineComponent label="Populate glTF extras" onClick={this.populateGltfExtras} isDisabled={!this.state.isValidJson || protectObj} />
+                <ButtonLineComponent label="glTF 附加项" onClick={this.populateGltfExtras} isDisabled={!this.state.isValidJson || protectObj} />
                 <ButtonLineComponent
-                    label={`Update metadata${this.props.entity ? " as " + this.state.metadataPropType : ""}`}
+                    label={`更新元数据${this.props.entity ? " as " + this.state.metadataPropType : ""}`}
                     onClick={() => {
                         if (this.props.entity) {
                             if (this.state.metadataPropType === MetadataTypes.NULL) {
                                 this.props.entity.metadata = null;
-                                this.setState({ statusMessage: "metadata set to null", dirty: false });
+                                this.setState({ statusMessage: "元数据设置为 null", dirty: false });
                                 return;
                             }
                             if (this.state.metadataPropType === MetadataTypes.UNDEFINED) {
                                 delete this.props.entity.metadata;
-                                this.setState({ statusMessage: "metadata set to undefined", dirty: false });
+                                this.setState({ statusMessage: "元数据设置为 undefined", dirty: false });
                                 return;
                             }
                             const parsedJson = this.parsableString(this.state.selectedEntityMetadata);
                             this.props.entity.metadata = parsedJson || this.state.selectedEntityMetadata;
-                            this.setState({ statusMessage: "metadata updated", dirty: false });
+                            this.setState({ statusMessage: "元数据更新", dirty: false });
                         }
                     }}
                     isDisabled={!this.state.dirty || protectObj}

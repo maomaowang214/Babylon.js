@@ -26,14 +26,14 @@ export class HemisphericEmitterGridComponent extends React.Component<IHemispheri
             <>
                 <FloatLineComponent
                     lockObject={this.props.lockObject}
-                    label="Radius"
+                    label="半径"
                     target={emitter}
                     propertyName="radius"
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
                 <SliderLineComponent
                     lockObject={this.props.lockObject}
-                    label="Radius range"
+                    label="半径范围"
                     target={emitter}
                     propertyName="radiusRange"
                     minimum={0}
@@ -43,7 +43,7 @@ export class HemisphericEmitterGridComponent extends React.Component<IHemispheri
                 />
                 <SliderLineComponent
                     lockObject={this.props.lockObject}
-                    label="Direction randomizer"
+                    label="方向随机函数发生器"
                     target={emitter}
                     propertyName="directionRandomizer"
                     minimum={0}

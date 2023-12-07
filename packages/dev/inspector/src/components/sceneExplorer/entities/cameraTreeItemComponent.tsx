@@ -97,11 +97,11 @@ export class CameraTreeItemComponent extends React.Component<ICameraTreeItemComp
             <div className="cameraTools">
                 <TreeItemLabelComponent label={this.props.camera.name} onClick={() => this.props.onClick()} icon={faCamera} color="green" />
                 {(!scene.activeCameras || scene.activeCameras.length === 0) && (
-                    <div className="activeCamera icon" onClick={() => this.setActive()} title="Set as main camera and attach to controls">
+                    <div className="activeCamera icon" onClick={() => this.setActive()} title="设置为主摄像头">
                         {isActiveElement}
                     </div>
                 )}
-                <div className="enableGizmo icon" onClick={() => this.toggleGizmo()} title="Turn on/off the camera's gizmo">
+                <div className="enableGizmo icon" onClick={() => this.toggleGizmo()} title="打开/关闭 相机的小控件">
                     {isGizmoEnabled}
                 </div>
                 <ExtensionsComponent target={this.props.camera} extensibilityGroups={this.props.extensibilityGroups} />

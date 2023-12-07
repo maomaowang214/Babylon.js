@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWindowRestore, faTimes, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import * as React from "react";
 
 import type { Nullable } from "core/types";
@@ -72,26 +72,21 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, { is
             );
         }
 
-        return <img id="logo" style={{ top: "0%" }} src="https://www.babylonjs.com/Assets/logo-babylonjs-social-twitter.png" />;
+        return <img id="logo" style={{ top: "0%" }} src="../../assets/飞翔的鸟.png" />;
     }
 
     render() {
         return (
             <div id="header">
-                {this.renderLogo()}
+                {/* {this.renderLogo()}
                 <div id="title">{this.props.title}</div>
                 <div id="commands">
-                    {!this.props.noCommands && !this.props.noExpand && (
-                        <div className="expand" onClick={() => this.props.onPopup()}>
-                            <FontAwesomeIcon icon={faWindowRestore} />
-                        </div>
-                    )}
                     {!this.props.noCommands && !this.props.noClose && (
                         <div className="close" onClick={() => this.props.onClose()}>
                             <FontAwesomeIcon icon={faTimes} />
                         </div>
                     )}
-                </div>
+                </div> */}
             </div>
         );
     }

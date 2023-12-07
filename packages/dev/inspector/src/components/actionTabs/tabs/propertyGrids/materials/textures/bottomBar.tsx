@@ -16,7 +16,7 @@ export class BottomBar extends React.PureComponent<IBottomBarProps> {
                 <span id="file-url">{this.props.texture.name}</span>
                 {!this.props.texture.noMipmap && (
                     <span id="mip-level">
-                        MIP Preview: {this.props.mipLevel} {width}x{height}
+                        MIP预览: {this.props.mipLevel} {width}x{height}
                     </span>
                 )}
             </div>

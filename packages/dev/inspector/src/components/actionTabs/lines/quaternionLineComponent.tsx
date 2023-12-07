@@ -152,8 +152,8 @@ export class QuaternionLineComponent extends React.Component<IQuaternionLineComp
 
         return (
             <div className="vector3Line">
-                <div className="firstLine" title={this.props.label + " (Using Quaternion)"}>
-                    <div className="label">{this.props.label + " (Using Quaternion)"}</div>
+                <div className="firstLine" title={this.props.label + " (四元数)"}>
+                    <div className="label">{this.props.label + " (四元数)"}</div>
                     <div className="vector">
                         {!this.props.useEuler && `X: ${quat.x.toFixed(1)}, Y: ${quat.y.toFixed(1)}, Z: ${quat.z.toFixed(1)}, W: ${quat.w.toFixed(1)}`}
                         {this.props.useEuler && `X: ${eulerDegrees.x.toFixed(2)}, Y: ${eulerDegrees.y.toFixed(2)}, Z: ${eulerDegrees.z.toFixed(2)}`}

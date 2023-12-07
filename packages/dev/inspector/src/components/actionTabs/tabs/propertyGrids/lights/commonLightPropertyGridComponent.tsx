@@ -36,17 +36,17 @@ export class CommonLightPropertyGridComponent extends React.Component<ICommonLig
                     lockObject={this.props.lockObject}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
+                <LineContainerComponent title="常规" selection={this.props.globalState}>
                     <TextLineComponent label="ID" value={light.id} />
                     <TextInputLineComponent
                         lockObject={this.props.lockObject}
-                        label="Name"
+                        label="名称"
                         target={light}
                         propertyName="name"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <TextLineComponent label="Unique ID" value={light.uniqueId.toString()} />
-                    <TextLineComponent label="Class" value={light.getClassName()} />
+                    <TextLineComponent label="唯一 ID" value={light.uniqueId.toString()} />
+                    <TextLineComponent label="类型" value={light.getClassName()} />
                     <ParentPropertyGridComponent
                         globalState={this.props.globalState}
                         node={light}
@@ -55,13 +55,13 @@ export class CommonLightPropertyGridComponent extends React.Component<ICommonLig
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Intensity"
+                        label="强度"
                         target={light}
                         propertyName="intensity"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <ButtonLineComponent
-                        label="Dispose"
+                        label="删除"
                         onClick={() => {
                             light.dispose();
                             this.props.globalState.onSelectionChangedObservable.notifyObservers(null);

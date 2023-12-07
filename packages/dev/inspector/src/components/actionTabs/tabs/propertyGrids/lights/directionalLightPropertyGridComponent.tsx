@@ -105,8 +105,8 @@ export class DirectionalLightPropertyGridComponent extends React.Component<IDire
                     light={light}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="DEBUG" closed={true} selection={this.props.globalState}>
-                    <CheckBoxLineComponent label="Display frustum" isSelected={() => displayFrustum} onSelect={() => this.displayFrustum()} />
+                <LineContainerComponent title="调试" closed={true} selection={this.props.globalState}>
+                    <CheckBoxLineComponent label="显示截锥体" isSelected={() => displayFrustum} onSelect={() => this.displayFrustum()} />
                 </LineContainerComponent>
             </>
         );

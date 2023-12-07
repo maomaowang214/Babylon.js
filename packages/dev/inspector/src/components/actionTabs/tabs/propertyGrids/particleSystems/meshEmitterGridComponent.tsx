@@ -31,7 +31,7 @@ export class MeshEmitterGridComponent extends React.Component<IMeshEmitterGridCo
             <>
                 <MeshPickerComponent
                     globalState={this.props.globalState}
-                    label="Source"
+                    label="源"
                     scene={this.props.scene}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     target={this.props.emitter}
@@ -40,7 +40,7 @@ export class MeshEmitterGridComponent extends React.Component<IMeshEmitterGridCo
                 {!emitter.useMeshNormalsForDirection && (
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Direction 1"
+                        label="方向 1"
                         target={emitter}
                         propertyName="direction1"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -49,14 +49,14 @@ export class MeshEmitterGridComponent extends React.Component<IMeshEmitterGridCo
                 {!emitter.useMeshNormalsForDirection && (
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Direction 2"
+                        label="方向 2"
                         target={emitter}
                         propertyName="direction2"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 )}
                 <CheckBoxLineComponent
-                    label="Use normals for direction"
+                    label="用法线表示方向"
                     target={emitter}
                     propertyName="useMeshNormalsForDirection"
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}

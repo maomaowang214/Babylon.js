@@ -29,16 +29,16 @@ export class SSRRenderingPipelinePropertyGridComponent extends React.Component<I
 
         return (
             <>
-                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
-                    <TextLineComponent label="Name" value={renderPipeline.name} />
-                    <TextLineComponent label="Class" value={renderPipeline.getClassName()} />
+                <LineContainerComponent title="常规" selection={this.props.globalState}>
+                    <TextLineComponent label="名称" value={renderPipeline.name} />
+                    <TextLineComponent label="类型" value={renderPipeline.getClassName()} />
                 </LineContainerComponent>
                 <LineContainerComponent title="SSR" selection={this.props.globalState}>
-                    <CheckBoxLineComponent label="Enabled" target={renderPipeline} propertyName="isEnabled" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
-                    <CheckBoxLineComponent label="Debug" target={renderPipeline} propertyName="debug" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <CheckBoxLineComponent label="启用" target={renderPipeline} propertyName="isEnabled" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <CheckBoxLineComponent label="调试" target={renderPipeline} propertyName="debug" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Strength"
+                        label="强度"
                         minimum={0}
                         maximum={5}
                         step={0.05}
@@ -48,7 +48,7 @@ export class SSRRenderingPipelinePropertyGridComponent extends React.Component<I
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Reflection exponent"
+                        label="反射指数"
                         minimum={0}
                         maximum={5}
                         step={0.05}
@@ -58,7 +58,7 @@ export class SSRRenderingPipelinePropertyGridComponent extends React.Component<I
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Reflectivity threshold"
+                        label="反射率阈值"
                         minimum={0}
                         maximum={1}
                         step={0.01}
@@ -68,7 +68,7 @@ export class SSRRenderingPipelinePropertyGridComponent extends React.Component<I
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Thickness"
+                        label="厚度"
                         minimum={0}
                         maximum={10}
                         step={0.01}
@@ -78,7 +78,7 @@ export class SSRRenderingPipelinePropertyGridComponent extends React.Component<I
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Step"
+                        label="步骤"
                         minimum={1}
                         maximum={50}
                         step={1}
@@ -87,14 +87,14 @@ export class SSRRenderingPipelinePropertyGridComponent extends React.Component<I
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="Smooth reflections"
+                        label="光滑的反射"
                         target={renderPipeline}
                         propertyName="enableSmoothReflections"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Max steps"
+                        label="最大步骤"
                         minimum={1}
                         maximum={3000}
                         step={10}
@@ -104,7 +104,7 @@ export class SSRRenderingPipelinePropertyGridComponent extends React.Component<I
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Max distance"
+                        label="最大距离"
                         minimum={1}
                         maximum={3000}
                         step={10}
@@ -114,7 +114,7 @@ export class SSRRenderingPipelinePropertyGridComponent extends React.Component<I
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Roughness factor"
+                        label="粗糙度因素"
                         minimum={0}
                         maximum={1}
                         step={0.01}
@@ -124,7 +124,7 @@ export class SSRRenderingPipelinePropertyGridComponent extends React.Component<I
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Self collision skips"
+                        label="自碰撞跳闸"
                         minimum={1}
                         maximum={10}
                         step={1}
@@ -134,7 +134,7 @@ export class SSRRenderingPipelinePropertyGridComponent extends React.Component<I
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="SSR downsample"
+                        label="SSR 下采样"
                         minimum={0}
                         maximum={5}
                         step={1}
@@ -143,27 +143,27 @@ export class SSRRenderingPipelinePropertyGridComponent extends React.Component<I
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="Clip to frustum"
+                        label="夹到截锥体上"
                         target={renderPipeline}
                         propertyName="clipToFrustum"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <LineContainerComponent title="Automatic thickness computation" selection={this.props.globalState}>
+                    <LineContainerComponent title="自动厚度计算" selection={this.props.globalState}>
                         <CheckBoxLineComponent
-                            label="Enabled"
+                            label="启用"
                             target={renderPipeline}
                             propertyName="enableAutomaticThicknessComputation"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <CheckBoxLineComponent
-                            label="Force write transparent"
+                            label="强制写入透明"
                             target={renderPipeline}
                             propertyName="backfaceForceDepthWriteTransparentMeshes"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="Downsample"
+                            label="下采样"
                             minimum={0}
                             maximum={5}
                             step={1}
@@ -172,10 +172,10 @@ export class SSRRenderingPipelinePropertyGridComponent extends React.Component<I
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                     </LineContainerComponent>
-                    <LineContainerComponent title="Blur" selection={this.props.globalState}>
+                    <LineContainerComponent title="模糊" selection={this.props.globalState}>
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="Strength"
+                            label="强度"
                             minimum={0}
                             maximum={0.15}
                             step={0.001}
@@ -185,7 +185,7 @@ export class SSRRenderingPipelinePropertyGridComponent extends React.Component<I
                         />
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="Downsample"
+                            label="下采样"
                             minimum={0}
                             maximum={5}
                             step={1}
@@ -194,41 +194,41 @@ export class SSRRenderingPipelinePropertyGridComponent extends React.Component<I
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                     </LineContainerComponent>
-                    <LineContainerComponent title="Attenuations" selection={this.props.globalState}>
+                    <LineContainerComponent title="衰减" selection={this.props.globalState}>
                         <CheckBoxLineComponent
-                            label="Screen borders"
+                            label="屏幕边界"
                             target={renderPipeline}
                             propertyName="attenuateScreenBorders"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <CheckBoxLineComponent
-                            label="Distance"
+                            label="距离"
                             target={renderPipeline}
                             propertyName="attenuateIntersectionDistance"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <CheckBoxLineComponent
-                            label="Step iterations"
+                            label="步迭代"
                             target={renderPipeline}
                             propertyName="attenuateIntersectionIterations"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <CheckBoxLineComponent
-                            label="Facing camera"
+                            label="面对镜头"
                             target={renderPipeline}
                             propertyName="attenuateFacingCamera"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <CheckBoxLineComponent
-                            label="Backface reflections"
+                            label="沿墙反射"
                             target={renderPipeline}
                             propertyName="attenuateBackfaceReflection"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                     </LineContainerComponent>
-                    <LineContainerComponent title="Environment" selection={this.props.globalState}>
+                    <LineContainerComponent title="环境" selection={this.props.globalState}>
                         <TextureLinkLineComponent
-                            label="Cube"
+                            label="立方体"
                             texture={renderPipeline.environmentTexture}
                             propertyName="environmentTexture"
                             texturedObject={renderPipeline}
@@ -236,21 +236,21 @@ export class SSRRenderingPipelinePropertyGridComponent extends React.Component<I
                             cubeOnly={true}
                         />
                         <CheckBoxLineComponent
-                            label="Is probe"
+                            label="探针"
                             target={renderPipeline}
                             propertyName="environmentTextureIsProbe"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                     </LineContainerComponent>
-                    <LineContainerComponent title="Color space" selection={this.props.globalState}>
+                    <LineContainerComponent title="颜色空间" selection={this.props.globalState}>
                         <CheckBoxLineComponent
-                            label="Input is in gamma space"
+                            label="输入在空间中"
                             target={renderPipeline}
                             propertyName="inputTextureColorIsInGammaSpace"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <CheckBoxLineComponent
-                            label="Output to gamma space"
+                            label="输出到空间"
                             target={renderPipeline}
                             propertyName="generateOutputInGammaSpace"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}

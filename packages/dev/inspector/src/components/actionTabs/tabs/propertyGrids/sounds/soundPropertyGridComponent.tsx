@@ -32,16 +32,16 @@ export class SoundPropertyGridComponent extends React.Component<ISoundPropertyGr
 
         return (
             <>
-                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
-                    <TextLineComponent label="Class" value={sound.getClassName()} />
+                <LineContainerComponent title="常规" selection={this.props.globalState}>
+                    <TextLineComponent label="类型" value={sound.getClassName()} />
                     <TextInputLineComponent
                         lockObject={this.props.lockObject}
-                        label="Name"
+                        label="名称"
                         target={sound}
                         propertyName="name"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <TextLineComponent label="Status" value={sound.isPaused ? "Paused" : sound.isPlaying ? "Playing" : "Stopped"} />
+                    <TextLineComponent label="状态" value={sound.isPaused ? "Paused" : sound.isPlaying ? "Playing" : "Stopped"} />
                     {/* {
                         postProcess.width &&
                         <TextLineComponent label="Width" value={postProcess.width.toString()} />
@@ -63,10 +63,10 @@ export class SoundPropertyGridComponent extends React.Component<ISoundPropertyGr
                         this.props.globalState.onSelectionChangedObservable.notifyObservers(null);
                     }} />                       */}
                 </LineContainerComponent>
-                <LineContainerComponent title="COMMANDS" selection={this.props.globalState}>
+                <LineContainerComponent title="命令" selection={this.props.globalState}>
                     {sound.isPlaying && (
                         <ButtonLineComponent
-                            label="Pause"
+                            label="暂停"
                             onClick={() => {
                                 sound.pause();
                                 this.forceUpdate();
@@ -75,7 +75,7 @@ export class SoundPropertyGridComponent extends React.Component<ISoundPropertyGr
                     )}
                     {!sound.isPlaying && (
                         <ButtonLineComponent
-                            label="Play"
+                            label="播放"
                             onClick={() => {
                                 sound.play();
                                 this.forceUpdate();
@@ -84,7 +84,7 @@ export class SoundPropertyGridComponent extends React.Component<ISoundPropertyGr
                     )}
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Samples"
+                        label="样品"
                         target={sound}
                         directValue={sound.getVolume()}
                         onChange={(value) => {
@@ -97,7 +97,7 @@ export class SoundPropertyGridComponent extends React.Component<ISoundPropertyGr
                         decimalCount={1}
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <CheckBoxLineComponent label="Loop" target={sound} propertyName="loop" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <CheckBoxLineComponent label="循环" target={sound} propertyName="loop" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                 </LineContainerComponent>
             </>
         );

@@ -34,16 +34,16 @@ export class BackgroundMaterialPropertyGridComponent extends React.Component<IBa
         const onDebugSelectionChangeObservable = this._onDebugSelectionChangeObservable;
 
         return (
-            <LineContainerComponent title="TEXTURES" selection={this.props.globalState}>
+            <LineContainerComponent title="纹理" selection={this.props.globalState}>
                 <TextureLinkLineComponent
-                    label="Diffuse"
+                    label="漫反射"
                     texture={material.diffuseTexture}
                     material={material}
                     onSelectionChangedObservable={this.props.onSelectionChangedObservable}
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <TextureLinkLineComponent
-                    label="Reflection"
+                    label="反射"
                     texture={material.reflectionTexture}
                     material={material}
                     onSelectionChangedObservable={this.props.onSelectionChangedObservable}
@@ -52,7 +52,7 @@ export class BackgroundMaterialPropertyGridComponent extends React.Component<IBa
                 {material.reflectionTexture && (
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Reflection blur"
+                        label="反射模糊"
                         target={material}
                         propertyName="reflectionBlur"
                         minimum={0}
@@ -76,17 +76,17 @@ export class BackgroundMaterialPropertyGridComponent extends React.Component<IBa
                     material={material}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="LIGHTING & COLORS" selection={this.props.globalState}>
+                <LineContainerComponent title="照明 & 颜色" selection={this.props.globalState}>
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Primary"
+                        label="颜色"
                         target={material}
                         propertyName="primaryColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Shadow level"
+                        label="阴影级别"
                         target={material}
                         propertyName="primaryColorShadowLevel"
                         minimum={0}
@@ -96,7 +96,7 @@ export class BackgroundMaterialPropertyGridComponent extends React.Component<IBa
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Highlight level"
+                        label="高亮级别"
                         target={material}
                         propertyName="primaryColorHighlightLevel"
                         minimum={0}
@@ -106,23 +106,23 @@ export class BackgroundMaterialPropertyGridComponent extends React.Component<IBa
                     />
                 </LineContainerComponent>
                 {this.renderTextures()}
-                <LineContainerComponent title="RENDERING" closed={true} selection={this.props.globalState}>
-                    <CheckBoxLineComponent label="Enable noise" target={material} propertyName="enableNoise" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                <LineContainerComponent title="渲染" closed={true} selection={this.props.globalState}>
+                    <CheckBoxLineComponent label="启用噪声" target={material} propertyName="enableNoise" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     <CheckBoxLineComponent
-                        label="Opacity fresnel"
+                        label="菲涅耳透明度"
                         target={material}
                         propertyName="opacityFresnel"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="Reflection fresnel"
+                        label="菲涅耳反射"
                         target={material}
                         propertyName="reflectionFresnel"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Reflection amount"
+                        label="反射量"
                         target={material}
                         propertyName="reflectionAmount"
                         minimum={0}

@@ -652,6 +652,7 @@ export class BoundingBoxGizmo extends Gizmo implements IBoundingBoxGizmo {
     }
 
     protected _attachedNodeChanged(value: Nullable<AbstractMesh>) {
+        // 屏蔽相机进入此函数
         if (value) {
             // Reset anchor mesh to match attached mesh's scale
             // This is needed to avoid invalid box/sphere position on first drag

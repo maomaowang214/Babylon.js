@@ -122,7 +122,7 @@ export class PropertiesBar extends React.PureComponent<IPropertiesBarProps, IPro
                                 <img
                                     id="resize"
                                     className="icon button"
-                                    title="Resize"
+                                    title="调整"
                                     alt="Resize"
                                     src={_resizeButton}
                                     onClick={() => resizeTexture(this.state.width, this.state.height)}
@@ -149,13 +149,13 @@ export class PropertiesBar extends React.PureComponent<IPropertiesBarProps, IPro
                     )}
                     {mipsEnabled && (
                         <div className="tab" id="mip-tab">
-                            <img title="Mip Preview Up" className="icon button" src={_mipUp} onClick={() => mipLevel > 0 && setMipLevel(mipLevel - 1)} />
-                            <img title="Mip Preview Down" className="icon button" src={_mipDown} onClick={() => mipLevel < maxLevels && setMipLevel(mipLevel + 1)} />
+                            <img title="Mip预览 上" className="icon button" src={_mipUp} onClick={() => mipLevel > 0 && setMipLevel(mipLevel - 1)} />
+                            <img title="Mip预览 下" className="icon button" src={_mipDown} onClick={() => mipLevel < maxLevels && setMipLevel(mipLevel + 1)} />
                         </div>
                     )}
                 </div>
                 <div className="tab" id="right-tab">
-                    <img title="Reset" className="icon button" src={_resetButton} onClick={() => resetTexture()} />
+                    <img title="重置" className="icon button" src={_resetButton} onClick={() => resetTexture()} />
                     <label>
                         <input
                             accept=".jpg, .png, .tga, .dds, .env"
@@ -169,9 +169,9 @@ export class PropertiesBar extends React.PureComponent<IPropertiesBarProps, IPro
                                 evt.target.value = "";
                             }}
                         />
-                        <img title="Upload" className="icon button" src={_uploadButton} />
+                        <img title="上传" className="icon button" src={_uploadButton} />
                     </label>
-                    <img title="Save" className="icon button" src={_saveButton} onClick={() => saveTexture()} />
+                    <img title="保存" className="icon button" src={_saveButton} onClick={() => saveTexture()} />
                 </div>
             </div>
         );

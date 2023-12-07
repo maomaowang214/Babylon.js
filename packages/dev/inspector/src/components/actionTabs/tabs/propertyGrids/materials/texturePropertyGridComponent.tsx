@@ -273,11 +273,11 @@ export class TexturePropertyGridComponent extends React.Component<ITextureProper
 
         return (
             <>
-                <LineContainerComponent title="PREVIEW" selection={this.props.globalState}>
+                <LineContainerComponent title="预览" selection={this.props.globalState}>
                     <TextureLineComponent ref={this._textureLineRef} texture={texture} width={256} height={256} globalState={this.props.globalState} />
-                    <FileButtonLineComponent label="Load texture from file" onClick={(file) => this.updateTexture(file)} accept=".jpg, .png, .tga, .dds, .env" />
+                    <FileButtonLineComponent label="从文件加载纹理" onClick={(file) => this.updateTexture(file)} accept=".jpg, .png, .tga, .dds, .env" />
                     <ButtonLineComponent
-                        label="Edit"
+                        label="编辑"
                         onClick={() => {
                             if (this.props.texture instanceof AdvancedDynamicTexture) {
                                 EditAdvancedDynamicTexture(this.props.texture as AdvancedDynamicTexture);
@@ -299,7 +299,7 @@ export class TexturePropertyGridComponent extends React.Component<ITextureProper
                 {this.state.isTextureEditorOpen && (
                     <PopupComponent
                         id="texture-editor"
-                        title="Texture Inspector"
+                        title="纹理检查员"
                         size={this._textureInspectorSize}
                         onOpen={this.onOpenTextureEditor}
                         onClose={() => this.onCloseTextureEditor}
@@ -314,14 +314,14 @@ export class TexturePropertyGridComponent extends React.Component<ITextureProper
                     lockObject={this.props.lockObject}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
-                    <TextLineComponent label="Width" value={texture.getSize().width.toString()} />
-                    <TextLineComponent label="Height" value={texture.getSize().height.toString()} />
-                    {texture.is2DArray && <TextLineComponent label="Layers" value={texture._texture?.depth.toString() ?? "?"} />}
-                    {texture.is3D && <TextLineComponent label="Depth" value={texture._texture?.depth.toString() ?? "?"} />}
+                <LineContainerComponent title="常规" selection={this.props.globalState}>
+                    <TextLineComponent label="宽" value={texture.getSize().width.toString()} />
+                    <TextLineComponent label="高" value={texture.getSize().height.toString()} />
+                    {texture.is2DArray && <TextLineComponent label="图层" value={texture._texture?.depth.toString() ?? "?"} />}
+                    {texture.is3D && <TextLineComponent label="深度" value={texture._texture?.depth.toString() ?? "?"} />}
                     {texture.isRenderTarget && (
                         <ButtonLineComponent
-                            label="Scale up"
+                            label="按比例增加"
                             onClick={() => {
                                 const scene = texture.getScene()!;
                                 texture.scale(2);
@@ -333,7 +333,7 @@ export class TexturePropertyGridComponent extends React.Component<ITextureProper
                     )}
                     {texture.isRenderTarget && (
                         <ButtonLineComponent
-                            label="Scale down"
+                            label="按比例减小"
                             onClick={() => {
                                 const scene = texture.getScene()!;
                                 texture.scale(0.5);
@@ -343,33 +343,33 @@ export class TexturePropertyGridComponent extends React.Component<ITextureProper
                             }}
                         />
                     )}
-                    <TextLineComponent label="Format" value={oformat?.label ?? "unknown"} />
+                    <TextLineComponent label="格式" value={oformat?.label ?? "unknown"} />
                     {!oformat?.hideType && !oformat?.compressed && <TextLineComponent label="Type" value={otype?.label ?? "unknown"} />}
-                    {!!oformat?.normalizable && !oformat?.compressed && !!otype?.normalizable && <TextLineComponent label="Normalized" value={otype.normalizable ? "Yes" : "No"} />}
-                    <TextLineComponent label="Is compressed" value={oformat?.compressed ? "Yes" : "No"} />
-                    <TextLineComponent label="Use sRGB buffers" value={texture._texture?._useSRGBBuffer ? "Yes" : "No"} />
-                    {extension && <TextLineComponent label="File format" value={extension} />}
-                    <TextLineComponent label="Unique ID" value={texture.uniqueId.toString()} />
-                    <TextLineComponent label="Internal Unique ID" value={(texture._texture?.uniqueId ?? "N/A").toString()} />
-                    <TextLineComponent label="Class" value={textureClass} />
-                    {count >= 0 && <TextLineComponent label="Number of textures" value={count.toString()} />}
-                    <TextLineComponent label="Has alpha" value={texture.hasAlpha ? "Yes" : "No"} />
+                    {!!oformat?.normalizable && !oformat?.compressed && !!otype?.normalizable && <TextLineComponent label="规范化" value={otype.normalizable ? "Yes" : "No"} />}
+                    <TextLineComponent label="压缩" value={oformat?.compressed ? "Yes" : "No"} />
+                    <TextLineComponent label="使用sRGB缓冲区" value={texture._texture?._useSRGBBuffer ? "Yes" : "No"} />
+                    {extension && <TextLineComponent label="文件格式" value={extension} />}
+                    <TextLineComponent label="唯一 ID" value={texture.uniqueId.toString()} />
+                    <TextLineComponent label="内部唯一ID" value={(texture._texture?.uniqueId ?? "N/A").toString()} />
+                    <TextLineComponent label="类型" value={textureClass} />
+                    {count >= 0 && <TextLineComponent label="纹理数量" value={count.toString()} />}
+                    <TextLineComponent label="阿尔法" value={texture.hasAlpha ? "Yes" : "No"} />
                     <CheckBoxLineComponent
-                        label="Get alpha from RGB"
+                        label="从RGB中得到阿尔法"
                         target={texture}
                         propertyName="getAlphaFromRGB"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <TextLineComponent label="Is 3D" value={texture.is3D ? "Yes" : "No"} />
-                    <TextLineComponent label="Is 2D array" value={texture.is2DArray ? "Yes" : "No"} />
-                    <TextLineComponent label="Is cube" value={texture.isCube ? "Yes" : "No"} />
-                    <TextLineComponent label="Is render target" value={texture.isRenderTarget ? "Yes" : "No"} />
-                    {texture.isRenderTarget && <TextLineComponent label="Depth/stencil texture format" value={oformatDepthStencil?.label ?? "no"} />}
-                    {texture instanceof Texture && <TextLineComponent label="Stored as inverted on Y" value={texture.invertY ? "Yes" : "No"} />}
-                    <TextLineComponent label="Has mipmaps" value={!texture.noMipmap ? "Yes" : "No"} />
+                    <TextLineComponent label="3D" value={texture.is3D ? "Yes" : "No"} />
+                    <TextLineComponent label="2D" value={texture.is2DArray ? "Yes" : "No"} />
+                    <TextLineComponent label="立方体" value={texture.isCube ? "Yes" : "No"} />
+                    <TextLineComponent label="渲染目标" value={texture.isRenderTarget ? "Yes" : "No"} />
+                    {texture.isRenderTarget && <TextLineComponent label="深度/模板纹理格式" value={oformatDepthStencil?.label ?? "no"} />}
+                    {texture instanceof Texture && <TextLineComponent label="反向存储在Y上" value={texture.invertY ? "Yes" : "No"} />}
+                    <TextLineComponent label="已经产生" value={!texture.noMipmap ? "Yes" : "No"} />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="UV set"
+                        label="UV 设置"
                         target={texture}
                         propertyName="coordinatesIndex"
                         minimum={0}
@@ -379,7 +379,7 @@ export class TexturePropertyGridComponent extends React.Component<ITextureProper
                         decimalCount={0}
                     />
                     <OptionsLineComponent
-                        label="Mode"
+                        label="模式"
                         options={coordinatesMode}
                         target={texture}
                         propertyName="coordinatesMode"
@@ -388,7 +388,7 @@ export class TexturePropertyGridComponent extends React.Component<ITextureProper
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Level"
+                        label="级别"
                         target={texture}
                         propertyName="level"
                         minimum={0}
@@ -398,7 +398,7 @@ export class TexturePropertyGridComponent extends React.Component<ITextureProper
                     />
                     {texture.updateSamplingMode && (
                         <OptionsLineComponent
-                            label="Sampling"
+                            label="抽样"
                             options={samplingMode}
                             target={texture}
                             noDirectUpdate={true}
@@ -412,12 +412,12 @@ export class TexturePropertyGridComponent extends React.Component<ITextureProper
                     <AnimationGridComponent globalState={this.props.globalState} animatable={texture} scene={texture.getScene()!} lockObject={this.props.lockObject} />
                 )}
                 {(texture as any).rootContainer && this._adtInstrumentation && (
-                    <LineContainerComponent title="ADVANCED TEXTURE PROPERTIES" selection={this.props.globalState}>
-                        <ValueLineComponent label="Last layout time" value={this._adtInstrumentation!.renderTimeCounter.current} units="ms" />
-                        <ValueLineComponent label="Last render time" value={this._adtInstrumentation!.layoutTimeCounter.current} units="ms" />
+                    <LineContainerComponent title="高级纹理属性" selection={this.props.globalState}>
+                        <ValueLineComponent label="最后布局时间" value={this._adtInstrumentation!.renderTimeCounter.current} units="ms" />
+                        <ValueLineComponent label="最后渲染时间" value={this._adtInstrumentation!.layoutTimeCounter.current} units="ms" />
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="Render scale"
+                            label="呈现规模"
                             minimum={0.1}
                             maximum={5}
                             step={0.1}
@@ -426,39 +426,39 @@ export class TexturePropertyGridComponent extends React.Component<ITextureProper
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <CheckBoxLineComponent
-                            label="Premultiply alpha"
+                            label="自左乘阿尔法"
                             target={texture}
                             propertyName="premulAlpha"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <FloatLineComponent
                             lockObject={this.props.lockObject}
-                            label="Ideal width"
+                            label="理想宽度"
                             target={texture}
                             propertyName="idealWidth"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <FloatLineComponent
                             lockObject={this.props.lockObject}
-                            label="Ideal height"
+                            label="理想高度"
                             target={texture}
                             propertyName="idealHeight"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <CheckBoxLineComponent
-                            label="Use smallest ideal"
+                            label="最小理想值"
                             target={texture}
                             propertyName="useSmallestIdeal"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <CheckBoxLineComponent
-                            label="Render at ideal size"
+                            label="理想尺寸渲染"
                             target={texture}
                             propertyName="renderAtIdealSize"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <CheckBoxLineComponent
-                            label="Invalidate Rect optimization"
+                            label="使矩形优化无效"
                             target={texture}
                             propertyName="useInvalidateRectOptimization"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -470,35 +470,35 @@ export class TexturePropertyGridComponent extends React.Component<ITextureProper
                         <div>
                             <FloatLineComponent
                                 lockObject={this.props.lockObject}
-                                label="U offset"
+                                label="U 偏移"
                                 target={texture}
                                 propertyName="uOffset"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <FloatLineComponent
                                 lockObject={this.props.lockObject}
-                                label="V offset"
+                                label="V 偏移"
                                 target={texture}
                                 propertyName="vOffset"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <FloatLineComponent
                                 lockObject={this.props.lockObject}
-                                label="U scale"
+                                label="U 尺寸"
                                 target={texture}
                                 propertyName="uScale"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <FloatLineComponent
                                 lockObject={this.props.lockObject}
-                                label="V scale"
+                                label="V 尺寸"
                                 target={texture}
                                 propertyName="vScale"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <FloatLineComponent
                                 lockObject={this.props.lockObject}
-                                label="U angle"
+                                label="U 角度"
                                 useEuler={this.props.globalState.onlyUseEulers}
                                 target={texture}
                                 propertyName="uAng"
@@ -506,7 +506,7 @@ export class TexturePropertyGridComponent extends React.Component<ITextureProper
                             />
                             <FloatLineComponent
                                 lockObject={this.props.lockObject}
-                                label="V angle"
+                                label="V 角度"
                                 useEuler={this.props.globalState.onlyUseEulers}
                                 target={texture}
                                 propertyName="vAng"
@@ -514,19 +514,19 @@ export class TexturePropertyGridComponent extends React.Component<ITextureProper
                             />
                             <FloatLineComponent
                                 lockObject={this.props.lockObject}
-                                label="W angle"
+                                label="W 角度"
                                 useEuler={this.props.globalState.onlyUseEulers}
                                 target={texture}
                                 propertyName="wAng"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <CheckBoxLineComponent
-                                label="Clamp U"
+                                label="夹紧 U"
                                 isSelected={() => texture.wrapU === Texture.CLAMP_ADDRESSMODE}
                                 onSelect={(value) => (texture.wrapU = value ? Texture.CLAMP_ADDRESSMODE : Texture.WRAP_ADDRESSMODE)}
                             />
                             <CheckBoxLineComponent
-                                label="Clamp V"
+                                label="夹紧 V"
                                 isSelected={() => texture.wrapV === Texture.CLAMP_ADDRESSMODE}
                                 onSelect={(value) => (texture.wrapV = value ? Texture.CLAMP_ADDRESSMODE : Texture.WRAP_ADDRESSMODE)}
                             />
@@ -536,7 +536,7 @@ export class TexturePropertyGridComponent extends React.Component<ITextureProper
                         <div>
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="Rotation Y"
+                                label="旋转 Y"
                                 useEuler={this.props.globalState.onlyUseEulers}
                                 minimum={0}
                                 maximum={2 * Math.PI}

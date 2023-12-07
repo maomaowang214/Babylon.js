@@ -188,6 +188,7 @@ export class Inspector {
             host.id = "inspector-host";
             host.style.width = options.inspectorWidth || "auto";
 
+            // 屏蔽右侧组件
             parentControlActions.appendChild(host);
 
             this._ActionTabsHost = host;

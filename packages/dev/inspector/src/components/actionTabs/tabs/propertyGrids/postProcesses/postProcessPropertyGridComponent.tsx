@@ -39,8 +39,8 @@ export class PostProcessPropertyGridComponent extends React.Component<IPostProce
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
                 {postProcess.nodeMaterialSource && (
-                    <LineContainerComponent title="CONFIGURATION" selection={this.props.globalState}>
-                        <ButtonLineComponent label="Node Material Editor" onClick={() => this.edit()} />
+                    <LineContainerComponent title="配置" selection={this.props.globalState}>
+                        <ButtonLineComponent label="节点材质编辑器" onClick={() => this.edit()} />
                     </LineContainerComponent>
                 )}
             </>

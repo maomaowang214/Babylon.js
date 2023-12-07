@@ -43,21 +43,21 @@ export class TransformNodePropertyGridComponent extends React.Component<ITransfo
                     lockObject={this.props.lockObject}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
+                <LineContainerComponent title="常规" selection={this.props.globalState}>
                     <TextLineComponent label="ID" value={transformNode.id} />
                     <TextInputLineComponent
                         lockObject={this.props.lockObject}
-                        label="Name"
+                        label="名称"
                         target={transformNode}
                         propertyName="name"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <TextLineComponent label="Unique ID" value={transformNode.uniqueId.toString()} />
-                    <TextLineComponent label="Class" value={transformNode.getClassName()} />
-                    <CheckBoxLineComponent label="IsEnabled" isSelected={() => transformNode.isEnabled()} onSelect={(value) => transformNode.setEnabled(value)} />
+                    <TextLineComponent label="唯一 ID" value={transformNode.uniqueId.toString()} />
+                    <TextLineComponent label="类型" value={transformNode.getClassName()} />
+                    <CheckBoxLineComponent label="是否启用" isSelected={() => transformNode.isEnabled()} onSelect={(value) => transformNode.setEnabled(value)} />
                     <ParentPropertyGridComponent globalState={this.props.globalState} node={transformNode} lockObject={this.props.lockObject} />
                     <ButtonLineComponent
-                        label="Dispose"
+                        label="删除"
                         onClick={() => {
                             transformNode.dispose();
                             this.props.globalState.onSelectionChangedObservable.notifyObservers(null);
@@ -66,10 +66,10 @@ export class TransformNodePropertyGridComponent extends React.Component<ITransfo
                 </LineContainerComponent>
                 <CommonPropertyGridComponent host={transformNode} lockObject={this.props.lockObject} globalState={this.props.globalState} />
                 <VariantsPropertyGridComponent host={transformNode as Mesh} lockObject={this.props.lockObject} globalState={this.props.globalState} />
-                <LineContainerComponent title="TRANSFORMATIONS" selection={this.props.globalState}>
+                <LineContainerComponent title="变换" selection={this.props.globalState}>
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Position"
+                        label="坐标"
                         target={transformNode}
                         propertyName="position"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -77,7 +77,7 @@ export class TransformNodePropertyGridComponent extends React.Component<ITransfo
                     {!transformNode.rotationQuaternion && (
                         <Vector3LineComponent
                             lockObject={this.props.lockObject}
-                            label="Rotation"
+                            label="旋转"
                             useEuler={this.props.globalState.onlyUseEulers}
                             target={transformNode}
                             propertyName="rotation"
@@ -88,7 +88,7 @@ export class TransformNodePropertyGridComponent extends React.Component<ITransfo
                     {transformNode.rotationQuaternion && (
                         <QuaternionLineComponent
                             lockObject={this.props.lockObject}
-                            label="Rotation"
+                            label="旋转"
                             useEuler={this.props.globalState.onlyUseEulers}
                             target={transformNode}
                             propertyName="rotationQuaternion"
@@ -97,7 +97,7 @@ export class TransformNodePropertyGridComponent extends React.Component<ITransfo
                     )}
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Scaling"
+                        label="缩放"
                         target={transformNode}
                         propertyName="scaling"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}

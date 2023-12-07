@@ -83,105 +83,105 @@ export class DebugTabComponent extends PaneComponent {
 
         return (
             <div className="pane">
-                <LineContainerComponent title="HELPERS" selection={this.props.globalState}>
+                <LineContainerComponent title="助手" selection={this.props.globalState}>
                     <RenderGridPropertyGridComponent globalState={this.props.globalState} scene={scene} />
-                    <CheckBoxLineComponent label="Physics" isSelected={() => this._physicsViewersEnabled} onSelect={() => this.switchPhysicsViewers()} />
+                    <CheckBoxLineComponent label="物理" isSelected={() => this._physicsViewersEnabled} onSelect={() => this.switchPhysicsViewers()} />
                 </LineContainerComponent>
-                <LineContainerComponent title="CORE TEXTURE CHANNELS" selection={this.props.globalState}>
+                <LineContainerComponent title="核心纹理通道" selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="Diffuse"
+                        label="扩散"
                         isSelected={() => StandardMaterial.DiffuseTextureEnabled}
                         onSelect={() => (StandardMaterial.DiffuseTextureEnabled = !StandardMaterial.DiffuseTextureEnabled)}
                     />
                     <CheckBoxLineComponent
-                        label="Ambient"
+                        label="环境"
                         isSelected={() => StandardMaterial.AmbientTextureEnabled}
                         onSelect={() => (StandardMaterial.AmbientTextureEnabled = !StandardMaterial.AmbientTextureEnabled)}
                     />
                     <CheckBoxLineComponent
-                        label="Specular"
+                        label="镜面"
                         isSelected={() => StandardMaterial.SpecularTextureEnabled}
                         onSelect={() => (StandardMaterial.SpecularTextureEnabled = !StandardMaterial.SpecularTextureEnabled)}
                     />
                     <CheckBoxLineComponent
-                        label="Emissive"
+                        label="发射"
                         isSelected={() => StandardMaterial.EmissiveTextureEnabled}
                         onSelect={() => (StandardMaterial.EmissiveTextureEnabled = !StandardMaterial.EmissiveTextureEnabled)}
                     />
                     <CheckBoxLineComponent
-                        label="Bump"
+                        label="凹凸"
                         isSelected={() => StandardMaterial.BumpTextureEnabled}
                         onSelect={() => (StandardMaterial.BumpTextureEnabled = !StandardMaterial.BumpTextureEnabled)}
                     />
                     <CheckBoxLineComponent
-                        label="Opacity"
+                        label="透明度"
                         isSelected={() => StandardMaterial.OpacityTextureEnabled}
                         onSelect={() => (StandardMaterial.OpacityTextureEnabled = !StandardMaterial.OpacityTextureEnabled)}
                     />
                     <CheckBoxLineComponent
-                        label="Reflection"
+                        label="反射"
                         isSelected={() => StandardMaterial.ReflectionTextureEnabled}
                         onSelect={() => (StandardMaterial.ReflectionTextureEnabled = !StandardMaterial.ReflectionTextureEnabled)}
                     />
                     <CheckBoxLineComponent
-                        label="Refraction"
+                        label="折射"
                         isSelected={() => StandardMaterial.RefractionTextureEnabled}
                         onSelect={() => (StandardMaterial.RefractionTextureEnabled = !StandardMaterial.RefractionTextureEnabled)}
                     />
                     <CheckBoxLineComponent
-                        label="ColorGrading"
+                        label="色彩分级"
                         isSelected={() => StandardMaterial.ColorGradingTextureEnabled}
                         onSelect={() => (StandardMaterial.ColorGradingTextureEnabled = !StandardMaterial.ColorGradingTextureEnabled)}
                     />
                     <CheckBoxLineComponent
-                        label="Lightmap"
+                        label="光线映射"
                         isSelected={() => StandardMaterial.LightmapTextureEnabled}
                         onSelect={() => (StandardMaterial.LightmapTextureEnabled = !StandardMaterial.LightmapTextureEnabled)}
                     />
                     <CheckBoxLineComponent
-                        label="Fresnel"
+                        label="菲涅耳"
                         isSelected={() => StandardMaterial.FresnelEnabled}
                         onSelect={() => (StandardMaterial.FresnelEnabled = !StandardMaterial.FresnelEnabled)}
                     />
                     <CheckBoxLineComponent
-                        label="Detail"
+                        label="详情"
                         isSelected={() => MaterialFlags.DetailTextureEnabled}
                         onSelect={() => (MaterialFlags.DetailTextureEnabled = !MaterialFlags.DetailTextureEnabled)}
                     />
                     <CheckBoxLineComponent
-                        label="Decal"
+                        label="贴花"
                         isSelected={() => MaterialFlags.DecalMapEnabled}
                         onSelect={() => (MaterialFlags.DecalMapEnabled = !MaterialFlags.DecalMapEnabled)}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="FEATURES" selection={this.props.globalState}>
-                    <CheckBoxLineComponent label="Animations" isSelected={() => scene.animationsEnabled} onSelect={() => (scene.animationsEnabled = !scene.animationsEnabled)} />
-                    <CheckBoxLineComponent label="Physics" isSelected={() => scene.physicsEnabled} onSelect={() => (scene.physicsEnabled = !scene.physicsEnabled)} />
-                    <CheckBoxLineComponent label="Collisions" isSelected={() => scene.collisionsEnabled} onSelect={() => (scene.collisionsEnabled = !scene.collisionsEnabled)} />
-                    <CheckBoxLineComponent label="Fog" isSelected={() => scene.fogEnabled} onSelect={() => (scene.fogEnabled = !scene.fogEnabled)} />
-                    <CheckBoxLineComponent label="Lens flares" isSelected={() => scene.lensFlaresEnabled} onSelect={() => (scene.lensFlaresEnabled = !scene.lensFlaresEnabled)} />
-                    <CheckBoxLineComponent label="Lights" isSelected={() => scene.lightsEnabled} onSelect={() => (scene.lightsEnabled = !scene.lightsEnabled)} />
-                    <CheckBoxLineComponent label="Particles" isSelected={() => scene.particlesEnabled} onSelect={() => (scene.particlesEnabled = !scene.particlesEnabled)} />
+                <LineContainerComponent title="特性" selection={this.props.globalState}>
+                    <CheckBoxLineComponent label="动画" isSelected={() => scene.animationsEnabled} onSelect={() => (scene.animationsEnabled = !scene.animationsEnabled)} />
+                    <CheckBoxLineComponent label="物理" isSelected={() => scene.physicsEnabled} onSelect={() => (scene.physicsEnabled = !scene.physicsEnabled)} />
+                    <CheckBoxLineComponent label="碰撞" isSelected={() => scene.collisionsEnabled} onSelect={() => (scene.collisionsEnabled = !scene.collisionsEnabled)} />
+                    <CheckBoxLineComponent label="雾" isSelected={() => scene.fogEnabled} onSelect={() => (scene.fogEnabled = !scene.fogEnabled)} />
+                    <CheckBoxLineComponent label="镜头光斑" isSelected={() => scene.lensFlaresEnabled} onSelect={() => (scene.lensFlaresEnabled = !scene.lensFlaresEnabled)} />
+                    <CheckBoxLineComponent label="灯光" isSelected={() => scene.lightsEnabled} onSelect={() => (scene.lightsEnabled = !scene.lightsEnabled)} />
+                    <CheckBoxLineComponent label="粒子" isSelected={() => scene.particlesEnabled} onSelect={() => (scene.particlesEnabled = !scene.particlesEnabled)} />
                     <CheckBoxLineComponent
-                        label="Post-processes"
+                        label="后处理"
                         isSelected={() => scene.postProcessesEnabled}
                         onSelect={() => (scene.postProcessesEnabled = !scene.postProcessesEnabled)}
                     />
-                    <CheckBoxLineComponent label="Probes" isSelected={() => scene.probesEnabled} onSelect={() => (scene.probesEnabled = !scene.probesEnabled)} />
-                    <CheckBoxLineComponent label="Textures" isSelected={() => scene.texturesEnabled} onSelect={() => (scene.texturesEnabled = !scene.texturesEnabled)} />
+                    <CheckBoxLineComponent label="探针" isSelected={() => scene.probesEnabled} onSelect={() => (scene.probesEnabled = !scene.probesEnabled)} />
+                    <CheckBoxLineComponent label="纹理" isSelected={() => scene.texturesEnabled} onSelect={() => (scene.texturesEnabled = !scene.texturesEnabled)} />
                     <CheckBoxLineComponent
-                        label="Procedural textures"
+                        label="可编程纹理"
                         isSelected={() => scene.proceduralTexturesEnabled}
                         onSelect={() => (scene.proceduralTexturesEnabled = !scene.proceduralTexturesEnabled)}
                     />
                     <CheckBoxLineComponent
-                        label="Render targets"
+                        label="渲染目标"
                         isSelected={() => scene.renderTargetsEnabled}
                         onSelect={() => (scene.renderTargetsEnabled = !scene.renderTargetsEnabled)}
                     />
-                    <CheckBoxLineComponent label="Shadows" isSelected={() => scene.shadowsEnabled} onSelect={() => (scene.shadowsEnabled = !scene.shadowsEnabled)} />
-                    <CheckBoxLineComponent label="Skeletons" isSelected={() => scene.skeletonsEnabled} onSelect={() => (scene.skeletonsEnabled = !scene.skeletonsEnabled)} />
-                    <CheckBoxLineComponent label="Sprites" isSelected={() => scene.spritesEnabled} onSelect={() => (scene.spritesEnabled = !scene.spritesEnabled)} />
+                    <CheckBoxLineComponent label="阴影" isSelected={() => scene.shadowsEnabled} onSelect={() => (scene.shadowsEnabled = !scene.shadowsEnabled)} />
+                    <CheckBoxLineComponent label="骨架" isSelected={() => scene.skeletonsEnabled} onSelect={() => (scene.skeletonsEnabled = !scene.skeletonsEnabled)} />
+                    <CheckBoxLineComponent label="精灵" isSelected={() => scene.spritesEnabled} onSelect={() => (scene.spritesEnabled = !scene.spritesEnabled)} />
                 </LineContainerComponent>
             </div>
         );
