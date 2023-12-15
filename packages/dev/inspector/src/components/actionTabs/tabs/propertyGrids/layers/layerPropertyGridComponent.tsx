@@ -30,18 +30,18 @@ export class LayerPropertyGridComponent extends React.Component<ILayerPropertyGr
 
         return (
             <>
-                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
-                    <TextLineComponent label="Class" value={layer.getClassName()} />
+                <LineContainerComponent title="常规" selection={this.props.globalState}>
+                    <TextLineComponent label="类" value={layer.getClassName()} />
                     <TextInputLineComponent
                         lockObject={this.props.lockObject}
-                        label="Name"
+                        label="名称"
                         target={layer}
                         propertyName="name"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Intensity"
+                        label="强度"
                         target={layer}
                         propertyName="intensity"
                         minimum={0}
@@ -52,7 +52,7 @@ export class LayerPropertyGridComponent extends React.Component<ILayerPropertyGr
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Blur Kernel Size"
+                        label="模糊内核大小"
                         target={layer}
                         propertyName="blurKernelSize"
                         minimum={0}

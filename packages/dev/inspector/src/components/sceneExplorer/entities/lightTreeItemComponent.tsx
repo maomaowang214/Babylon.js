@@ -62,10 +62,10 @@ export class LightTreeItemComponent extends React.Component<ILightTreeItemCompon
         return (
             <div className="lightTools">
                 <TreeItemLabelComponent label={this.props.light.name} onClick={() => this.props.onClick()} icon={faLightbulb} color="yellow" />
-                <div className="visibility icon" onClick={() => this.switchIsEnabled()} title="Turn on/off the light">
+                <div className="visibility icon" onClick={() => this.switchIsEnabled()} title="打开/关闭灯">
                     {isEnabledElement}
                 </div>
-                <div className="enableGizmo icon" onClick={() => this.toggleGizmo()} title="Turn on/off the light's gizmo">
+                <div className="enableGizmo icon" onClick={() => this.toggleGizmo()} title="打开/关闭灯的小玩意">
                     {isGizmoEnabled}
                 </div>
                 {<ExtensionsComponent target={this.props.light} extensibilityGroups={this.props.extensibilityGroups} />}

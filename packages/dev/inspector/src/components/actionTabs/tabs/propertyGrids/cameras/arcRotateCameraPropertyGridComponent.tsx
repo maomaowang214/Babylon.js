@@ -36,10 +36,10 @@ export class ArcRotateCameraPropertyGridComponent extends React.Component<IArcRo
                     camera={camera}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="TRANSFORMS" selection={this.props.globalState}>
+                <LineContainerComponent title="变换" selection={this.props.globalState}>
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Target"
+                        label="目标"
                         target={camera}
                         propertyName="target"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -57,7 +57,7 @@ export class ArcRotateCameraPropertyGridComponent extends React.Component<IArcRo
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Beta"
+                        label="试用版"
                         useEuler={this.props.globalState.onlyUseEulers}
                         target={camera}
                         propertyName="beta"
@@ -68,129 +68,129 @@ export class ArcRotateCameraPropertyGridComponent extends React.Component<IArcRo
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Radius"
+                        label="半径"
                         target={camera}
                         propertyName="radius"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="CONTROLS" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="控制" closed={true} selection={this.props.globalState}>
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Angular sensitivity X"
+                        label="角度灵敏度 X"
                         target={camera}
                         propertyName="angularSensibilityX"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Angular sensitivity Y"
+                        label="角度灵敏度 Y"
                         target={camera}
                         propertyName="angularSensibilityY"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Panning sensitivity"
+                        label="平移灵敏度"
                         target={camera}
                         propertyName="panningSensibility"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Pinch delta percentage"
+                        label="捏合增量百分比"
                         target={camera}
                         propertyName="pinchDeltaPercentage"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Wheel delta percentage"
+                        label="车轮增量百分比"
                         target={camera}
                         propertyName="wheelDeltaPercentage"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Speed"
+                        label="速度"
                         target={camera}
                         propertyName="speed"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="COLLISIONS" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="碰撞" closed={true} selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="Check collisions"
+                        label="检查碰撞"
                         target={camera}
                         propertyName="checkCollisions"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Collision radius"
+                        label="碰撞半径"
                         target={camera}
                         propertyName="collisionRadius"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="LIMITS" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="限制" closed={true} selection={this.props.globalState}>
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Lower alpha limit"
+                        label="alpha 下限"
                         target={camera}
                         propertyName="lowerAlphaLimit"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Upper alpha limit"
+                        label="alpha 上限"
                         target={camera}
                         propertyName="upperAlphaLimit"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Lower beta limit"
+                        label="beta 下限"
                         target={camera}
                         propertyName="lowerBetaLimit"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Upper beta limit"
+                        label="beta 上限"
                         target={camera}
                         propertyName="upperBetaLimit"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Lower radius limit"
+                        label="半径下限"
                         target={camera}
                         propertyName="lowerRadiusLimit"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Upper radius limit"
+                        label="半径上限"
                         target={camera}
                         propertyName="upperRadiusLimit"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="BEHAVIORS" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="行为" closed={true} selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="Auto rotation"
+                        label="自动旋转"
                         target={camera}
                         propertyName="useAutoRotationBehavior"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="Bouncing"
+                        label="弹跳"
                         target={camera}
                         propertyName="useBouncingBehavior"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <CheckBoxLineComponent label="Framing" target={camera} propertyName="useFramingBehavior" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <CheckBoxLineComponent label="框架" target={camera} propertyName="useFramingBehavior" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                 </LineContainerComponent>
             </>
         );

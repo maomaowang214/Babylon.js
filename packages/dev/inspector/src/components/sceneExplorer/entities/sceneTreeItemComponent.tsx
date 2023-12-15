@@ -98,7 +98,9 @@ export class SceneTreeItemComponent extends React.Component<
 
         this.state = { isSelected: false, isInPickingMode: false, gizmoMode: gizmoMode, isInWorldCoodinatesMode: false, isMouseDown: false, isMeasure: false };
 
-        this.draggableBox();
+        setTimeout(() => {
+            this.draggableBox(document.getElementById("draggableBox"));
+        }, 500);
     }
 
     shouldComponentUpdate(
@@ -483,48 +485,78 @@ export class SceneTreeItemComponent extends React.Component<
     }
 
     /** 自定义拖动工具栏 */
-    draggableBox() {
-        setTimeout(() => {
-            const draggable = document.getElementById("draggableBox") as HTMLElement;
-            let isMouseDown = false;
-            let initX: number, initY: number;
+    draggableBox(elmnt: any) {
+        let pos1 = 0,
+            pos2 = 0,
+            pos3 = 0,
+            pos4 = 0;
 
-            let click_store: string | number | NodeJS.Timeout | undefined;
+        if (document.getElementById(elmnt.id + "header")) {
+            /* 如果存在，header 就是你移动 DIV 的地方：*/
+            const dom: any = document.getElementById(elmnt.id + "header");
+            dom.onmousedown = dragMouseDown;
+        } else {
+            /* 否则，将 DIV 从 DIV 内的任何位置移动：*/
+            elmnt.onmousedown = dragMouseDown;
+        }
 
-            draggable.addEventListener("mousedown", (e) => {
-                click_store = setTimeout(() => {
-                    isMouseDown = true;
-                    initX = e.offsetX;
-                    initY = e.offsetY;
-                }, 200);
-            });
+        function dragMouseDown(e: any) {
+            e = e || window.event;
+            e.preventDefault();
+            // 在启动时获取鼠标光标位置：
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // 当光标移动时调用一个函数：
+            document.onmousemove = elementDrag;
+        }
 
-            document.addEventListener("mousemove", (e) => {
-                if (isMouseDown) {
-                    draggable.style.left = e.clientX - initX + "px";
-                    draggable.style.top = e.clientY - initY + "px";
-                }
-            });
+        function elementDrag(e: any) {
+            e = e || window.event;
+            e.preventDefault();
+            // 计算新的光标位置：
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // 设置元素的新位置：
+            elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+            elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+        }
 
-            draggable.addEventListener("mouseup", () => {
-                isMouseDown = false;
-                clearTimeout(click_store);
-            });
-        }, 1000);
+        function closeDragElement() {
+            /* 释放鼠标按钮时停止移动：*/
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
 
-        // let isMouseDown = false;
-        // draggable.addEventListener("mousedown", () => {
-        //     isMouseDown = true;
-        // });
-        // document.addEventListener("mousemove", (e) => {
-        //     if (isMouseDown) {
-        //         draggable.style.left = e.clientX + "px";
-        //         draggable.style.top = e.clientY + "px";
-        //     }
-        // });
-        // draggable.addEventListener("mouseup", () => {
-        //     isMouseDown = false;
-        // });
+        // setTimeout(() => {
+        //     const draggable = document.getElementById("draggableBox") as HTMLElement;
+        //     let isMouseDown = false;
+        //     let initX: number, initY: number;
+
+        //     let click_store: string | number | NodeJS.Timeout | undefined;
+
+        //     draggable.addEventListener("mousedown", (e) => {
+        //         click_store = setTimeout(() => {
+        //             isMouseDown = true;
+        //             initX = e.offsetX;
+        //             initY = e.offsetY;
+        //         }, 200);
+        //     });
+
+        //     document.addEventListener("mousemove", (e) => {
+        //         if (isMouseDown) {
+        //             draggable.style.left = e.clientX - initX + "px";
+        //             draggable.style.top = e.clientY - initY + "px";
+        //         }
+        //     });
+
+        //     draggable.addEventListener("mouseup", () => {
+        //         isMouseDown = false;
+        //         clearTimeout(click_store);
+        //     });
+        // }, 1000);
     }
 
     /** 自定义测量 */
@@ -691,7 +723,7 @@ export class SceneTreeItemComponent extends React.Component<
                 </div>
 
                 <div id="draggableBox" className="draggableBox">
-                    <div className="dragGJ" title="拖动工具">
+                    <div id="draggableBoxheader" className="dragGJ" title="拖动工具">
                         {/* <FontAwesomeIcon icon={faChevronDown} /> */}
                     </div>
                     <div

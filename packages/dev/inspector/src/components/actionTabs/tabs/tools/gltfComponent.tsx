@@ -30,7 +30,7 @@ export class GLTFComponent extends React.Component<IGLTFComponentProps> {
         const win = window.open("", "_blank");
         if (win) {
             // TODO: format this better and use generator registry (https://github.com/KhronosGroup/glTF-Generator-Registry)
-            win.document.title = "glTF Validation Results";
+            win.document.title = "glTF 验证结果";
             win.document.body.innerText = JSON.stringify(validationResults, null, 2);
             win.document.body.style.whiteSpace = "pre";
             win.document.body.style.fontFamily = `monospace`;
@@ -72,14 +72,14 @@ export class GLTFComponent extends React.Component<IGLTFComponentProps> {
         const issues = validationResults.issues;
 
         return (
-            <LineContainerComponent title="GLTF VALIDATION" closed={!issues.numErrors && !issues.numWarnings} selection={this.props.globalState}>
-                {issues.numErrors !== 0 && <MessageLineComponent text="Your file has some validation issues" icon={faTimesCircle} color="Red" />}
-                {issues.numErrors === 0 && <MessageLineComponent text="Your file is a valid glTF file" icon={faCheck} color="Green" />}
-                <TextLineComponent label="Errors" value={issues.numErrors.toString()} />
-                <TextLineComponent label="Warnings" value={issues.numWarnings.toString()} />
-                <TextLineComponent label="Infos" value={issues.numInfos.toString()} />
-                <TextLineComponent label="Hints" value={issues.numHints.toString()} />
-                <TextLineComponent label="More details" value="Click here" onLink={() => this.openValidationDetails()} />
+            <LineContainerComponent title="GLTF 验证" closed={!issues.numErrors && !issues.numWarnings} selection={this.props.globalState}>
+                {issues.numErrors !== 0 && <MessageLineComponent text="您的文件存在一些验证问题" icon={faTimesCircle} color="Red" />}
+                {issues.numErrors === 0 && <MessageLineComponent text="您的文件是有效的 glTF 文件" icon={faCheck} color="Green" />}
+                <TextLineComponent label="错误" value={issues.numErrors.toString()} />
+                <TextLineComponent label="警告" value={issues.numWarnings.toString()} />
+                <TextLineComponent label="信息" value={issues.numInfos.toString()} />
+                <TextLineComponent label="提示" value={issues.numHints.toString()} />
+                <TextLineComponent label="更多详情" value="Click here" onLink={() => this.openValidationDetails()} />
             </LineContainerComponent>
         );
     }
@@ -114,25 +114,25 @@ export class GLTFComponent extends React.Component<IGLTFComponentProps> {
 
         return (
             <div>
-                <LineContainerComponent title="GLTF LOADER" closed={true} selection={this.props.globalState}>
-                    <CheckBoxLineComponent label="Always compute bounding box" target={loaderState} propertyName="alwaysComputeBoundingBox" />
-                    <CheckBoxLineComponent label="Always compute skeleton root node" target={loaderState} propertyName="alwaysComputeSkeletonRootNode" />
-                    <OptionsLineComponent label="Animation start mode" options={animationStartMode} target={loaderState} propertyName="animationStartMode" />
-                    <CheckBoxLineComponent label="Capture performance counters" target={loaderState} propertyName="capturePerformanceCounters" />
-                    <CheckBoxLineComponent label="Compile materials" target={loaderState} propertyName="compileMaterials" />
-                    <CheckBoxLineComponent label="Compile shadow generators" target={loaderState} propertyName="compileShadowGenerators" />
-                    <OptionsLineComponent label="Coordinate system" options={coordinateSystemMode} target={loaderState} propertyName="coordinateSystemMode" />
-                    <CheckBoxLineComponent label="Create instances" target={loaderState} propertyName="createInstances" />
-                    <CheckBoxLineComponent label="Enable logging" target={loaderState} propertyName="loggingEnabled" />
-                    <CheckBoxLineComponent label="Load all materials" target={loaderState} propertyName="loadAllMaterials" />
-                    <FloatLineComponent lockObject={this.props.lockObject} label="Target FPS" target={loaderState} propertyName="targetFps" isInteger={true} />
-                    <CheckBoxLineComponent label="Transparency as coverage" target={loaderState} propertyName="transparencyAsCoverage" />
-                    <CheckBoxLineComponent label="Use clip plane" target={loaderState} propertyName="useClipPlane" />
-                    <CheckBoxLineComponent label="Use sRGB buffers" target={loaderState} propertyName="useSRGBBuffers" />
-                    <CheckBoxLineComponent label="Validate" target={loaderState} propertyName="validate" />
-                    <MessageLineComponent text="You need to reload your file to see these changes" />
+                <LineContainerComponent title="GLTF加载" closed={true} selection={this.props.globalState}>
+                    <CheckBoxLineComponent label="始终计算边界框" target={loaderState} propertyName="alwaysComputeBoundingBox" />
+                    <CheckBoxLineComponent label="始终计算主干根节点" target={loaderState} propertyName="alwaysComputeSkeletonRootNode" />
+                    <OptionsLineComponent label="动画启动模式" options={animationStartMode} target={loaderState} propertyName="animationStartMode" />
+                    <CheckBoxLineComponent label="捕获性能计数器" target={loaderState} propertyName="capturePerformanceCounters" />
+                    <CheckBoxLineComponent label="编译材料" target={loaderState} propertyName="compileMaterials" />
+                    <CheckBoxLineComponent label="编译阴影生成器" target={loaderState} propertyName="compileShadowGenerators" />
+                    <OptionsLineComponent label="坐标系" options={coordinateSystemMode} target={loaderState} propertyName="coordinateSystemMode" />
+                    <CheckBoxLineComponent label="创建实例" target={loaderState} propertyName="createInstances" />
+                    <CheckBoxLineComponent label="启用日志记录" target={loaderState} propertyName="loggingEnabled" />
+                    <CheckBoxLineComponent label="装载所有材料" target={loaderState} propertyName="loadAllMaterials" />
+                    <FloatLineComponent lockObject={this.props.lockObject} label="目标 FPS" target={loaderState} propertyName="targetFps" isInteger={true} />
+                    <CheckBoxLineComponent label="透明度作为覆盖范围" target={loaderState} propertyName="transparencyAsCoverage" />
+                    <CheckBoxLineComponent label="使用剪辑平面" target={loaderState} propertyName="useClipPlane" />
+                    <CheckBoxLineComponent label="使用sRGB缓冲区" target={loaderState} propertyName="useSRGBBuffers" />
+                    <CheckBoxLineComponent label="验证" target={loaderState} propertyName="validate" />
+                    <MessageLineComponent text="您需要重新加载文件才能看到这些更改" />
                 </LineContainerComponent>
-                <LineContainerComponent title="GLTF EXTENSIONS" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="GLTF 扩展" closed={true} selection={this.props.globalState}>
                     <CheckBoxLineComponent
                         label="EXT_lights_image_based"
                         isSelected={() => extensionStates["EXT_lights_image_based"].enabled}
@@ -271,7 +271,7 @@ export class GLTFComponent extends React.Component<IGLTFComponentProps> {
                         isSelected={() => extensionStates["MSFT_audio_emitter"].enabled}
                         onSelect={(value) => (extensionStates["MSFT_audio_emitter"].enabled = value)}
                     />
-                    <MessageLineComponent text="You need to reload your file to see these changes" />
+                    <MessageLineComponent text="您需要重新加载文件才能看到这些更改" />
                 </LineContainerComponent>
                 {this.props.globalState.validationResults && this.renderValidation()}
             </div>

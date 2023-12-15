@@ -472,6 +472,7 @@
                 background-color: rgba(51, 183, 102, 0.8);
             }
             .dragGJ {
+                cursor: move;
                 background: #fff;
                 width: 40px;
                 height: 10px;
@@ -480,6 +481,7 @@
                 line-height: 10px;
                 text-align: right;
                 color: #222222;
+                z-index: 101;
             }
         }
 

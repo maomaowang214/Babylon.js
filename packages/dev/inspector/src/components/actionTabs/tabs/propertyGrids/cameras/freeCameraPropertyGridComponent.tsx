@@ -33,24 +33,24 @@ export class FreeCameraPropertyGridComponent extends React.Component<IFreeCamera
                     camera={camera}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="TRANSFORMS" selection={this.props.globalState}>
+                <LineContainerComponent title="变换" selection={this.props.globalState}>
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Target"
+                        label="目标"
                         target={camera}
                         propertyName="target"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Position"
+                        label="坐标"
                         target={camera}
                         propertyName="position"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Rotation"
+                        label="旋转"
                         noSlider={true}
                         useEuler={this.props.globalState.onlyUseEulers}
                         target={camera}
@@ -58,40 +58,40 @@ export class FreeCameraPropertyGridComponent extends React.Component<IFreeCamera
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="CONTROLS" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="控制" closed={true} selection={this.props.globalState}>
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Angular sensitivity"
+                        label="角度灵敏度"
                         target={camera}
                         propertyName="angularSensibility"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Speed"
+                        label="速度"
                         target={camera}
                         propertyName="speed"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="COLLISIONS" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="碰撞" closed={true} selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="Check collisions"
+                        label="检查碰撞"
                         target={camera}
                         propertyName="checkCollisions"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <CheckBoxLineComponent label="Apply gravity" target={camera} propertyName="applyGravity" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <CheckBoxLineComponent label="施加重力" target={camera} propertyName="applyGravity" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Ellipsoid"
+                        label="椭圆体"
                         target={camera}
                         propertyName="ellipsoid"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="Ellipsoid offset"
+                        label="椭球体偏移"
                         target={camera}
                         propertyName="ellipsoidOffset"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}

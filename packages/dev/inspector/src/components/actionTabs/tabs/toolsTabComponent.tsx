@@ -364,23 +364,23 @@ export class ToolsTabComponent extends PaneComponent {
 
         return (
             <div className="pane">
-                <LineContainerComponent title="CAPTURE" selection={this.props.globalState}>
-                    <ButtonLineComponent label="Screenshot" onClick={() => this.captureScreenshot()} />
-                    <ButtonLineComponent label="Generate equirectangular capture" onClick={() => this.captureEquirectangular()} />
+                <LineContainerComponent title="捕获" selection={this.props.globalState}>
+                    <ButtonLineComponent label="截屏" onClick={() => this.captureScreenshot()} />
+                    <ButtonLineComponent label="生成等距柱状投影捕获" onClick={() => this.captureEquirectangular()} />
                     <ButtonLineComponent label={this.state.tag} onClick={() => this.recordVideo()} />
                 </LineContainerComponent>
-                <LineContainerComponent title="CAPTURE WITH RTT" selection={this.props.globalState}>
-                    <ButtonLineComponent label="Capture" onClick={() => this.captureRender()} />
+                <LineContainerComponent title="使用 RTT 进行捕获" selection={this.props.globalState}>
+                    <ButtonLineComponent label="捕获" onClick={() => this.captureRender()} />
                     <div className="vector3Line">
                         <FloatLineComponent
                             lockObject={this._lockObject}
-                            label="Precision"
+                            label="精度"
                             target={this._screenShotSize}
                             propertyName="precision"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <CheckBoxLineComponent
-                            label="Use Width/Height"
+                            label="使用 宽度/高度"
                             onSelect={(value) => {
                                 this._useWidthHeight = value;
                                 this.forceUpdate();
@@ -391,7 +391,7 @@ export class ToolsTabComponent extends PaneComponent {
                             <div className="secondLine">
                                 <NumericInputComponent
                                     lockObject={this._lockObject}
-                                    label="Width"
+                                    label="宽度"
                                     precision={0}
                                     step={1}
                                     value={this._screenShotSize.width ? this._screenShotSize.width : 512}
@@ -399,7 +399,7 @@ export class ToolsTabComponent extends PaneComponent {
                                 />
                                 <NumericInputComponent
                                     lockObject={this._lockObject}
-                                    label="Height"
+                                    label="高度"
                                     precision={0}
                                     step={1}
                                     value={this._screenShotSize.height ? this._screenShotSize.height : 512}
@@ -410,25 +410,25 @@ export class ToolsTabComponent extends PaneComponent {
                     </div>
                 </LineContainerComponent>
                 <LineContainerComponent title="GIF" selection={this.props.globalState}>
-                    {this._crunchingGIF && <MessageLineComponent text="Creating the GIF file..." />}
-                    {!this._crunchingGIF && <ButtonLineComponent label={this._gifRecorder ? "Stop" : "Record"} onClick={() => this.recordGIF()} />}
+                    {this._crunchingGIF && <MessageLineComponent text="创建 GIF 文件..." />}
+                    {!this._crunchingGIF && <ButtonLineComponent label={this._gifRecorder ? "停止" : "记录"} onClick={() => this.recordGIF()} />}
                     {!this._crunchingGIF && !this._gifRecorder && (
                         <>
-                            <FloatLineComponent lockObject={this._lockObject} label="Resolution" isInteger={true} target={this._gifOptions} propertyName="width" />
-                            <FloatLineComponent lockObject={this._lockObject} label="Frequency (ms)" isInteger={true} target={this._gifOptions} propertyName="frequency" />
+                            <FloatLineComponent lockObject={this._lockObject} label="分辨率" isInteger={true} target={this._gifOptions} propertyName="width" />
+                            <FloatLineComponent lockObject={this._lockObject} label="频率 (ms)" isInteger={true} target={this._gifOptions} propertyName="frequency" />
                         </>
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="REPLAY" selection={this.props.globalState}>
-                    {!this.props.globalState.recorder.isRecording && <ButtonLineComponent label="Start recording" onClick={() => this.startRecording()} />}
+                <LineContainerComponent title="回放" selection={this.props.globalState}>
+                    {!this.props.globalState.recorder.isRecording && <ButtonLineComponent label="开始录制" onClick={() => this.startRecording()} />}
                     {this.props.globalState.recorder.isRecording && <IndentedTextLineComponent value={"Record in progress"} />}
-                    {this.props.globalState.recorder.isRecording && <ButtonLineComponent label="Generate delta file" onClick={() => this.exportReplay()} />}
-                    <FileButtonLineComponent label={`Apply delta file`} onClick={(file) => this.applyDelta(file)} accept=".json" />
+                    {this.props.globalState.recorder.isRecording && <ButtonLineComponent label="生成增量文件" onClick={() => this.exportReplay()} />}
+                    <FileButtonLineComponent label={`应用增量文件`} onClick={(file) => this.applyDelta(file)} accept=".json" />
                 </LineContainerComponent>
-                <LineContainerComponent title="SCENE IMPORT" selection={this.props.globalState}>
-                    <FileMultipleButtonLineComponent label="Import animations" accept="gltf" onClick={(evt: any) => this.importAnimations(evt)} />
+                <LineContainerComponent title="场景导入" selection={this.props.globalState}>
+                    <FileMultipleButtonLineComponent label="导入动画" accept="gltf" onClick={(evt: any) => this.importAnimations(evt)} />
                     <CheckBoxLineComponent
-                        label="Overwrite animations"
+                        label="覆盖动画"
                         target={sceneImportDefaults}
                         propertyName="overwriteAnimations"
                         onSelect={(value) => {
@@ -438,20 +438,20 @@ export class ToolsTabComponent extends PaneComponent {
                     />
                     {sceneImportDefaults["overwriteAnimations"] === false && (
                         <OptionsLineComponent
-                            label="Animation merge mode"
+                            label="动画合并模式"
                             options={animationGroupLoadingModes}
                             target={sceneImportDefaults}
                             propertyName="animationGroupLoadingMode"
                         />
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="SCENE EXPORT" selection={this.props.globalState}>
-                    <ButtonLineComponent label="Export to Babylon" onClick={() => this.exportBabylon()} />
+                <LineContainerComponent title="场景导出" selection={this.props.globalState}>
+                    <ButtonLineComponent label="导出 Babylon" onClick={() => this.exportBabylon()} />
                     {!scene.getEngine().premultipliedAlpha && scene.environmentTexture && scene.environmentTexture._prefiltered && scene.activeCamera && (
                         <>
-                            <ButtonLineComponent label="Generate .env texture" onClick={() => this.createEnvTexture()} />
+                            <ButtonLineComponent label="生成 .env 纹理" onClick={() => this.createEnvTexture()} />
                             <OptionsLineComponent
-                                label="Image type"
+                                label="图片类型"
                                 options={envExportImageTypes}
                                 target={this._envOptions}
                                 propertyName="imageTypeIndex"
@@ -462,7 +462,7 @@ export class ToolsTabComponent extends PaneComponent {
                             {this._envOptions.imageTypeIndex > 0 && (
                                 <FloatLineComponent
                                     lockObject={this._lockObject}
-                                    label="Quality"
+                                    label="质量"
                                     isInteger={false}
                                     min={0}
                                     max={1}
@@ -473,39 +473,39 @@ export class ToolsTabComponent extends PaneComponent {
                         </>
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="GLTF EXPORT" selection={this.props.globalState}>
-                    {this._isExportingGltf && <TextLineComponent label="Please wait..exporting" ignoreValue={true} />}
+                <LineContainerComponent title="GLTF 导出" selection={this.props.globalState}>
+                    {this._isExportingGltf && <TextLineComponent label="导出请稍候。。" ignoreValue={true} />}
                     {!this._isExportingGltf && (
                         <>
                             <CheckBoxLineComponent
-                                label="Export Disabled Nodes"
+                                label="导出禁用的节点"
                                 isSelected={() => this._gltfExportOptions.exportDisabledNodes}
                                 onSelect={(value) => (this._gltfExportOptions.exportDisabledNodes = value)}
                             />
                             <CheckBoxLineComponent
-                                label="Export Skybox"
+                                label="导出天空盒"
                                 isSelected={() => this._gltfExportOptions.exportSkyboxes}
                                 onSelect={(value) => (this._gltfExportOptions.exportSkyboxes = value)}
                             />
                             <CheckBoxLineComponent
-                                label="Export Cameras"
+                                label="导出相机"
                                 isSelected={() => this._gltfExportOptions.exportCameras}
                                 onSelect={(value) => (this._gltfExportOptions.exportCameras = value)}
                             />
                             <CheckBoxLineComponent
-                                label="Export Lights"
+                                label="导出灯光"
                                 isSelected={() => this._gltfExportOptions.exportLights}
                                 onSelect={(value) => (this._gltfExportOptions.exportLights = value)}
                             />
-                            <ButtonLineComponent label="Export to GLB" onClick={() => this.exportGLTF()} />
+                            <ButtonLineComponent label="导出 GLB" onClick={() => this.exportGLTF()} />
                         </>
                     )}
                 </LineContainerComponent>
                 {GLTFFileLoader && <GLTFComponent lockObject={this._lockObject} scene={scene} globalState={this.props.globalState!} />}
-                <LineContainerComponent title="REFLECTOR" selection={this.props.globalState}>
-                    <TextInputLineComponent lockObject={this._lockObject} label="Hostname" target={this} propertyName="_reflectorHostname" />
-                    <FloatLineComponent lockObject={this._lockObject} label="Port" target={this} propertyName="_reflectorPort" isInteger={true} />
-                    <ButtonLineComponent label="Connect" onClick={() => this.connectReflector()} />
+                <LineContainerComponent title="反射镜" selection={this.props.globalState}>
+                    <TextInputLineComponent lockObject={this._lockObject} label="主机名" target={this} propertyName="_reflectorHostname" />
+                    <FloatLineComponent lockObject={this._lockObject} label="端口" target={this} propertyName="_reflectorPort" isInteger={true} />
+                    <ButtonLineComponent label="连接" onClick={() => this.connectReflector()} />
                 </LineContainerComponent>
             </div>
         );

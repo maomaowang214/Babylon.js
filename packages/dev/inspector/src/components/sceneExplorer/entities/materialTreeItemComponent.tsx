@@ -26,7 +26,7 @@ export class MaterialTreeItemComponent extends React.Component<IMaterialTreeItem
                     onClick={() => {
                         (this.props.material as NodeMaterial).edit({ nodeEditorConfig: { backgroundColor: this.props.material.getScene().clearColor } });
                     }}
-                    title="Node Material Editor"
+                    title="节点材质编辑器"
                     color="white"
                 >
                     <FontAwesomeIcon icon={faPen} />

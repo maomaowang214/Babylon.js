@@ -145,22 +145,22 @@ export class AnimationGroupGridComponent extends React.Component<IAnimationGroup
 
         return (
             <>
-                <LineContainerComponent title="GENERAL">
+                <LineContainerComponent title="常规">
                     <TextLineComponent label="Class" value={animationGroup.getClassName()} />
                     <TextInputLineComponent
                         lockObject={this.props.lockObject}
-                        label="Name"
+                        label="名称"
                         target={animationGroup}
                         propertyName="name"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="CONTROLS">
+                <LineContainerComponent title="控制">
                     <ButtonLineComponent label={playButtonText} onClick={() => this.playOrPause()} />
-                    <ButtonLineComponent label="Stop" onClick={() => this.props.animationGroup.stop()} />
+                    <ButtonLineComponent label="停止" onClick={() => this.props.animationGroup.stop()} />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Speed ratio"
+                        label="速度比率"
                         minimum={0}
                         maximum={10}
                         step={0.1}
@@ -171,7 +171,7 @@ export class AnimationGroupGridComponent extends React.Component<IAnimationGroup
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
                         ref={this._timelineRef}
-                        label="Current frame"
+                        label="当前帧"
                         minimum={animationGroup.from}
                         maximum={animationGroup.to}
                         step={(animationGroup.to - animationGroup.from) / 1000.0}
@@ -179,14 +179,14 @@ export class AnimationGroupGridComponent extends React.Component<IAnimationGroup
                         onInput={(value) => this.onCurrentFrameChange(value)}
                     />
                     <CheckBoxLineComponent
-                        label="Blending"
+                        label="混合"
                         target={animationGroup}
                         propertyName="enableBlending"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Blending speed"
+                        label="混合速度"
                         minimum={0}
                         maximum={1}
                         step={0.01}
@@ -195,33 +195,33 @@ export class AnimationGroupGridComponent extends React.Component<IAnimationGroup
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="Is additive"
+                        label="添加剂"
                         target={animationGroup}
                         propertyName="isAdditive"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Weight"
+                        label="重量"
                         target={animationGroup}
                         propertyName="weight"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="Play order"
+                        label="播放顺序"
                         target={animationGroup}
                         propertyName="playOrder"
                         isInteger={true}
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="INFOS">
-                    <TextLineComponent label="Animation count" value={animationGroup.targetedAnimations.length.toString()} />
+                <LineContainerComponent title="信息">
+                    <TextLineComponent label="动画计数" value={animationGroup.targetedAnimations.length.toString()} />
                     <AnimationCurveEditorComponent globalState={this.props.globalState} context={this._animationCurveEditorContext} />
                     <TextLineComponent label="From" value={animationGroup.from.toFixed(2)} />
                     <TextLineComponent label="To" value={animationGroup.to.toFixed(2)} />
-                    <TextLineComponent label="Unique ID" value={animationGroup.uniqueId.toString()} />
+                    <TextLineComponent label="唯一 ID" value={animationGroup.uniqueId.toString()} />
                 </LineContainerComponent>
             </>
         );
