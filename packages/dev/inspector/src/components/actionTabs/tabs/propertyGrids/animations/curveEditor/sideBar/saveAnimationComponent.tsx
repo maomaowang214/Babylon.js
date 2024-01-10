@@ -46,6 +46,68 @@ export class SaveAnimationComponent extends React.Component<ISaveAnimationCompon
         return JSON.stringify(json);
     }
 
+    /**
+     * 保存json到数据库
+     */
+    public saveToServer() {
+        const scene: any = this.props.context.scene;
+        const json = {
+            token: scene.token,
+            modelName: this.props.context.title,
+            context: this._getJson(),
+        };
+
+        const xmlHttp = new XMLHttpRequest();
+        const hostDocument = this._root.current!.ownerDocument;
+
+        xmlHttp.onreadystatechange = () => {
+            if (xmlHttp.readyState == 4) {
+                if (xmlHttp.status == 200) {
+                    const snippet = JSON.parse(xmlHttp.responseText);
+                    const oldId = this.props.context.snippetId;
+                    this.props.context.snippetId = snippet.id;
+                    if (snippet.version && snippet.version != "0") {
+                        this.props.context.snippetId += "#" + snippet.version;
+                    }
+
+                    this.forceUpdate();
+
+                    const windowAsAny = window as any;
+
+                    if (windowAsAny.Playground && oldId) {
+                        windowAsAny.Playground.onRequestCodeChangeObservable.notifyObservers({
+                            regex: new RegExp(oldId, "g"),
+                            replace: this.props.context.snippetId,
+                        });
+                    }
+
+                    hostDocument.defaultView!.alert("Animations saved with ID: " + this.props.context.snippetId);
+                } else {
+                    hostDocument.defaultView!.alert(
+                        `Unable to save your animations. It may be too large (${(dataToSend.payload.length / 1024).toFixed(
+                            2
+                        )} KB). Please try reducing the number of animations or the number of keys per animation and try again.`
+                    );
+                }
+            }
+        };
+
+        // xmlHttp.open("POST", Animation.SnippetUrl + (this.props.context.snippetId ? "/" + this.props.context.snippetId : ""), true);
+        xmlHttp.open("POST", '/basic-api/saveAnimations', true);
+        xmlHttp.setRequestHeader("Content-Type", "application/json");
+
+        const dataToSend = {
+            payload: JSON.stringify({
+                animations: json,
+            }),
+            name: "",
+            description: "",
+            tags: "",
+        };
+
+        xmlHttp.send(JSON.stringify(dataToSend));
+    }
+
     public saveToSnippetServer() {
         const xmlHttp = new XMLHttpRequest();
         const hostDocument = this._root.current!.ownerDocument;
@@ -139,10 +201,10 @@ export class SaveAnimationComponent extends React.Component<ISaveAnimationCompon
                         id="save-snippet"
                         type="button"
                         onClick={() => {
-                            this.saveToSnippetServer();
+                            this.saveToServer();
                         }}
                     >
-                        Save Snippet
+                        保存片段
                     </button>
                     <button
                         className="simple-button"
@@ -152,7 +214,7 @@ export class SaveAnimationComponent extends React.Component<ISaveAnimationCompon
                             this.saveToFile();
                         }}
                     >
-                        Save File
+                        保存到本地
                     </button>
                 </div>
                 {this.props.context.snippetId && <div id="save-animation-snippet">Snippet ID: {this.props.context.snippetId}</div>}
