@@ -90,6 +90,7 @@ export class MaterialPluginManager {
         }
 
         if (this._material._uniformBufferLayoutBuilt) {
+            // eslint-disable-next-line no-throw-literal
             throw `The plugin "${plugin.name}" can't be added to the material "${this._material.name}" because this material has already been used for rendering! Please add plugins to materials before any rendering with this material occurs.`;
         }
 
@@ -98,7 +99,7 @@ export class MaterialPluginManager {
             MaterialPluginManager._MaterialPluginClassToMainDefine[pluginClassName] = "MATERIALPLUGIN_" + ++MaterialPluginManager._MaterialPluginCounter;
         }
 
-        this._material._callbackPluginEventGeneric = this._handlePluginEvent.bind(this);
+        this._material._callbackPluginEventGeneric = (id, info) => this._handlePluginEvent(id, info);
 
         this._plugins.push(plugin);
         this._plugins.sort((a, b) => a.priority - b.priority);
@@ -150,10 +151,10 @@ export class MaterialPluginManager {
      * @param name name of the plugin
      * @returns the plugin if found, else null
      */
-    public getPlugin(name: string): Nullable<MaterialPluginBase> {
+    public getPlugin<T = MaterialPluginBase>(name: string): Nullable<T> {
         for (let i = 0; i < this._plugins.length; ++i) {
             if (this._plugins[i].name === name) {
-                return this._plugins[i];
+                return this._plugins[i] as T;
             }
         }
         return null;

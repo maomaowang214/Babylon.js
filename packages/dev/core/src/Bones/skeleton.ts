@@ -25,7 +25,7 @@ export class Skeleton implements IAnimatable {
     /**
      * Defines the list of child bones
      */
-    public bones = new Array<Bone>();
+    public bones: Bone[] = [];
     /**
      * Defines an estimate of the dimension of the skeleton at rest
      */
@@ -177,17 +177,20 @@ export class Skeleton implements IAnimatable {
      * @param mesh defines the mesh to use to get the root matrix (if needInitialSkinMatrix === true)
      * @returns a Float32Array containing matrices data
      */
-    public getTransformMatrices(mesh: AbstractMesh): Float32Array {
+    public getTransformMatrices(mesh: Nullable<AbstractMesh>): Float32Array {
         if (this.needInitialSkinMatrix) {
+            if (!mesh) {
+                throw new Error("getTransformMatrices: When using the needInitialSkinMatrix flag, a mesh must be provided");
+            }
             if (!mesh._bonesTransformMatrices) {
-                this.prepare();
+                this.prepare(true);
             }
 
             return mesh._bonesTransformMatrices!;
         }
 
         if (!this._transformMatrices || this._isDirty) {
-            this.prepare();
+            this.prepare(!this._transformMatrices);
         }
 
         return this._transformMatrices;
@@ -751,8 +754,8 @@ export class Skeleton implements IAnimatable {
                 index: bone.getIndex(),
                 name: bone.name,
                 id: bone.id,
-                matrix: bone.getBindMatrix().toArray(),
-                rest: bone.getRestMatrix().toArray(),
+                matrix: bone.getBindMatrix().asArray(),
+                rest: bone.getRestMatrix().asArray(),
                 linkedTransformNodeId: bone.getTransformNode()?.id,
             };
 
@@ -884,7 +887,7 @@ export class Skeleton implements IAnimatable {
      * Sorts bones per internal index
      */
     public sortBones(): void {
-        const bones = new Array<Bone>();
+        const bones: Bone[] = [];
         const visited = new Array<boolean>(this.bones.length);
         for (let index = 0; index < this.bones.length; index++) {
             this._sortBones(index, bones, visited);

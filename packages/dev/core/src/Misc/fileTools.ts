@@ -14,8 +14,10 @@ import { ThinEngine } from "../Engines/thinEngine";
 import { EngineStore } from "../Engines/engineStore";
 import { Logger } from "./logger";
 import { TimingTools } from "./timingTools";
+import type { INative } from "../Engines/Native/nativeInterfaces";
 
 const Base64DataUrlRegEx = new RegExp(/^data:([^,]+\/[^,]+)?;base64,/i);
+declare const _native: INative;
 
 /** @ignore */
 export class LoadFileError extends RuntimeError {
@@ -48,7 +50,10 @@ export class RequestFileError extends RuntimeError {
      * @param message defines the message of the error
      * @param request defines the optional web request
      */
-    constructor(message: string, public request: WebRequest) {
+    constructor(
+        message: string,
+        public request: WebRequest
+    ) {
         super(message, ErrorCodes.RequestFileError);
         this.name = "RequestFileError";
         BaseError._setPrototypeOf(this, RequestFileError.prototype);
@@ -62,7 +67,10 @@ export class ReadFileError extends RuntimeError {
      * @param message defines the message of the error
      * @param file defines the optional file
      */
-    constructor(message: string, public file: File) {
+    constructor(
+        message: string,
+        public file: File
+    ) {
         super(message, ErrorCodes.ReadFileError);
         this.name = "ReadFileError";
         BaseError._setPrototypeOf(this, ReadFileError.prototype);
@@ -76,6 +84,8 @@ export const FileToolsOptions: {
     BaseUrl: string;
     CorsBehavior: string | ((url: string | string[]) => string);
     PreprocessUrl: (url: string) => string;
+    ScriptBaseUrl: string;
+    ScriptPreprocessUrl: (url: string) => string;
 } = {
     /**
      * Gets or sets the retry strategy to apply when an error happens while loading an asset.
@@ -99,10 +109,22 @@ export const FileToolsOptions: {
     /**
      * Gets or sets a function used to pre-process url before using them to load assets
      * @param url
+     * @returns the processed url
      */
-    PreprocessUrl: (url: string) => {
-        return url;
-    },
+    PreprocessUrl: (url: string) => url,
+
+    /**
+     * Gets or sets the base URL to use to load scripts
+     * Used for both JS and WASM
+     */
+    ScriptBaseUrl: "",
+    /**
+     * Gets or sets a function used to pre-process script url before using them to load.
+     * Used for both JS and WASM
+     * @param url defines the url to process
+     * @returns the processed url
+     */
+    ScriptPreprocessUrl: (url: string) => url,
 };
 
 /**
@@ -157,6 +179,12 @@ export const LoadImage = (
     mimeType: string = "",
     imageBitmapOptions?: ImageBitmapOptions
 ): Nullable<HTMLImageElement> => {
+    const engine = EngineStore.LastCreatedEngine;
+    if (typeof HTMLImageElement === "undefined" && !engine?._features.forceBitmapOverHTMLImageElement) {
+        onError("LoadImage is only supported in web or BabylonNative environments.");
+        return null;
+    }
+
     let url: string;
     let usingObjectURL = false;
 
@@ -175,8 +203,6 @@ export const LoadImage = (
         url = FileToolsOptions.PreprocessUrl(input);
     }
 
-    const engine = EngineStore.LastCreatedEngine;
-
     const onErrorHandler = (exception: any) => {
         if (onError) {
             const inputText = url || input.toString();
@@ -184,7 +210,7 @@ export const LoadImage = (
         }
     };
 
-    if (typeof Image === "undefined" || (engine?._features.forceBitmapOverHTMLImageElement ?? false)) {
+    if (engine?._features.forceBitmapOverHTMLImageElement) {
         LoadFile(
             url,
             (data) => {

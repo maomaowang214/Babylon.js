@@ -102,26 +102,31 @@ export class RenderingManager {
         }
 
         this._maintainStateBetweenFrames = value;
-
-        // Restore wasDispatched flags when switching to maintainStateBetweenFrames to false
         if (!this._maintainStateBetweenFrames) {
-            for (const mesh of this._scene.meshes) {
-                if (mesh.subMeshes) {
-                    for (const subMesh of mesh.subMeshes) {
-                        subMesh._wasDispatched = false;
-                    }
+            this.restoreDispachedFlags();
+        }
+    }
+
+    /**
+     * Restore wasDispatched flags on the lists of elements to render.
+     */
+    public restoreDispachedFlags() {
+        for (const mesh of this._scene.meshes) {
+            if (mesh.subMeshes) {
+                for (const subMesh of mesh.subMeshes) {
+                    subMesh._wasDispatched = false;
                 }
             }
+        }
 
-            if (this._scene.spriteManagers) {
-                for (const spriteManager of this._scene.spriteManagers) {
-                    spriteManager._wasDispatched = false;
-                }
+        if (this._scene.spriteManagers) {
+            for (const spriteManager of this._scene.spriteManagers) {
+                spriteManager._wasDispatched = false;
             }
+        }
 
-            for (const particleSystem of this._scene.particleSystems) {
-                particleSystem._wasDispatched = false;
-            }
+        for (const particleSystem of this._scene.particleSystems) {
+            particleSystem._wasDispatched = false;
         }
     }
 
@@ -138,7 +143,8 @@ export class RenderingManager {
     }
 
     /**
-     * Gets the rendering group with the specified id.
+     * @returns the rendering group with the specified id.
+     * @param id the id of the rendering group (0 by default)
      */
     public getRenderingGroup(id: number): RenderingGroup {
         const renderingGroupId = id || 0;
@@ -195,7 +201,7 @@ export class RenderingManager {
                 continue;
             }
 
-            const renderingGroupMask = Math.pow(2, index);
+            const renderingGroupMask = 1 << index;
             info.renderingGroupId = index;
 
             // Before Observable

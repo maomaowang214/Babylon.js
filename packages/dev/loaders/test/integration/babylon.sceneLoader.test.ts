@@ -504,7 +504,7 @@ describe("Babylon Scene Loader", function () {
                 const promises = new Array<Promise<void>>();
                 const data: { [key: string]: any } = {};
 
-                const setRequestHeaderCalls = new Array<string>();
+                const setRequestHeaderCalls: string[] = [];
                 const origSetRequestHeader = BABYLON.WebRequest.prototype.setRequestHeader;
                 BABYLON.WebRequest.prototype.setRequestHeader = function (...args) {
                     console.log(args);
@@ -788,7 +788,7 @@ describe("Babylon Scene Loader", function () {
                 });
             }, fileContents);
 
-            expect(assertionData["positions"]).toEqual([1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2]);
+            expect(assertionData["positions"]).toEqual([-1, 1, 1, -1, 2, 1, -2, 1, 1, -1, 1, 2]);
             expect(assertionData["colors"]).toBeNull();
             expect(assertionData["meshesLength"]).toBe(1);
         });
@@ -822,7 +822,7 @@ describe("Babylon Scene Loader", function () {
                 });
             }, fileContents);
 
-            expect(assertionData["positions"]).toEqual([1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2]);
+            expect(assertionData["positions"]).toEqual([-1, 1, 1, -1, 2, 1, -2, 1, 1, -1, 1, 2]);
             expect(assertionData["meshesLength"]).toBe(1);
         });
     });

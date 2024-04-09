@@ -42,6 +42,9 @@ export class NullEngineOptions {
      */
     public deterministicLockstep = false;
 
+    /** Defines the seconds between each deterministic lock step */
+    timeStep?: number;
+
     /**
      * Maximum about of steps between frames (Default: 4)
      * @see https://doc.babylonjs.com/features/featuresDeepDive/animation/advanced_animations#deterministic-lockstep
@@ -98,6 +101,10 @@ export class NullEngine extends Engine {
             options.deterministicLockstep = false;
         }
 
+        if (options.timeStep !== undefined) {
+            this._timeStep = options.timeStep;
+        }
+
         if (options.lockstepMaxSteps === undefined) {
             options.lockstepMaxSteps = 4;
         }
@@ -131,6 +138,8 @@ export class NullEngine extends Engine {
             fragmentDepthSupported: false,
             highPrecisionShaderSupported: true,
             colorBufferFloat: false,
+            supportFloatTexturesResolve: false,
+            rg11b10ufColorRenderable: false,
             textureFloat: false,
             textureFloatLinearFiltering: false,
             textureFloatRender: false,
@@ -181,7 +190,7 @@ export class NullEngine extends Engine {
             needToAlwaysBindUniformBuffers: false,
             supportRenderPasses: true,
             supportSpriteInstancing: false,
-            forceVertexBufferStrideMultiple4Bytes: false,
+            forceVertexBufferStrideAndOffsetMultiple4Bytes: false,
             _collectUbosUpdatedInFrame: false,
         };
 
@@ -702,7 +711,11 @@ export class NullEngine extends Engine {
     /**
      * @internal
      */
-    public _createHardwareRenderTargetWrapper(isMulti: boolean, isCube: boolean, size: number | { width: number; height: number; layers?: number }): RenderTargetWrapper {
+    public _createHardwareRenderTargetWrapper(
+        isMulti: boolean,
+        isCube: boolean,
+        size: number | { width: number; height: number; depth?: number; layers?: number }
+    ): RenderTargetWrapper {
         const rtWrapper = new RenderTargetWrapper(isMulti, isCube, size, this);
         this._renderTargetWrapperCache.push(rtWrapper);
         return rtWrapper;

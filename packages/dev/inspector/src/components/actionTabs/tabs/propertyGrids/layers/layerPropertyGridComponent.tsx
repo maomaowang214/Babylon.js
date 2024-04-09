@@ -11,6 +11,9 @@ import type { IExplorerExtensibilityGroup } from "core/Debug/debugLayer";
 import { TextInputLineComponent } from "shared-ui-components/lines/textInputLineComponent";
 import { SliderLineComponent } from "shared-ui-components/lines/sliderLineComponent";
 import type { EffectLayer } from "core/Layers/effectLayer";
+import { GlowLayer } from "core/Layers/glowLayer";
+import { HighlightLayer } from "core/Layers/highlightLayer";
+import { CheckBoxLineComponent } from "shared-ui-components/lines/checkBoxLineComponent";
 
 interface ILayerPropertyGridComponentProps {
     globalState: GlobalState;

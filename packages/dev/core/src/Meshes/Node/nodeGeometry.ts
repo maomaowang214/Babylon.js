@@ -7,7 +7,8 @@ import { GeometryOutputBlock } from "./Blocks/geometryOutputBlock";
 import type { NodeGeometryBlock } from "./nodeGeometryBlock";
 import { NodeGeometryBuildState } from "./nodeGeometryBuildState";
 import { GetClass } from "../../Misc/typeStore";
-import { SerializationHelper, serialize } from "../../Misc/decorators";
+import { serialize } from "../../Misc/decorators";
+import { SerializationHelper } from "../../Misc/decorators.serialization";
 import { Constants } from "../../Engines/constants";
 import { WebRequest } from "../../Misc/webRequest";
 import { BoxBlock } from "./Blocks/Sources/boxBlock";
@@ -49,7 +50,7 @@ export class NodeGeometry {
     private _buildExecutionTime: number = 0;
 
     /** Define the Url to load node editor script */
-    public static EditorURL = `https://unpkg.com/babylonjs-node-geometry-editor@${Engine.Version}/babylon.nodeGeometryEditor.js`;
+    public static EditorURL = `${Tools._DefaultCdnUrl}/v${Engine.Version}/nodeGeometryEditor/babylon.nodeGeometryEditor.js`;
 
     /** Define the Url to load snippets */
     public static SnippetUrl = Constants.SnippetUrl;
@@ -57,7 +58,7 @@ export class NodeGeometry {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     private BJSNODEGEOMETRYEDITOR = this._getGlobalNodeGeometryEditor();
 
-    /** Get the inspector from bundle or global */
+    /** @returns the inspector from bundle or global */
     private _getGlobalNodeGeometryEditor(): any {
         // UMD Global name detection from Webpack Bundle UMD Name.
         if (typeof NODEGEOMETRYEDITOR !== "undefined") {
@@ -88,7 +89,7 @@ export class NodeGeometry {
     /**
      * Gets an array of blocks that needs to be serialized even if they are not yet connected
      */
-    public attachedBlocks = new Array<NodeGeometryBlock>();
+    public attachedBlocks: NodeGeometryBlock[] = [];
 
     /**
      * Observable raised when the geometry is built
@@ -194,7 +195,7 @@ export class NodeGeometry {
                 const editorUrl = config && config.editorURL ? config.editorURL : NodeGeometry.EditorURL;
 
                 // Load editor and add it to the DOM
-                Tools.LoadScript(editorUrl, () => {
+                Tools.LoadBabylonScript(editorUrl, () => {
                     this.BJSNODEGEOMETRYEDITOR = this.BJSNODEGEOMETRYEDITOR || this._getGlobalNodeGeometryEditor();
                     this._createNodeEditor(config?.nodeGeometryEditorConfig);
                     resolve();
@@ -207,7 +208,10 @@ export class NodeGeometry {
         });
     }
 
-    /** Creates the node editor window. */
+    /**
+     * Creates the node editor window.
+     * @param additionalConfig Additional configuration for the NGE
+     */
     private _createNodeEditor(additionalConfig?: any) {
         const nodeEditorConfig: any = {
             nodeGeometry: this,
@@ -226,6 +230,7 @@ export class NodeGeometry {
         this._buildWasSuccessful = false;
 
         if (!this.outputBlock) {
+            // eslint-disable-next-line no-throw-literal
             throw "You must define the outputBlock property before building the geometry";
         }
         const now = PrecisionDate.Now;
@@ -376,7 +381,9 @@ export class NodeGeometry {
                 const id = teleportOut._tempEntryPointUniqueId;
                 if (id) {
                     const source = map[id] as TeleportInBlock;
-                    source.attachToEndpoint(teleportOut);
+                    if (source) {
+                        source.attachToEndpoint(teleportOut);
+                    }
                 }
             }
         }
@@ -548,6 +555,7 @@ export class NodeGeometry {
     /**
      * Makes a duplicate of the current geometry.
      * @param name defines the name to use for the new geometry
+     * @returns the new geometry
      */
     public clone(name: string): NodeGeometry {
         const serializationObject = this.serialize();

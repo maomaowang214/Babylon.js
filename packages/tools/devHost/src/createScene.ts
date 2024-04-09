@@ -1,45 +1,17 @@
-/* eslint-disable-next-line import/no-internal-modules */
-import { canvas, engine } from "./index";
-import "@dev/loaders";
-import "@tools/node-editor";
-import "@tools/node-geometry-editor";
-import * as GUIEditor from "@tools/gui-editor";
-import { Inspector, InjectGUIEditor } from "@dev/inspector";
-import type { ArcRotateCamera } from "@dev/core";
-import { MeshBuilder, Scene, SceneLoader, Vector3 } from "@dev/core";
-// import { AdvancedDynamicTexture, Button } from "@dev/gui";
+import { ThinParticleSystem } from "core/Particles/thinParticleSystem";
+import { engine } from "./engine";
+import { Vector3 } from "core/Maths/math.vector";
+import { Texture } from "core/Materials/Textures/texture";
 
 export const createScene = async function () {
-    const scene = new Scene(engine);
-    scene.createDefaultCameraOrLight(true);
-    // const hdrTexture = new CubeTexture("https://playground.babylonjs.com/textures/SpecularHDR.dds", scene);
-    // scene.createDefaultSkybox(hdrTexture, true, 10000);
+    // Create a particle system
+    const particleSystem = new ThinParticleSystem("particles", 2000, engine);
 
-    // The first parameter can be used to specify which mesh to import. Here we import all meshes
-    SceneLoader.AppendAsync("https://assets.babylonjs.com/meshes/webp/", "webp.gltf", scene, function (_newMeshes) {
-        scene.activeCamera!.attachControl(canvas, false);
-        // scene.activeCamera!.alpha += Math.PI; // camera +180°
-        (scene.activeCamera as ArcRotateCamera).radius = 80;
-    });
+    //Texture of each particle
+    particleSystem.particleTexture = new Texture("textures/flare.png");
 
-    const mesh = MeshBuilder.CreateBox('box', {width: 10, height: 10}, scene)
-    mesh.position = new Vector3(0, 20, 0)
+    // Position where the particles are emiited from
+    particleSystem.emitter = new Vector3(0, 0.5, 0);
 
-
-    // const advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI("UI");
-
-    // const button1 = Button.CreateSimpleButton("but1", "Click Me");
-    // button1.width = "150px";
-    // button1.height = "40px";
-    // button1.color = "white";
-    // button1.cornerRadius = 20;
-    // button1.background = "green";
-    // button1.onPointerUpObservable.add(function () {
-    //     console.log("you did it!");
-    // });
-    // advancedTexture.addControl(button1);
-    InjectGUIEditor(GUIEditor);
-    Inspector.Show(scene, {});
-
-    return scene;
+    particleSystem.start();
 };

@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/require-returns-check */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { Nullable, FloatArray, IndicesArray, DeepImmutable } from "../types";
 import type { Matrix, Vector2 } from "../Maths/math.vector";
@@ -207,6 +208,11 @@ export class VertexData {
     public metadata: any = {};
 
     /**
+     * Gets or sets a value indicating that the mesh must be flagged with hasVertexAlpha = true
+     */
+    public hasVertexAlpha: boolean;
+
+    /**
      * Creates a new VertexData
      */
     public constructor() {
@@ -385,6 +391,10 @@ export class VertexData {
 
         if (this.colors) {
             meshOrGeometry.setVerticesData(VertexBuffer.ColorKind, this.colors, updatable);
+            if (this.hasVertexAlpha && (meshOrGeometry as any).hasVertexAlpha !== undefined) {
+                (meshOrGeometry as any).hasVertexAlpha = true;
+            }
+
             if (isAsync) {
                 yield;
             }
@@ -585,7 +595,7 @@ export class VertexData {
             return [this];
         }
 
-        const result = new Array<VertexData>();
+        const result: VertexData[] = [];
         for (const materialInfo of this.materialInfos) {
             const vertexData = new VertexData();
 
@@ -702,14 +712,77 @@ export class VertexData {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         let root: VertexData = this;
 
+        if (enableCompletion) {
+            // First let's make sure we have the max set of attributes on the main vertex data
+            for (const other of others) {
+                if (!other) {
+                    continue;
+                }
+
+                other._validate();
+
+                if (!this.normals && other.normals) {
+                    this.normals = new Float32Array(this.positions!.length);
+                }
+
+                if (!this.tangents && other.tangents) {
+                    this.tangents = new Float32Array((this.positions!.length / 3) * 4);
+                }
+
+                if (!this.uvs && other.uvs) {
+                    this.uvs = new Float32Array((this.positions!.length / 3) * 2);
+                }
+
+                if (!this.uvs2 && other.uvs2) {
+                    this.uvs2 = new Float32Array((this.positions!.length / 3) * 2);
+                }
+
+                if (!this.uvs3 && other.uvs3) {
+                    this.uvs3 = new Float32Array((this.positions!.length / 3) * 2);
+                }
+
+                if (!this.uvs4 && other.uvs4) {
+                    this.uvs4 = new Float32Array((this.positions!.length / 3) * 2);
+                }
+
+                if (!this.uvs5 && other.uvs5) {
+                    this.uvs5 = new Float32Array((this.positions!.length / 3) * 2);
+                }
+
+                if (!this.uvs6 && other.uvs6) {
+                    this.uvs6 = new Float32Array((this.positions!.length / 3) * 2);
+                }
+
+                if (!this.colors && other.colors) {
+                    this.colors = new Float32Array((this.positions!.length / 3) * 4);
+                    this.colors.fill(1); // Set to white by default
+                }
+
+                if (!this.matricesIndices && other.matricesIndices) {
+                    this.matricesIndices = new Float32Array((this.positions!.length / 3) * 4);
+                }
+
+                if (!this.matricesWeights && other.matricesWeights) {
+                    this.matricesWeights = new Float32Array((this.positions!.length / 3) * 4);
+                }
+
+                if (!this.matricesIndicesExtra && other.matricesIndicesExtra) {
+                    this.matricesIndicesExtra = new Float32Array((this.positions!.length / 3) * 4);
+                }
+
+                if (!this.matricesWeightsExtra && other.matricesWeightsExtra) {
+                    this.matricesWeightsExtra = new Float32Array((this.positions!.length / 3) * 4);
+                }
+            }
+        }
+
         for (const other of others) {
             if (!other) {
                 continue;
             }
 
-            other._validate();
-
             if (!enableCompletion) {
+                other._validate();
                 if (
                     !this.normals !== !other.normals ||
                     !this.tangents !== !other.tangents ||
@@ -728,107 +801,56 @@ export class VertexData {
                     throw new Error("Cannot merge vertex data that do not have the same set of attributes");
                 }
             } else {
-                if (!this.normals !== !other.normals) {
-                    if (!this.normals) {
-                        this.normals = new Float32Array(this.positions!.length);
-                    } else {
-                        other.normals = new Float32Array(other.positions!.length);
-                    }
+                // Align the others with main set of attributes
+                if (this.normals && !other.normals) {
+                    other.normals = new Float32Array(other.positions!.length);
                 }
 
-                if (!this.tangents !== !other.tangents) {
-                    if (!this.tangents) {
-                        this.tangents = new Float32Array((this.positions!.length / 3) * 4);
-                    } else {
-                        other.tangents = new Float32Array((other.positions!.length / 3) * 4);
-                    }
-                }
-                if (!this.uvs !== !other.uvs) {
-                    if (!this.uvs) {
-                        this.uvs = new Float32Array((this.positions!.length / 3) * 2);
-                    } else {
-                        other.uvs = new Float32Array((other.positions!.length / 3) * 2);
-                    }
+                if (this.tangents && !other.tangents) {
+                    other.tangents = new Float32Array((other.positions!.length / 3) * 4);
                 }
 
-                if (!this.uvs2 !== !other.uvs2) {
-                    if (!this.uvs2) {
-                        this.uvs2 = new Float32Array((this.positions!.length / 3) * 2);
-                    } else {
-                        other.uvs2 = new Float32Array((other.positions!.length / 3) * 2);
-                    }
+                if (this.uvs && !other.uvs) {
+                    other.uvs = new Float32Array((other.positions!.length / 3) * 2);
                 }
 
-                if (!this.uvs3 !== !other.uvs3) {
-                    if (!this.uvs3) {
-                        this.uvs3 = new Float32Array((this.positions!.length / 3) * 2);
-                    } else {
-                        other.uvs3 = new Float32Array((other.positions!.length / 3) * 2);
-                    }
+                if (this.uvs2 && !other.uvs2) {
+                    other.uvs2 = new Float32Array((other.positions!.length / 3) * 2);
                 }
 
-                if (!this.uvs4 !== !other.uvs4) {
-                    if (!this.uvs4) {
-                        this.uvs4 = new Float32Array((this.positions!.length / 3) * 2);
-                    } else {
-                        other.uvs4 = new Float32Array((other.positions!.length / 3) * 2);
-                    }
-                }
-                if (!this.uvs5 !== !other.uvs5) {
-                    if (!this.uvs5) {
-                        this.uvs5 = new Float32Array((this.positions!.length / 3) * 2);
-                    } else {
-                        other.uvs5 = new Float32Array((other.positions!.length / 3) * 2);
-                    }
+                if (this.uvs3 && !other.uvs3) {
+                    other.uvs3 = new Float32Array((other.positions!.length / 3) * 2);
                 }
 
-                if (!this.uvs6 !== !other.uvs6) {
-                    if (!this.uvs6) {
-                        this.uvs6 = new Float32Array((this.positions!.length / 3) * 2);
-                    } else {
-                        other.uvs6 = new Float32Array((other.positions!.length / 3) * 2);
-                    }
+                if (this.uvs4 && !other.uvs4) {
+                    other.uvs4 = new Float32Array((other.positions!.length / 3) * 2);
+                }
+                if (this.uvs5 && !other.uvs5) {
+                    other.uvs5 = new Float32Array((other.positions!.length / 3) * 2);
                 }
 
-                if (!this.colors !== !other.colors) {
-                    if (!this.colors) {
-                        this.colors = new Float32Array((this.positions!.length / 3) * 4);
-                        this.colors.fill(1); // Set to white by default
-                    } else {
-                        other.colors = new Float32Array((other.positions!.length / 3) * 4);
-                        other.colors.fill(1); // Set to white by default
-                    }
+                if (this.uvs6 && !other.uvs6) {
+                    other.uvs6 = new Float32Array((other.positions!.length / 3) * 2);
                 }
 
-                if (!this.matricesIndices !== !other.matricesIndices) {
-                    if (!this.matricesIndices) {
-                        this.matricesIndices = new Float32Array((this.positions!.length / 3) * 4);
-                    } else {
-                        other.matricesIndices = new Float32Array((other.positions!.length / 3) * 4);
-                    }
-                }
-                if (!this.matricesWeights !== !other.matricesWeights) {
-                    if (!this.matricesWeights) {
-                        this.matricesWeights = new Float32Array((this.positions!.length / 3) * 4);
-                    } else {
-                        other.matricesWeights = new Float32Array((other.positions!.length / 3) * 4);
-                    }
+                if (this.colors && !other.colors) {
+                    other.colors = new Float32Array((other.positions!.length / 3) * 4);
+                    other.colors.fill(1); // Set to white by default
                 }
 
-                if (!this.matricesIndicesExtra !== !other.matricesIndicesExtra) {
-                    if (!this.matricesIndicesExtra) {
-                        this.matricesIndicesExtra = new Float32Array((this.positions!.length / 3) * 4);
-                    } else {
-                        other.matricesIndicesExtra = new Float32Array((other.positions!.length / 3) * 4);
-                    }
+                if (this.matricesIndices && !other.matricesIndices) {
+                    other.matricesIndices = new Float32Array((other.positions!.length / 3) * 4);
+                }
+                if (this.matricesWeights && !other.matricesWeights) {
+                    other.matricesWeights = new Float32Array((other.positions!.length / 3) * 4);
                 }
 
-                if (!this.matricesWeightsExtra !== !other.matricesWeightsExtra) {
-                    if (!this.matricesWeightsExtra) {
-                        this.matricesWeightsExtra = new Float32Array((this.positions!.length / 3) * 4);
-                    } else {
-                        other.matricesWeightsExtra = new Float32Array((other.positions!.length / 3) * 4);
-                    }
+                if (this.matricesIndicesExtra && !other.matricesIndicesExtra) {
+                    other.matricesIndicesExtra = new Float32Array((other.positions!.length / 3) * 4);
+                }
+
+                if (this.matricesWeightsExtra && !other.matricesWeightsExtra) {
+                    other.matricesWeightsExtra = new Float32Array((other.positions!.length / 3) * 4);
                 }
             }
         }
@@ -1060,6 +1082,9 @@ export class VertexData {
                 transform,
                 vertexDatas.map((other) => [other.vertexData.colors, other.transform])
             );
+            if (root.hasVertexAlpha !== undefined || vertexDatas.some((other) => other.vertexData.hasVertexAlpha !== undefined)) {
+                this.hasVertexAlpha = root.hasVertexAlpha || vertexDatas.some((other) => other.vertexData.hasVertexAlpha);
+            }
             if (isAsync) {
                 yield;
             }
@@ -1132,10 +1157,10 @@ export class VertexData {
             kind === VertexBuffer.PositionKind
                 ? VertexData._TransformVector3Coordinates
                 : kind === VertexBuffer.NormalKind
-                ? VertexData._TransformVector3Normals
-                : kind === VertexBuffer.TangentKind
-                ? VertexData._TransformVector4Normals
-                : () => {};
+                  ? VertexData._TransformVector3Normals
+                  : kind === VertexBuffer.TangentKind
+                    ? VertexData._TransformVector4Normals
+                    : () => {};
 
         if (source instanceof Float32Array) {
             // use non-loop method when the source is Float32Array
@@ -1288,6 +1313,7 @@ export class VertexData {
 
         if (this.colors) {
             serializationObject.colors = Array.from(this.colors);
+            serializationObject.hasVertexAlpha = this.hasVertexAlpha;
         }
 
         if (this.matricesIndices) {
@@ -1427,16 +1453,6 @@ export class VertexData {
      * * invertUV swaps in the U and V coordinates when applying a texture, optional, default false
      * * uvs a linear array, of length 2 * number of vertices, of custom UV values, optional
      * * colors a linear array, of length 4 * number of vertices, of custom color values, optional
-     * @param options.pathArray
-     * @param options.closeArray
-     * @param options.closePath
-     * @param options.offset
-     * @param options.sideOrientation
-     * @param options.frontUVs
-     * @param options.backUVs
-     * @param options.invertUV
-     * @param options.uvs
-     * @param options.colors
      * @returns the VertexData of the ribbon
      * @deprecated use CreateRibbonVertexData instead
      */
@@ -1467,15 +1483,6 @@ export class VertexData {
      * * sideOrientation optional and takes the values : Mesh.FRONTSIDE (default), Mesh.BACKSIDE or Mesh.DOUBLESIDE
      * * frontUvs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the front side, optional, default vector4 (0, 0, 1, 1)
      * * backUVs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the back side, optional, default vector4 (0, 0, 1, 1)
-     * @param options.size
-     * @param options.width
-     * @param options.height
-     * @param options.depth
-     * @param options.faceUV
-     * @param options.faceColors
-     * @param options.sideOrientation
-     * @param options.frontUVs
-     * @param options.backUVs
      * @returns the VertexData of the box
      * @deprecated Please use CreateBoxVertexData from the BoxBuilder file instead
      */
@@ -1542,18 +1549,6 @@ export class VertexData {
      * * sideOrientation optional and takes the values : Mesh.FRONTSIDE (default), Mesh.BACKSIDE or Mesh.DOUBLESIDE
      * * frontUvs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the front side, optional, default vector4 (0, 0, 1, 1)
      * * backUVs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the back side, optional, default vector4 (0, 0, 1, 1)
-     * @param options.pattern
-     * @param options.tileSize
-     * @param options.tileWidth
-     * @param options.tileHeight
-     * @param options.size
-     * @param options.width
-     * @param options.height
-     * @param options.alignHorizontal
-     * @param options.alignVertical
-     * @param options.sideOrientation
-     * @param options.frontUVs
-     * @param options.backUVs
      * @returns the VertexData of the tiled plane
      * @deprecated use CreateTiledPlaneVertexData instead
      */
@@ -1587,16 +1582,6 @@ export class VertexData {
      * * sideOrientation optional and takes the values : Mesh.FRONTSIDE (default), Mesh.BACKSIDE or Mesh.DOUBLESIDE
      * * frontUvs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the front side, optional, default vector4 (0, 0, 1, 1)
      * * backUVs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the back side, optional, default vector4 (0, 0, 1, 1)
-     * @param options.segments
-     * @param options.diameter
-     * @param options.diameterX
-     * @param options.diameterY
-     * @param options.diameterZ
-     * @param options.arc
-     * @param options.slice
-     * @param options.sideOrientation
-     * @param options.frontUVs
-     * @param options.backUVs
      * @returns the VertexData of the ellipsoid
      * @deprecated use CreateSphereVertexData instead
      */
@@ -1632,20 +1617,6 @@ export class VertexData {
      * * sideOrientation optional and takes the values : Mesh.FRONTSIDE (default), Mesh.BACKSIDE or Mesh.DOUBLESIDE
      * * frontUvs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the front side, optional, default vector4 (0, 0, 1, 1)
      * * backUVs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the back side, optional, default vector4 (0, 0, 1, 1)
-     * @param options.height
-     * @param options.diameterTop
-     * @param options.diameterBottom
-     * @param options.diameter
-     * @param options.tessellation
-     * @param options.subdivisions
-     * @param options.arc
-     * @param options.faceColors
-     * @param options.faceUV
-     * @param options.hasRings
-     * @param options.enclose
-     * @param options.sideOrientation
-     * @param options.frontUVs
-     * @param options.backUVs
      * @returns the VertexData of the cylinder, cone or prism
      * @deprecated please use CreateCylinderVertexData instead
      */
@@ -1677,12 +1648,6 @@ export class VertexData {
      * * sideOrientation optional and takes the values : Mesh.FRONTSIDE (default), Mesh.BACKSIDE or Mesh.DOUBLESIDE
      * * frontUvs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the front side, optional, default vector4 (0, 0, 1, 1)
      * * backUVs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the back side, optional, default vector4 (0, 0, 1, 1)
-     * @param options.diameter
-     * @param options.thickness
-     * @param options.tessellation
-     * @param options.sideOrientation
-     * @param options.frontUVs
-     * @param options.backUVs
      * @returns the VertexData of the torus
      * @deprecated use CreateTorusVertexData instead
      */
@@ -1702,8 +1667,6 @@ export class VertexData {
      * @param options an object used to set the following optional parameters for the LineSystem, required but can be empty
      *  - lines an array of lines, each line being an array of successive Vector3
      *  - colors an array of line colors, each of the line colors being an array of successive Color4, one per line point
-     * @param options.lines
-     * @param options.colors
      * @returns the VertexData of the LineSystem
      * @deprecated use CreateLineSystemVertexData instead
      */
@@ -1718,10 +1681,6 @@ export class VertexData {
      *  - dashSize the size of the dashes relative to the dash number, optional, default 3
      *  - gapSize the size of the gap between two successive dashes relative to the dash number, optional, default 1
      *  - dashNb the intended total number of dashes, optional, default 200
-     * @param options.points
-     * @param options.dashSize
-     * @param options.gapSize
-     * @param options.dashNb
      * @returns the VertexData for the DashedLines
      * @deprecated use CreateDashedLinesVertexData instead
      */
@@ -1735,11 +1694,6 @@ export class VertexData {
      *  - width the width (x direction) of the ground, optional, default 1
      *  - height the height (z direction) of the ground, optional, default 1
      *  - subdivisions the number of subdivisions per side, optional, default 1
-     * @param options.width
-     * @param options.height
-     * @param options.subdivisions
-     * @param options.subdivisionsX
-     * @param options.subdivisionsY
      * @returns the VertexData of the Ground
      * @deprecated Please use CreateGroundVertexData instead
      */
@@ -1756,16 +1710,6 @@ export class VertexData {
      * * zmax the ground maximum Z coordinate, optional, default 1
      * * subdivisions a javascript object {w: positive integer, h: positive integer}, `w` and `h` are the numbers of subdivisions on the ground width and height creating 'tiles', default {w: 6, h: 6}
      * * precision a javascript object {w: positive integer, h: positive integer}, `w` and `h` are the numbers of subdivisions on the tile width and height, default {w: 2, h: 2}
-     * @param options.xmin
-     * @param options.zmin
-     * @param options.xmax
-     * @param options.zmax
-     * @param options.subdivisions
-     * @param options.subdivisions.w
-     * @param options.subdivisions.h
-     * @param options.precision
-     * @param options.precision.w
-     * @param options.precision.h
      * @returns the VertexData of the TiledGround
      * @deprecated use CreateTiledGroundVertexData instead
      */
@@ -1793,16 +1737,6 @@ export class VertexData {
      * * bufferWidth the width of image
      * * bufferHeight the height of image
      * * alphaFilter Remove any data where the alpha channel is below this value, defaults 0 (all data visible)
-     * @param options.width
-     * @param options.height
-     * @param options.subdivisions
-     * @param options.minHeight
-     * @param options.maxHeight
-     * @param options.colorFilter
-     * @param options.buffer
-     * @param options.bufferWidth
-     * @param options.bufferHeight
-     * @param options.alphaFilter
      * @returns the VertexData of the Ground designed from a heightmap
      * @deprecated use CreateGroundFromHeightMapVertexData instead
      */
@@ -1830,12 +1764,6 @@ export class VertexData {
      * * sideOrientation optional and takes the values : Mesh.FRONTSIDE (default), Mesh.BACKSIDE or Mesh.DOUBLESIDE
      * * frontUvs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the front side, optional, default vector4 (0, 0, 1, 1)
      * * backUVs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the back side, optional, default vector4 (0, 0, 1, 1)
-     * @param options.size
-     * @param options.width
-     * @param options.height
-     * @param options.sideOrientation
-     * @param options.frontUVs
-     * @param options.backUVs
      * @returns the VertexData of the box
      * @deprecated use CreatePlaneVertexData instead
      */
@@ -1852,12 +1780,6 @@ export class VertexData {
      * * sideOrientation optional and takes the values : Mesh.FRONTSIDE (default), Mesh.BACKSIDE or Mesh.DOUBLESIDE
      * * frontUvs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the front side, optional, default vector4 (0, 0, 1, 1)
      * * backUVs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the back side, optional, default vector4 (0, 0, 1, 1)
-     * @param options.radius
-     * @param options.tessellation
-     * @param options.arc
-     * @param options.sideOrientation
-     * @param options.frontUVs
-     * @param options.backUVs
      * @returns the VertexData of the box
      * @deprecated use CreateDiscVertexData instead
      */
@@ -1894,15 +1816,6 @@ export class VertexData {
      * * sideOrientation optional and takes the values : Mesh.FRONTSIDE (default), Mesh.BACKSIDE or Mesh.DOUBLESIDE
      * * frontUvs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the front side, optional, default vector4 (0, 0, 1, 1)
      * * backUVs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the back side, optional, default vector4 (0, 0, 1, 1)
-     * @param options.radius
-     * @param options.radiusX
-     * @param options.radiusY
-     * @param options.radiusZ
-     * @param options.flat
-     * @param options.subdivisions
-     * @param options.sideOrientation
-     * @param options.frontUVs
-     * @param options.backUVs
      * @returns the VertexData of the IcoSphere
      * @deprecated use CreateIcoSphereVertexData instead
      */
@@ -1939,18 +1852,6 @@ export class VertexData {
      * * sideOrientation optional and takes the values : Mesh.FRONTSIDE (default), Mesh.BACKSIDE or Mesh.DOUBLESIDE
      * * frontUvs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the front side, optional, default vector4 (0, 0, 1, 1)
      * * backUVs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the back side, optional, default vector4 (0, 0, 1, 1)
-     * @param options.type
-     * @param options.size
-     * @param options.sizeX
-     * @param options.sizeY
-     * @param options.sizeZ
-     * @param options.custom
-     * @param options.faceUV
-     * @param options.faceColors
-     * @param options.flat
-     * @param options.sideOrientation
-     * @param options.frontUVs
-     * @param options.backUVs
      * @returns the VertexData of the Polyhedron
      * @deprecated use CreatePolyhedronVertexData instead
      */
@@ -2003,15 +1904,6 @@ export class VertexData {
      * * sideOrientation optional and takes the values : Mesh.FRONTSIDE (default), Mesh.BACKSIDE or Mesh.DOUBLESIDE
      * * frontUvs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the front side, optional, default vector4 (0, 0, 1, 1)
      * * backUVs only usable when you create a double-sided mesh, used to choose what parts of the texture image to crop and apply on the back side, optional, default vector4 (0, 0, 1, 1)
-     * @param options.radius
-     * @param options.tube
-     * @param options.radialSegments
-     * @param options.tubularSegments
-     * @param options.p
-     * @param options.q
-     * @param options.sideOrientation
-     * @param options.frontUVs
-     * @param options.backUVs
      * @returns the VertexData of the Torus Knot
      * @deprecated use CreateTorusKnotVertexData instead
      */
@@ -2048,17 +1940,6 @@ export class VertexData {
      * * depthSort : optional boolean to enable the facet depth sort computation
      * * distanceTo : optional Vector3 to compute the facet depth from this location
      * * depthSortedFacets : optional array of depthSortedFacets to store the facet distances from the reference location
-     * @param options.facetNormals
-     * @param options.facetPositions
-     * @param options.facetPartitioning
-     * @param options.ratio
-     * @param options.bInfo
-     * @param options.bbSize
-     * @param options.subDiv
-     * @param options.useRightHandedSystem
-     * @param options.depthSort
-     * @param options.distanceTo
-     * @param options.depthSortedFacets
      */
     public static ComputeNormals(
         positions: any,
@@ -2402,6 +2283,9 @@ export class VertexData {
         const colors = parsedVertexData.colors;
         if (colors) {
             vertexData.set(Color4.CheckColors4(colors, positions.length / 3), VertexBuffer.ColorKind);
+            if (parsedVertexData.hasVertexAlpha !== undefined) {
+                vertexData.hasVertexAlpha = parsedVertexData.hasVertexAlpha;
+            }
         }
 
         // matricesIndices

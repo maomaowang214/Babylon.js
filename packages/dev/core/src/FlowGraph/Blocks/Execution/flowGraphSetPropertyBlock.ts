@@ -1,65 +1,82 @@
-import { RichTypeString, RichTypeAny } from "../../flowGraphRichTypes";
+import { RichTypeAny } from "../../flowGraphRichTypes";
 import type { FlowGraphContext } from "../../flowGraphContext";
 import type { FlowGraphDataConnection } from "../../flowGraphDataConnection";
-import { FlowGraphWithOnDoneExecutionBlock } from "../../flowGraphWithOnDoneExecutionBlock";
+import { FlowGraphExecutionBlockWithOutSignal } from "../../flowGraphExecutionBlockWithOutSignal";
 import { RegisterClass } from "../../../Misc/typeStore";
 import type { IFlowGraphBlockConfiguration } from "../../flowGraphBlock";
+import { FlowGraphPathConverterComponent } from "../../flowGraphPathConverterComponent";
+import type { IPathToObjectConverter } from "../../../ObjectModel/objectModelInterfaces";
+import type { IObjectAccessor } from "../../typeDefinitions";
+
+/**
+ * @experimental
+ * Configuration for the set property block.
+ */
+export interface IFlowGraphSetPropertyBlockConfiguration extends IFlowGraphBlockConfiguration {
+    /**
+     * The path of the entity whose property will be set. Needs a corresponding
+     * entity on the context variables.
+     */
+    path: string;
+    /**
+     * The path converter to use to convert the path to an object accessor.
+     */
+    pathConverter: IPathToObjectConverter<IObjectAccessor>;
+}
 
 /**
  * @experimental
  * Block that sets a property on a target object.
- * TODO: Add support for animating the property.
  */
-export class FlowGraphSetPropertyBlock<TargetT, ValueT> extends FlowGraphWithOnDoneExecutionBlock {
-    /**
-     * Input connection: The target object.
-     */
-    public readonly target: FlowGraphDataConnection<TargetT>;
-    /**
-     * Input connection: The property to set on the object.
-     * Supports dot notation.
-     */
-    public readonly property: FlowGraphDataConnection<string>;
+export class FlowGraphSetPropertyBlock<ValueT> extends FlowGraphExecutionBlockWithOutSignal {
     /**
      * Input connection: The value to set on the property.
      */
-    public readonly value: FlowGraphDataConnection<ValueT>;
+    public readonly a: FlowGraphDataConnection<ValueT>;
+    /**
+     * The component with the templated inputs for the provided path.
+     */
+    public readonly templateComponent: FlowGraphPathConverterComponent;
 
-    public constructor(config?: IFlowGraphBlockConfiguration) {
+    public constructor(
+        /**
+         * the configuration of the block
+         */
+        public config: IFlowGraphSetPropertyBlockConfiguration
+    ) {
         super(config);
 
-        this.target = this._registerDataInput("target", RichTypeAny);
-        this.property = this._registerDataInput("property", RichTypeString);
-        this.value = this._registerDataInput("value", RichTypeAny);
-    }
-
-    private _setProperty(target: any, property: string, value: any): void {
-        const splitProp = property.split(".");
-
-        let currentTarget = target;
-        for (let i = 0; i < splitProp.length - 1; i++) {
-            currentTarget = currentTarget[splitProp[i]];
-        }
-
-        currentTarget[splitProp[splitProp.length - 1]] = value;
+        this.a = this.registerDataInput("a", RichTypeAny);
+        this.templateComponent = new FlowGraphPathConverterComponent(config.path, this);
     }
 
     public _execute(context: FlowGraphContext): void {
-        const target = this.target.getValue(context);
-        const property = this.property.getValue(context);
-        const value = this.value.getValue(context);
+        const value = this.a.getValue(context);
+        const accessor = this.templateComponent.getAccessor(this.config.pathConverter, context);
+        accessor.info.set(value, accessor.object);
 
-        if (target && property && value) {
-            this._setProperty(target, property, value);
-        } else {
-            throw new Error("Invalid target, property or value.");
-        }
-
-        this.onDone._activateSignal(context);
+        this.out._activateSignal(context);
     }
 
+    /**
+     * Serializes the block to a JSON object.
+     * @param serializationObject the object to serialize to.
+     */
+    public serialize(serializationObject: any = {}) {
+        super.serialize(serializationObject);
+        serializationObject.config.path = this.config.path;
+    }
+
+    /**
+     * @returns class name of the block.
+     */
     public getClassName(): string {
-        return "FGSetPropertyBlock";
+        return FlowGraphSetPropertyBlock.ClassName;
     }
+
+    /**
+     * Class name of the block.
+     */
+    public static ClassName = "FGSetPropertyBlock";
 }
 RegisterClass("FGSetPropertyBlock", FlowGraphSetPropertyBlock);

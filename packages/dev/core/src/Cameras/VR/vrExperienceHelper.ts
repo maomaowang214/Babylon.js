@@ -130,7 +130,10 @@ class VRExperienceHelperGazer implements IDisposable {
     /** @internal */
     public _activePointer = false;
 
-    constructor(public scene: Scene, gazeTrackerToClone: Nullable<Mesh> = null) {
+    constructor(
+        public scene: Scene,
+        gazeTrackerToClone: Nullable<Mesh> = null
+    ) {
         this._id = VRExperienceHelperGazer._IdCounter++;
 
         // Gaze tracker
@@ -207,7 +210,10 @@ class VRExperienceHelperGazer implements IDisposable {
 }
 
 class VRExperienceHelperCameraGazer extends VRExperienceHelperGazer {
-    constructor(private _getCamera: () => Nullable<Camera>, scene: Scene) {
+    constructor(
+        private _getCamera: () => Nullable<Camera>,
+        scene: Scene
+    ) {
         super(scene);
     }
 
@@ -1543,7 +1549,7 @@ export class VRExperienceHelper {
 
     /**
      * Set lighting enabled / disabled on the laser pointer of both controllers
-     * @param enabled should the lighting be enabled on the laser pointer
+     * @param _enabled should the lighting be enabled on the laser pointer
      */
     public setLaserLightingState(_enabled: boolean = true) {
         // no-op
@@ -1560,7 +1566,7 @@ export class VRExperienceHelper {
 
     /**
      * Sets the color of the laser ray from the vr controllers.
-     * @param color new color for the ray.
+     * @param _color new color for the ray.
      */
     public changeLaserColor(_color: Color3) {
         if (!this.updateControllerLaserColor) {

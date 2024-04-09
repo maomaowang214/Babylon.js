@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { ComputeEffect, IComputeEffectCreationOptions } from "../../Compute/computeEffect";
+import type { ComputeEffect, IComputeEffectCreationOptions, IComputeShaderPath } from "../../Compute/computeEffect";
 import type { IComputeContext } from "../../Compute/IComputeContext";
 import type { IComputePipelineContext } from "../../Compute/IComputePipelineContext";
 import { ThinEngine } from "../../Engines/thinEngine";
 import type { Nullable } from "../../types";
+import type { WebGPUPerfCounter } from "../WebGPU/webgpuPerfCounter";
 
 /**
  * Type used to locate a resource in a compute shader.
@@ -17,6 +18,32 @@ export type ComputeBindingLocation = { group: number; binding: number };
  */
 export type ComputeBindingMapping = { [key: string]: ComputeBindingLocation };
 
+/**
+ * Types of messages that can be generated during compilation
+ */
+export type ComputeCompilationMessageType = "error" | "warning" | "info";
+
+/**
+ * Messages generated during compilation
+ */
+export interface ComputeCompilationMessages {
+    /**
+     * Number of errors generated during compilation
+     */
+    numErrors: number;
+    /**
+     * List of messages generated during compilation
+     */
+    messages: {
+        type: ComputeCompilationMessageType;
+        text: string;
+        line?: number;
+        column?: number;
+        length?: number;
+        offset?: number;
+    }[];
+}
+
 /** @internal */
 export enum ComputeBindingType {
     Texture = 0,
@@ -26,6 +53,7 @@ export enum ComputeBindingType {
     TextureWithoutSampler = 4,
     Sampler = 5,
     ExternalTexture = 6,
+    DataBuffer = 7,
 }
 
 /** @internal */
@@ -39,7 +67,17 @@ declare module "../../Engines/thinEngine" {
          * @param options Options used to create the effect
          * @returns The new compute effect
          */
-        createComputeEffect(baseName: any, options: IComputeEffectCreationOptions): ComputeEffect;
+        createComputeEffect(
+            baseName:
+                | string
+                | (IComputeShaderPath & {
+                      /**
+                       * @internal
+                       */
+                      computeToken?: string;
+                  }),
+            options: IComputeEffectCreationOptions
+        ): ComputeEffect;
 
         /**
          * Creates a new compute pipeline context
@@ -62,6 +100,7 @@ declare module "../../Engines/thinEngine" {
          * @param y The number of workgroups to execute on the Y dimension
          * @param z The number of workgroups to execute on the Z dimension
          * @param bindingsMapping list of bindings mapping (key is property name, value is binding location)
+         * @param gpuPerfCounter GPU time computed for the compute shader will be assigned to this object
          */
         computeDispatch(
             effect: ComputeEffect,
@@ -70,7 +109,8 @@ declare module "../../Engines/thinEngine" {
             x: number,
             y?: number,
             z?: number,
-            bindingsMapping?: ComputeBindingMapping
+            bindingsMapping?: ComputeBindingMapping,
+            gpuPerfCounter?: WebGPUPerfCounter
         ): void;
 
         /**
@@ -97,7 +137,7 @@ declare module "../../Engines/thinEngine" {
         _rebuildComputeEffects(): void;
 
         /** @internal */
-        _executeWhenComputeStateIsCompiled(pipelineContext: IComputePipelineContext, action: () => void): void;
+        _executeWhenComputeStateIsCompiled(pipelineContext: IComputePipelineContext, action: (messages: Nullable<ComputeCompilationMessages>) => void): void;
 
         /** @internal */
         _releaseComputeEffect(effect: ComputeEffect): void;
@@ -107,7 +147,7 @@ declare module "../../Engines/thinEngine" {
     }
 }
 
-ThinEngine.prototype.createComputeEffect = function (baseName: any, options: IComputeEffectCreationOptions): ComputeEffect {
+ThinEngine.prototype.createComputeEffect = function (baseName: IComputeShaderPath & { computeToken?: string }, options: IComputeEffectCreationOptions): ComputeEffect {
     throw new Error("createComputeEffect: This engine does not support compute shaders!");
 };
 
@@ -147,8 +187,11 @@ ThinEngine.prototype._prepareComputePipelineContext = function (
 
 ThinEngine.prototype._rebuildComputeEffects = function (): void {};
 
-ThinEngine.prototype._executeWhenComputeStateIsCompiled = function (pipelineContext: IComputePipelineContext, action: () => void): void {
-    action();
+ThinEngine.prototype._executeWhenComputeStateIsCompiled = function (
+    pipelineContext: IComputePipelineContext,
+    action: (messages: Nullable<ComputeCompilationMessages>) => void
+): void {
+    action(null);
 };
 
 ThinEngine.prototype._releaseComputeEffect = function (effect: ComputeEffect): void {};

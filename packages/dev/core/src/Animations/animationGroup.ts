@@ -124,18 +124,32 @@ export class AnimationGroup implements IDisposable {
      */
     public metadata: any = null;
 
+    private _mask: Nullable<AnimationGroupMask> = null;
+
     /**
      * Gets or sets the mask associated with this animation group. This mask is used to filter which objects should be animated.
      */
-    public mask?: AnimationGroupMask;
+    public get mask() {
+        return this._mask;
+    }
+
+    public set mask(value: Nullable<AnimationGroupMask>) {
+        if (this._mask === value) {
+            return;
+        }
+
+        this._mask = value;
+
+        this.syncWithMask(true);
+    }
 
     /**
      * Makes sure that the animations are either played or stopped according to the animation group mask.
      * Note however that the call won't have any effect if the animation group has not been started yet.
-     * You should call this function if you modify the mask after the animation group has been started.
+     * @param forceUpdate If true, forces to loop over the animatables even if no mask is defined (used internally, you shouldn't need to use it). Default: false.
      */
-    public syncWithMask() {
-        if (!this.mask) {
+    public syncWithMask(forceUpdate = false) {
+        if (!this.mask && !forceUpdate) {
             this._numActiveAnimatables = this._targetedAnimations.length;
             return;
         }
@@ -145,7 +159,7 @@ export class AnimationGroup implements IDisposable {
         for (let i = 0; i < this._animatables.length; ++i) {
             const animatable = this._animatables[i];
 
-            if (this.mask.retainsTarget(animatable.target.name)) {
+            if (!this.mask || this.mask.disabled || this.mask.retainsTarget(animatable.target.name)) {
                 this._numActiveAnimatables++;
                 if (animatable.paused) {
                     animatable.restart();
@@ -163,7 +177,7 @@ export class AnimationGroup implements IDisposable {
      * Use this function if you know you won't need those animations anymore and if you want to free memory.
      */
     public removeUnmaskedAnimations() {
-        if (!this.mask) {
+        if (!this.mask || this.mask.disabled) {
             return;
         }
 
@@ -190,17 +204,43 @@ export class AnimationGroup implements IDisposable {
     }
 
     /**
-     * Gets the first frame
+     * Gets or sets the first frame
      */
     public get from(): number {
         return this._from;
     }
 
+    public set from(value: number) {
+        if (this._from === value) {
+            return;
+        }
+
+        this._from = value;
+
+        for (let index = 0; index < this._animatables.length; index++) {
+            const animatable = this._animatables[index];
+            animatable.fromFrame = this._from;
+        }
+    }
+
     /**
-     * Gets the last frame
+     * Gets or sets the last frame
      */
     public get to(): number {
         return this._to;
+    }
+
+    public set to(value: number) {
+        if (this._to === value) {
+            return;
+        }
+
+        this._to = value;
+
+        for (let index = 0; index < this._animatables.length; index++) {
+            const animatable = this._animatables[index];
+            animatable.toFrame = this._to;
+        }
     }
 
     /**
@@ -727,6 +767,8 @@ export class AnimationGroup implements IDisposable {
             animatable.restart();
         }
 
+        this.syncWithMask();
+
         this.onAnimationGroupPlayObservable.notifyObservers(this);
 
         return this;
@@ -796,7 +838,7 @@ export class AnimationGroup implements IDisposable {
     }
 
     /**
-     * Goes to a specific frame in this animation group
+     * Goes to a specific frame in this animation group. Note that the animation group must be in playing or paused status
      * @param frame the frame number to go to
      * @returns the animationGroup
      */

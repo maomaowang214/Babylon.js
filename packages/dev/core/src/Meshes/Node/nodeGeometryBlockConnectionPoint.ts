@@ -64,17 +64,22 @@ export class NodeGeometryConnectionPoint {
     /**
      * Gets or sets the additional types supported by this connection point
      */
-    public acceptedConnectionPointTypes = new Array<NodeGeometryBlockConnectionPointTypes>();
+    public acceptedConnectionPointTypes: NodeGeometryBlockConnectionPointTypes[] = [];
 
     /**
      * Gets or sets the additional types excluded by this connection point
      */
-    public excludedConnectionPointTypes = new Array<NodeGeometryBlockConnectionPointTypes>();
+    public excludedConnectionPointTypes: NodeGeometryBlockConnectionPointTypes[] = [];
 
     /**
      * Observable triggered when this point is connected
      */
     public onConnectionObservable = new Observable<NodeGeometryConnectionPoint>();
+
+    /**
+     * Observable triggered when this point is disconnected
+     */
+    public onDisconnectionObservable = new Observable<NodeGeometryConnectionPoint>();
 
     /**
      * Gets or sets a boolean indicating that this connection point is exposed on a frame
@@ -210,6 +215,32 @@ export class NodeGeometryConnectionPoint {
         return this._type;
     }
 
+    /** @internal */
+    public _callCount = 0;
+
+    /** @internal */
+    public _executionCount = 0;
+
+    /** @internal */
+    public _resetCounters() {
+        this._callCount = 0;
+        this._executionCount = 0;
+    }
+
+    /**
+     * Gets the number of times this point was called
+     */
+    public get callCount() {
+        return this._callCount;
+    }
+
+    /**
+     * Gets the number of times this point was executed
+     */
+    public get executionCount() {
+        return this._executionCount;
+    }
+
     /**
      * Gets the value represented by this connection point
      * @param state current evaluation state
@@ -218,10 +249,16 @@ export class NodeGeometryConnectionPoint {
     public getConnectedValue(state: NodeGeometryBuildState) {
         if (this.isConnected) {
             if (this._connectedPoint?._storedFunction) {
-                return this._connectedPoint?._storedFunction(state);
+                this._connectedPoint!._callCount++;
+                this._connectedPoint!._executionCount++;
+                return this._connectedPoint!._storedFunction(state);
             }
-            return this._connectedPoint?._storedValue;
+            this._connectedPoint!._callCount++;
+            this._connectedPoint!._executionCount = 1;
+            return this._connectedPoint!._storedValue;
         }
+        this._callCount++;
+        this._executionCount = 1;
         return this.value;
     }
 
@@ -300,6 +337,7 @@ export class NodeGeometryConnectionPoint {
      */
     public connectTo(connectionPoint: NodeGeometryConnectionPoint, ignoreConstraints = false): NodeGeometryConnectionPoint {
         if (!ignoreConstraints && !this.canConnectTo(connectionPoint)) {
+            // eslint-disable-next-line no-throw-literal
             throw "Cannot connect these two connectors.";
         }
 
@@ -326,6 +364,10 @@ export class NodeGeometryConnectionPoint {
 
         this._endpoints.splice(index, 1);
         endpoint._connectedPoint = null;
+
+        this.onDisconnectionObservable.notifyObservers(endpoint);
+        endpoint.onDisconnectionObservable.notifyObservers(this);
+
         return this;
     }
 
@@ -377,5 +419,6 @@ export class NodeGeometryConnectionPoint {
      */
     public dispose() {
         this.onConnectionObservable.clear();
+        this.onDisconnectionObservable.clear();
     }
 }

@@ -1,17 +1,22 @@
 import type { FlowGraphDataConnection } from "../../flowGraphDataConnection";
-import { FlowGraphBlock } from "../../flowGraphBlock";
 import type { RichType } from "../../flowGraphRichTypes";
 import type { FlowGraphContext } from "../../flowGraphContext";
 import type { IFlowGraphBlockConfiguration } from "../../flowGraphBlock";
+import { FlowGraphCachedOperationBlock } from "./flowGraphCachedOperationBlock";
 /**
  * @experimental
  * The base block for all binary operation blocks. Receives an input of type
  * LeftT, one of type RightT, and outputs a value of type ResultT.
  */
-export class FlowGraphBinaryOperationBlock<LeftT, RightT, ResultT> extends FlowGraphBlock {
-    leftInput: FlowGraphDataConnection<LeftT>;
-    rightInput: FlowGraphDataConnection<RightT>;
-    output: FlowGraphDataConnection<ResultT>;
+export class FlowGraphBinaryOperationBlock<LeftT, RightT, ResultT> extends FlowGraphCachedOperationBlock<ResultT> {
+    /**
+     * First input of this block
+     */
+    a: FlowGraphDataConnection<LeftT>;
+    /**
+     * Second input of this block
+     */
+    b: FlowGraphDataConnection<RightT>;
 
     constructor(
         leftRichType: RichType<LeftT>,
@@ -21,16 +26,24 @@ export class FlowGraphBinaryOperationBlock<LeftT, RightT, ResultT> extends FlowG
         private _className: string,
         config?: IFlowGraphBlockConfiguration
     ) {
-        super(config);
-        this.leftInput = this._registerDataInput("leftInput", leftRichType);
-        this.rightInput = this._registerDataInput("rightInput", rightRichType);
-        this.output = this._registerDataOutput("Output", resultRichType);
+        super(resultRichType, config);
+        this.a = this.registerDataInput("a", leftRichType);
+        this.b = this.registerDataInput("b", rightRichType);
     }
 
-    public _updateOutputs(_context: FlowGraphContext): void {
-        this.output.setValue(this._operation(this.leftInput.getValue(_context), this.rightInput.getValue(_context)), _context);
+    /**
+     * the operation performed by this block
+     * @param context the graph context
+     * @returns the result of the operation
+     */
+    public override _doOperation(context: FlowGraphContext): ResultT {
+        return this._operation(this.a.getValue(context), this.b.getValue(context));
     }
 
+    /**
+     * Gets the class name of this block
+     * @returns the class name
+     */
     public getClassName(): string {
         return this._className;
     }

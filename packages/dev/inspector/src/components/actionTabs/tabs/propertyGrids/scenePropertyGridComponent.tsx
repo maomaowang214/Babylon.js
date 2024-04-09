@@ -29,6 +29,7 @@ import { AnimationGridComponent } from "./animations/animationPropertyGridCompon
 import "core/Physics/physicsEngineComponent";
 import "core/Physics/v1/physicsEngineComponent";
 import "core/Physics/v1/physicsEngineComponent";
+import { Logger } from "core/Misc/logger";
 
 interface IScenePropertyGridComponentProps {
     globalState: GlobalState;
@@ -90,7 +91,7 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
                         () => {},
                         (message) => {
                             if (message) {
-                                console.error(message);
+                                Logger.Error(message);
                             }
                         },
                         undefined,
@@ -182,12 +183,7 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
                         propertyName="clearColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <CheckBoxLineComponent
-                        label="启用透明颜色"
-                        target={scene}
-                        propertyName="autoClear"
-                        onPropertyChangedObservable={this.props.onPropertyChangedObservable}
-                    />
+                    <CheckBoxLineComponent label="启用透明颜色" target={scene} propertyName="autoClear" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
                         label="环境色"

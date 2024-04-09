@@ -284,10 +284,16 @@ export class PrePassRenderer {
             type = Constants.TEXTURETYPE_HALF_FLOAT;
         }
 
-        if (type !== Constants.TEXTURETYPE_FLOAT) {
-            for (let i = 0; i < PrePassRenderer.TextureFormats.length; ++i) {
-                if (PrePassRenderer.TextureFormats[i].type === Constants.TEXTURETYPE_FLOAT) {
-                    PrePassRenderer.TextureFormats[Constants.PREPASS_DEPTH_TEXTURE_TYPE].type = type;
+        for (let i = 0; i < PrePassRenderer.TextureFormats.length; ++i) {
+            const format = PrePassRenderer.TextureFormats[i].format;
+            if (PrePassRenderer.TextureFormats[i].type === Constants.TEXTURETYPE_FLOAT) {
+                PrePassRenderer.TextureFormats[Constants.PREPASS_DEPTH_TEXTURE_TYPE].type = type;
+                if (
+                    (format === Constants.TEXTUREFORMAT_R || format === Constants.TEXTUREFORMAT_RG || format === Constants.TEXTUREFORMAT_RGBA) &&
+                    !this._engine._caps.supportFloatTexturesResolve
+                ) {
+                    // We don't know in advance if the texture will be used as a resolve target, so we revert to half_float if the extension to resolve full float textures is not supported
+                    PrePassRenderer.TextureFormats[Constants.PREPASS_DEPTH_TEXTURE_TYPE].type = Constants.TEXTURETYPE_HALF_FLOAT;
                 }
             }
         }
@@ -496,7 +502,7 @@ export class PrePassRenderer {
     /**
      * Sets an intermediary texture between prepass and postprocesses. This texture
      * will be used as input for post processes
-     * @param rt
+     * @param rt The render target texture to use
      * @returns true if there are postprocesses that will use this texture,
      * false if there is no postprocesses - and the function has no effect
      */
@@ -602,7 +608,7 @@ export class PrePassRenderer {
 
     /**
      * Retrieves an effect configuration by name
-     * @param name
+     * @param name the name of the effect configuration
      * @returns the effect configuration, or null if not present
      */
     public getEffectConfiguration(name: string): Nullable<PrePassEffectConfiguration> {

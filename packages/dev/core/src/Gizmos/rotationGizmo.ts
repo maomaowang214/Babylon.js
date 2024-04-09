@@ -3,6 +3,7 @@ import type { Observer } from "../Misc/observable";
 import { Observable } from "../Misc/observable";
 import type { Nullable } from "../types";
 import { Vector3 } from "../Maths/math.vector";
+import type { Quaternion } from "../Maths/math.vector";
 import { Color3 } from "../Maths/math.color";
 import type { AbstractMesh } from "../Meshes/abstractMesh";
 import type { Mesh } from "../Meshes/mesh";
@@ -20,6 +21,8 @@ import type { GizmoManager } from "./gizmoManager";
  * Interface for rotation gizmo
  */
 export interface IRotationGizmo extends IGizmo {
+    /** True when the mouse pointer is dragging a gizmo mesh */
+    readonly isDragging: boolean;
     /** Internal gizmo used for interactions on the x axis */
     xGizmo: IPlaneRotationGizmo;
     /** Internal gizmo used for interactions on the y axis */
@@ -42,6 +45,10 @@ export interface IRotationGizmo extends IGizmo {
      * @param cache Gizmo axis definition used for reactive gizmo UI
      */
     addToAxisCache(mesh: Mesh, cache: GizmoAxisCache): void;
+    /**
+     * Force release the drag action by code
+     */
+    releaseDrag(): void;
 }
 
 /**
@@ -78,6 +85,12 @@ export interface RotationGizmoOptions {
      * Specific options for zGizmo
      */
     zOptions?: PlaneRotationGizmoOptions;
+
+    /**
+     * Additional transform applied to the gizmo.
+     * @See Gizmo.additionalTransformNode for more detail
+     */
+    additionalTransformNode?: TransformNode;
 }
 
 /**
@@ -146,7 +159,7 @@ export class RotationGizmo extends Gizmo implements IRotationGizmo {
 
     protected _checkBillboardTransform() {
         if (this._nodeAttached && (<TransformNode>this._nodeAttached).billboardMode) {
-            console.log("Rotation Gizmo will not work with transforms in billboard mode.");
+            Logger.Log("Rotation Gizmo will not work with transforms in billboard mode.");
         }
     }
 
@@ -169,11 +182,24 @@ export class RotationGizmo extends Gizmo implements IRotationGizmo {
      * True when the mouse pointer is hovering a gizmo mesh
      */
     public get isHovered() {
-        let hovered = false;
+        return this.xGizmo.isHovered || this.yGizmo.isHovered || this.zGizmo.isHovered;
+    }
+
+    /**
+     * True when the mouse pointer is dragging a gizmo mesh
+     */
+    public get isDragging() {
+        return this.xGizmo.dragBehavior.dragging || this.yGizmo.dragBehavior.dragging || this.zGizmo.dragBehavior.dragging;
+    }
+
+    public get additionalTransformNode() {
+        return this._additionalTransformNode;
+    }
+
+    public set additionalTransformNode(transformNode: TransformNode | undefined) {
         [this.xGizmo, this.yGizmo, this.zGizmo].forEach((gizmo) => {
-            hovered = hovered || gizmo.isHovered;
+            gizmo.additionalTransformNode = transformNode;
         });
-        return hovered;
     }
 
     /**
@@ -200,6 +226,9 @@ export class RotationGizmo extends Gizmo implements IRotationGizmo {
         this.xGizmo = new PlaneRotationGizmo(new Vector3(1, 0, 0), xColor, gizmoLayer, tessellation, this, useEulerRotation, thickness);
         this.yGizmo = new PlaneRotationGizmo(new Vector3(0, 1, 0), yColor, gizmoLayer, tessellation, this, useEulerRotation, thickness);
         this.zGizmo = new PlaneRotationGizmo(new Vector3(0, 0, 1), zColor, gizmoLayer, tessellation, this, useEulerRotation, thickness);
+
+        this.additionalTransformNode = options?.additionalTransformNode;
+
         // Relay drag events and set update scale
         [this.xGizmo, this.yGizmo, this.zGizmo].forEach((gizmo) => {
             //must set updateScale on each gizmo, as setting it on root RotationGizmo doesnt prevent individual gizmos from updating
@@ -315,12 +344,38 @@ export class RotationGizmo extends Gizmo implements IRotationGizmo {
     }
 
     /**
+     * posture that the gizmo will be display
+     * When set null, default value will be used (Quaternion(0, 0, 0, 1))
+     */
+    public get customRotationQuaternion(): Nullable<Quaternion> {
+        return this._customRotationQuaternion;
+    }
+
+    public set customRotationQuaternion(customRotationQuaternion: Nullable<Quaternion>) {
+        this._customRotationQuaternion = customRotationQuaternion;
+        [this.xGizmo, this.yGizmo, this.zGizmo].forEach((gizmo) => {
+            if (gizmo) {
+                gizmo.customRotationQuaternion = customRotationQuaternion;
+            }
+        });
+    }
+
+    /**
      * Builds Gizmo Axis Cache to enable features such as hover state preservation and graying out other axis during manipulation
      * @param mesh Axis gizmo mesh
      * @param cache Gizmo axis definition used for reactive gizmo UI
      */
     public addToAxisCache(mesh: Mesh, cache: GizmoAxisCache) {
         this._gizmoAxisCache.set(mesh, cache);
+    }
+
+    /**
+     * Force release the drag action by code
+     */
+    public releaseDrag() {
+        this.xGizmo.dragBehavior.releaseDrag();
+        this.yGizmo.dragBehavior.releaseDrag();
+        this.zGizmo.dragBehavior.releaseDrag();
     }
 
     /**

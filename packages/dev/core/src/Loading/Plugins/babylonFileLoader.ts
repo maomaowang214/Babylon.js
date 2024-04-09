@@ -30,6 +30,7 @@ import { ReflectionProbe } from "../../Probes/reflectionProbe";
 import { GetClass } from "../../Misc/typeStore";
 import { Tools } from "../../Misc/tools";
 import { PostProcess } from "../../PostProcesses/postProcess";
+import { SpriteManager } from "core/Sprites/spriteManager";
 
 /** @internal */
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-var
@@ -427,6 +428,15 @@ const loadAssetContainer = (scene: Scene, data: string, rootUrl: string, onError
             }
         }
 
+        // Sprites
+        if (parsedData.spriteManagers) {
+            for (let index = 0, cache = parsedData.spriteManagers.length; index < cache; index++) {
+                const parsedSpriteManager = parsedData.spriteManagers[index];
+                const spriteManager = SpriteManager.Parse(parsedSpriteManager, scene, rootUrl);
+                log += "\n\t\tSpriteManager " + spriteManager.name;
+            }
+        }
+
         // Browsing all the graph to connect the dots
         for (index = 0, cache = scene.cameras.length; index < cache; index++) {
             const camera = scene.cameras[index];
@@ -621,7 +631,7 @@ SceneLoader.RegisterPlugin({
                 meshesNames = [meshesNames];
             }
 
-            const hierarchyIds = new Array<number>();
+            const hierarchyIds: number[] = [];
             const parsedIdToNodeMap = new Map<number, Node>();
 
             // Transform nodes (the overall idea is to load all of them as this is super fast and then get rid of the ones we don't need)

@@ -8,9 +8,9 @@ import type { Scene } from "../../../../scene";
 import type { AbstractMesh } from "../../../../Meshes/abstractMesh";
 import type { NodeMaterialDefines, NodeMaterial } from "../../nodeMaterial";
 import { editableInPropertyPage, PropertyTypeForEdition } from "../../../../Decorators/nodeDecorator";
-import { MaterialHelper } from "../../../materialHelper";
 import type { Effect } from "../../../effect";
 import type { Mesh } from "../../../../Meshes/mesh";
+import { BindLogDepth } from "../../../materialHelper.functions";
 
 /**
  * Block used to output the final color
@@ -90,8 +90,8 @@ export class FragmentOutputBlock extends NodeMaterialBlock {
     }
 
     public bind(effect: Effect, nodeMaterial: NodeMaterial, mesh?: Mesh) {
-        if (this.useLogarithmicDepth && mesh) {
-            MaterialHelper.BindLogDepth(undefined, effect, mesh.getScene());
+        if ((this.useLogarithmicDepth || nodeMaterial.useLogarithmicDepth) && mesh) {
+            BindLogDepth(undefined, effect, mesh.getScene());
         }
     }
 
@@ -104,7 +104,7 @@ export class FragmentOutputBlock extends NodeMaterialBlock {
 
         state.sharedData.hints.needAlphaBlending = rgba.isConnected || a.isConnected;
         state.sharedData.blocksWithDefines.push(this);
-        if (this.useLogarithmicDepth) {
+        if (this.useLogarithmicDepth || state.sharedData.nodeMaterial.useLogarithmicDepth) {
             state._emitUniformFromString("logarithmicDepthConstant", "float");
             state._emitVaryingFromString("vFragmentDepth", "float");
             state.sharedData.bindableBlocks.push(this);
@@ -145,7 +145,7 @@ export class FragmentOutputBlock extends NodeMaterialBlock {
         state.compilationString += `gl_FragColor = toGammaSpace(gl_FragColor);\n`;
         state.compilationString += `#endif\n`;
 
-        if (this.useLogarithmicDepth) {
+        if (this.useLogarithmicDepth || state.sharedData.nodeMaterial.useLogarithmicDepth) {
             state.compilationString += `gl_FragDepthEXT = log2(vFragmentDepth) * logarithmicDepthConstant * 0.5;\n`;
         }
 

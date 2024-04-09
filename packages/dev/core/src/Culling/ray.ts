@@ -12,6 +12,7 @@ import type { Plane } from "../Maths/math.plane";
 import { EngineStore } from "../Engines/engineStore";
 
 import type { Mesh } from "../Meshes/mesh";
+import { Epsilon } from "core/Maths/math.constants";
 
 /**
  * Class representing a ray with position and direction
@@ -26,6 +27,7 @@ export class Ray {
      * @param origin origin point
      * @param direction direction
      * @param length length of the ray
+     * @param epsilon The epsilon value to use when calculating the ray/triangle intersection (default: 0)
      */
     constructor(
         /** origin point */
@@ -33,7 +35,9 @@ export class Ray {
         /** direction */
         public direction: Vector3,
         /** length of the ray */
-        public length: number = Number.MAX_VALUE
+        public length: number = Number.MAX_VALUE,
+        /** The epsilon value to use when calculating the ray/triangle intersection (default: Epsilon from math constants) */
+        public epsilon: number = Epsilon
     ) {}
 
     // Methods
@@ -213,7 +217,7 @@ export class Ray {
 
         const bv = Vector3.Dot(tvec, pvec) * invdet;
 
-        if (bv < 0 || bv > 1.0) {
+        if (bv < -this.epsilon || bv > 1.0 + this.epsilon) {
             return null;
         }
 
@@ -221,7 +225,7 @@ export class Ray {
 
         const bw = Vector3.Dot(this.direction, qvec) * invdet;
 
-        if (bw < 0 || bv + bw > 1.0) {
+        if (bw < -this.epsilon || bv + bw > 1.0 + this.epsilon) {
             return null;
         }
 
@@ -553,11 +557,27 @@ export class Ray {
      * @returns the new ray
      */
     public static CreateNewFromTo(origin: Vector3, end: Vector3, world: DeepImmutable<Matrix> = Matrix.IdentityReadOnly): Ray {
-        const direction = end.subtract(origin);
-        const length = Math.sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
-        direction.normalize();
+        const result = new Ray(new Vector3(0, 0, 0), new Vector3(0, 0, 0));
+        return Ray.CreateFromToToRef(origin, end, result, world);
+    }
 
-        return Ray.Transform(new Ray(origin, direction, length), world);
+    /**
+     * Function will update a transformed ray starting from origin and ending at the end point. Ray's length will be set, and ray will be
+     * transformed to the given world matrix.
+     * @param origin The origin point
+     * @param end The end point
+     * @param result the object to store the result
+     * @param world a matrix to transform the ray to. Default is the identity matrix.
+     * @returns the ref ray
+     */
+    public static CreateFromToToRef(origin: Vector3, end: Vector3, result: Ray, world: DeepImmutable<Matrix> = Matrix.IdentityReadOnly): Ray {
+        result.origin.copyFrom(origin);
+        const direction = end.subtractToRef(origin, result.direction);
+        const length = Math.sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
+        result.length = length;
+        result.direction.normalize();
+
+        return Ray.TransformToRef(result, world, result);
     }
 
     /**
@@ -578,11 +598,13 @@ export class Ray {
      * @param ray ray to transform
      * @param matrix matrix to apply
      * @param result ray to store result in
+     * @returns the updated result ray
      */
-    public static TransformToRef(ray: DeepImmutable<Ray>, matrix: DeepImmutable<Matrix>, result: Ray): void {
+    public static TransformToRef(ray: DeepImmutable<Ray>, matrix: DeepImmutable<Matrix>, result: Ray): Ray {
         Vector3.TransformCoordinatesToRef(ray.origin, matrix, result.origin);
         Vector3.TransformNormalToRef(ray.direction, matrix, result.direction);
         result.length = ray.length;
+        result.epsilon = ray.epsilon;
 
         const dir = result.direction;
         const len = dir.length();
@@ -594,6 +616,8 @@ export class Ray {
             dir.z *= num;
             result.length *= len;
         }
+
+        return result;
     }
 
     /**
@@ -705,26 +729,24 @@ Scene.prototype.createPickingRayToRef = function (
 ): Scene {
     const engine = this.getEngine();
 
-    if (!camera) {
-        if (!this.activeCamera) {
-            return this;
-        }
-
-        camera = this.activeCamera;
+    if (!camera && !(camera = this.activeCamera!)) {
+        return this;
     }
 
     const cameraViewport = camera.viewport;
-    const viewport = cameraViewport.toGlobal(engine.getRenderWidth(), engine.getRenderHeight());
+    const renderHeight = engine.getRenderHeight();
+    const { x: vx, y: vy, width, height } = cameraViewport.toGlobal(engine.getRenderWidth(), renderHeight);
 
     // Moving coordinates to local viewport world
-    x = x / engine.getHardwareScalingLevel() - viewport.x;
-    y = y / engine.getHardwareScalingLevel() - (engine.getRenderHeight() - viewport.y - viewport.height);
+    const levelInv = 1 / engine.getHardwareScalingLevel();
+    x = x * levelInv - vx;
+    y = y * levelInv - (renderHeight - vy - height);
 
     result.update(
         x,
         y,
-        viewport.width,
-        viewport.height,
+        width,
+        height,
         world ? world : Matrix.IdentityReadOnly,
         cameraViewSpace ? Matrix.IdentityReadOnly : camera.getViewMatrix(),
         camera.getProjectionMatrix(),
@@ -748,22 +770,20 @@ Scene.prototype.createPickingRayInCameraSpaceToRef = function (x: number, y: num
 
     const engine = this.getEngine();
 
-    if (!camera) {
-        if (!this.activeCamera) {
-            throw new Error("Active camera not set");
-        }
-
-        camera = this.activeCamera;
+    if (!camera && !(camera = this.activeCamera!)) {
+        throw new Error("Active camera not set");
     }
 
     const cameraViewport = camera.viewport;
-    const viewport = cameraViewport.toGlobal(engine.getRenderWidth(), engine.getRenderHeight());
+    const renderHeight = engine.getRenderHeight();
+    const { x: vx, y: vy, width, height } = cameraViewport.toGlobal(engine.getRenderWidth(), renderHeight);
     const identity = Matrix.Identity();
 
     // Moving coordinates to local viewport world
-    x = x / engine.getHardwareScalingLevel() - viewport.x;
-    y = y / engine.getHardwareScalingLevel() - (engine.getRenderHeight() - viewport.y - viewport.height);
-    result.update(x, y, viewport.width, viewport.height, identity, identity, camera.getProjectionMatrix());
+    const levelInv = 1 / engine.getHardwareScalingLevel();
+    x = x * levelInv - vx;
+    y = y * levelInv - (renderHeight - vy - height);
+    result.update(x, y, width, height, identity, identity, camera.getProjectionMatrix());
     return this;
 };
 
@@ -866,7 +886,7 @@ Scene.prototype._internalMultiPick = function (
     if (!PickingInfo) {
         return null;
     }
-    const pickingInfos = new Array<PickingInfo>();
+    const pickingInfos: PickingInfo[] = [];
     const computeWorldMatrixForCamera = !!(this.activeCameras && this.activeCameras.length > 1 && this.cameraToUseForPointers !== this.activeCamera);
     const currentCamera = this.cameraToUseForPointers || this.activeCamera;
 
@@ -1047,15 +1067,16 @@ Camera.prototype.getForwardRayToRef = function (refRay: Ray, length = 100, trans
     }
     refRay.length = length;
 
-    if (!origin) {
-        refRay.origin.copyFrom(this.position);
-    } else {
+    if (origin) {
         refRay.origin.copyFrom(origin);
+    } else {
+        refRay.origin.copyFrom(this.position);
     }
-    TmpVectors.Vector3[2].set(0, 0, this._scene.useRightHandedSystem ? -1 : 1);
-    Vector3.TransformNormalToRef(TmpVectors.Vector3[2], transform, TmpVectors.Vector3[3]);
-
-    Vector3.NormalizeToRef(TmpVectors.Vector3[3], refRay.direction);
+    const forward = TmpVectors.Vector3[2];
+    forward.set(0, 0, this._scene.useRightHandedSystem ? -1 : 1);
+    const worldForward = TmpVectors.Vector3[3];
+    Vector3.TransformNormalToRef(forward, transform, worldForward);
+    Vector3.NormalizeToRef(worldForward, refRay.direction);
 
     return refRay;
 };

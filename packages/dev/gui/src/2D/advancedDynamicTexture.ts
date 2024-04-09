@@ -38,7 +38,7 @@ import type { StandardMaterial } from "core/Materials/standardMaterial";
  * @see https://doc.babylonjs.com/features/featuresDeepDive/gui/gui
  */
 export class AdvancedDynamicTexture extends DynamicTexture {
-    /** Define the Uurl to load snippets */
+    /** Define the url to load snippets */
     public static SnippetUrl = Constants.SnippetUrl;
 
     /** Indicates if some optimizations can be performed in GUI GPU management (the downside is additional memory/GPU texture memory used) */
@@ -78,7 +78,8 @@ export class AdvancedDynamicTexture extends DynamicTexture {
     public _layerToDispose: Nullable<Layer>;
     /** @internal */
     public _linkedControls = new Array<Control>();
-    private _isFullscreen = false;
+    /** @internal */
+    public _isFullscreen = false;
     private _fullscreenViewport = new Viewport(0, 0, 1, 1);
     private _idealWidth = 0;
     private _idealHeight = 0;
@@ -1278,11 +1279,12 @@ export class AdvancedDynamicTexture extends DynamicTexture {
     }
 
     /**
-     * Clones the ADT
+     * Clones the ADT. If no mesh is defined, the GUI will be considered as a fullscreen GUI
      * @param newName defines the name of the new ADT
+     * @param attachToMesh defines if the new ADT should be attached to a mesh
      * @returns the clone of the ADT
      */
-    public clone(newName?: string): AdvancedDynamicTexture {
+    public clone(newName?: string, attachToMesh?: AbstractMesh): AdvancedDynamicTexture {
         const scene = this.getScene();
 
         if (!scene) {
@@ -1290,7 +1292,16 @@ export class AdvancedDynamicTexture extends DynamicTexture {
         }
         const size = this.getSize();
         const data = this.serializeContent();
-        const clone = new AdvancedDynamicTexture(newName ?? "Clone of " + this.name, size.width, size.height, scene, !this.noMipmap, this.samplingMode);
+        let clone;
+        if (!this._isFullscreen) {
+            if (attachToMesh) {
+                clone = AdvancedDynamicTexture.CreateForMesh(attachToMesh, size.width, size.height);
+            } else {
+                clone = new AdvancedDynamicTexture(newName ?? "Clone of " + this.name, size.width, size.height, scene, !this.noMipmap, this.samplingMode);
+            }
+        } else {
+            clone = AdvancedDynamicTexture.CreateFullscreenUI(newName ?? "Clone of " + this.name);
+        }
         clone.parseSerializedObject(data);
 
         return clone;
@@ -1442,6 +1453,7 @@ export class AdvancedDynamicTexture extends DynamicTexture {
     private static _CreateMaterial(mesh: AbstractMesh, uniqueId: string, texture: AdvancedDynamicTexture, onlyAlphaTesting: boolean): void {
         const internalClassType = GetClass("BABYLON.StandardMaterial");
         if (!internalClassType) {
+            // eslint-disable-next-line no-throw-literal
             throw "StandardMaterial needs to be imported before as it contains a side-effect required by your code.";
         }
 
@@ -1541,7 +1553,7 @@ export class AdvancedDynamicTexture extends DynamicTexture {
     }
 
     /**
-     * Returns true if all the GUI components are ready to render
+     * @returns true if all the GUI components are ready to render
      */
     public guiIsReady(): boolean {
         return this._rootContainer.isReady();

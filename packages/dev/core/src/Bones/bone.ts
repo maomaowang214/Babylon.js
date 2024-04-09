@@ -21,10 +21,10 @@ export class Bone extends Node {
     /**
      * Gets the list of child bones
      */
-    public children = new Array<Bone>();
+    public children: Bone[] = [];
 
     /** Gets the animations associated with this bone */
-    public animations = new Array<Animation>();
+    public animations: Animation[] = [];
 
     /**
      * Gets or sets bone length
@@ -290,6 +290,7 @@ export class Bone extends Node {
 
     /**
      * Gets the matrix used to store the final world transformation of the bone (ie. the matrix sent to shaders)
+     * @returns the final world matrix
      */
     public getFinalMatrix(): Matrix {
         return this._finalMatrix;
@@ -298,6 +299,7 @@ export class Bone extends Node {
     /**
      * Gets the matrix used to store the final world transformation of the bone (ie. the matrix sent to shaders)
      * @deprecated Please use getFinalMatrix instead
+     * @returns the final world matrix
      */
     public getWorldMatrix(): Matrix {
         return this.getFinalMatrix();

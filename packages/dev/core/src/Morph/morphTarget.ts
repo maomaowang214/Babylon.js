@@ -6,7 +6,8 @@ import { EngineStore } from "../Engines/engineStore";
 import type { AbstractMesh } from "../Meshes/abstractMesh";
 import { VertexBuffer } from "../Buffers/buffer";
 import type { AnimationPropertiesOverride } from "../Animations/animationPropertiesOverride";
-import { serialize, SerializationHelper } from "../Misc/decorators";
+import { serialize } from "../Misc/decorators";
+import { SerializationHelper } from "../Misc/decorators.serialization";
 import { GetClass } from "../Misc/typeStore";
 
 import type { Animation } from "../Animations/animation";
@@ -19,7 +20,7 @@ export class MorphTarget implements IAnimatable {
     /**
      * Gets or sets the list of animations
      */
-    public animations = new Array<Animation>();
+    public animations: Animation[] = [];
 
     private _scene: Nullable<Scene>;
     private _positions: Nullable<FloatArray> = null;

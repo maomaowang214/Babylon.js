@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { Nullable } from "core/types";
-import { serializeAsVector3, serialize, SerializationHelper } from "core/Misc/decorators";
+import { serializeAsVector3, serialize } from "core/Misc/decorators";
+import { SerializationHelper } from "core/Misc/decorators.serialization";
 import type { Matrix } from "core/Maths/math.vector";
 import { Vector3, Quaternion } from "core/Maths/math.vector";
 import type { IAnimatable } from "core/Animations/animatable.interface";
 import type { BaseTexture } from "core/Materials/Textures/baseTexture";
 import { MaterialDefines } from "core/Materials/materialDefines";
-import { MaterialHelper } from "core/Materials/materialHelper";
 import { PushMaterial } from "core/Materials/pushMaterial";
 import { VertexBuffer } from "core/Buffers/buffer";
 import type { AbstractMesh } from "core/Meshes/abstractMesh";
@@ -19,6 +19,7 @@ import "./sky.fragment";
 import "./sky.vertex";
 import { EffectFallbacks } from "core/Materials/effectFallbacks";
 import { addClipPlaneUniforms, bindClipPlane } from "core/Materials/clipPlaneMaterialHelper";
+import { BindFogParameters, BindLogDepth, PrepareDefinesForAttributes, PrepareDefinesForMisc } from "core/Materials/materialHelper.functions";
 
 /** @internal */
 class SkyMaterialDefines extends MaterialDefines {
@@ -35,6 +36,7 @@ class SkyMaterialDefines extends MaterialDefines {
     public IMAGEPROCESSINGPOSTPROCESS = false;
     public SKIPFINALCOLORCLAMP = false;
     public DITHER = false;
+    public LOGARITHMICDEPTH = false;
 
     constructor() {
         super();
@@ -178,8 +180,10 @@ export class SkyMaterial extends PushMaterial {
      * @returns a boolean indicating that the submesh is ready or not
      */
     public isReadyForSubMesh(mesh: AbstractMesh, subMesh: SubMesh): boolean {
+        const drawWrapper = subMesh._drawWrapper;
+
         if (this.isFrozen) {
-            if (subMesh.effect && subMesh.effect._wasPreviouslyReady) {
+            if (drawWrapper.effect && drawWrapper._wasPreviouslyReady) {
                 return true;
             }
         }
@@ -195,10 +199,10 @@ export class SkyMaterial extends PushMaterial {
             return true;
         }
 
-        MaterialHelper.PrepareDefinesForMisc(mesh, scene, false, this.pointsCloud, this.fogEnabled, false, defines);
+        PrepareDefinesForMisc(mesh, scene, this._useLogarithmicDepth, this.pointsCloud, this.fogEnabled, false, defines);
 
         // Attribs
-        MaterialHelper.PrepareDefinesForAttributes(mesh, defines, true, false);
+        PrepareDefinesForAttributes(mesh, defines, true, false);
 
         if (defines.IMAGEPROCESSINGPOSTPROCESS !== scene.imageProcessingConfiguration.applyByPostProcess) {
             defines.markAsMiscDirty();
@@ -238,6 +242,7 @@ export class SkyMaterial extends PushMaterial {
                 "view",
                 "vFogInfos",
                 "vFogColor",
+                "logarithmicDepthConstant",
                 "pointSize",
                 "luminance",
                 "turbidity",
@@ -259,7 +264,7 @@ export class SkyMaterial extends PushMaterial {
         }
 
         defines._renderId = scene.getRenderId();
-        subMesh.effect._wasPreviouslyReady = true;
+        drawWrapper._wasPreviouslyReady = true;
 
         return true;
     }
@@ -288,12 +293,17 @@ export class SkyMaterial extends PushMaterial {
         this.bindOnlyWorldMatrix(world);
         this._activeEffect.setMatrix("viewProjection", scene.getTransformMatrix());
 
-        if (this._mustRebind(scene, effect)) {
+        if (this._mustRebind(scene, effect, subMesh)) {
             bindClipPlane(effect, this, scene);
 
             // Point size
             if (this.pointsCloud) {
                 this._activeEffect.setFloat("pointSize", this.pointSize);
+            }
+
+            // Log. depth
+            if (this._useLogarithmicDepth) {
+                BindLogDepth(defines, effect, scene);
             }
         }
 
@@ -303,7 +313,7 @@ export class SkyMaterial extends PushMaterial {
         }
 
         // Fog
-        MaterialHelper.BindFogParameters(scene, mesh, this._activeEffect);
+        BindFogParameters(scene, mesh, this._activeEffect);
 
         // Sky
         const camera = scene.activeCamera;
@@ -342,7 +352,7 @@ export class SkyMaterial extends PushMaterial {
 
         this._activeEffect.setVector3("sunPosition", this.sunPosition);
 
-        this._afterBind(mesh, this._activeEffect);
+        this._afterBind(mesh, this._activeEffect, subMesh);
     }
 
     /**

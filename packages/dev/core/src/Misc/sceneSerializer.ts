@@ -5,12 +5,13 @@ import { MultiMaterial } from "../Materials/multiMaterial";
 import type { Material } from "../Materials/material";
 import type { Scene } from "../scene";
 import type { Light } from "../Lights/light";
-import { SerializationHelper } from "./decorators";
+import { SerializationHelper } from "./decorators.serialization";
 import { Texture } from "../Materials/Textures/texture";
 import type { CubeTexture } from "../Materials/Textures/cubeTexture";
 import type { Node } from "../node";
 import type { TransformNode } from "../Meshes/transformNode";
 import type { Camera } from "../Cameras/camera";
+import { Logger } from "core/Misc/logger";
 
 let serializedGeometries: Geometry[] = [];
 const SerializeGeometry = (geometry: Geometry, serializationGeometries: any): any => {
@@ -140,7 +141,7 @@ export class SceneSerializer {
         const serializationObject: any = {};
 
         if (checkSyncReadSupported && !scene.getEngine()._features.supportSyncTextureRead && Texture.ForceSerializeBuffers) {
-            console.warn("The serialization object may not contain the proper base64 encoded texture data! You should use the SerializeAsync method instead.");
+            Logger.Warn("The serialization object may not contain the proper base64 encoded texture data! You should use the SerializeAsync method instead.");
         }
 
         SceneSerializer.ClearCache();
@@ -343,6 +344,14 @@ export class SceneSerializer {
         // Components
         for (const component of scene._serializableComponents) {
             component.serialize(serializationObject);
+        }
+
+        // Sprites
+        if (scene.spriteManagers) {
+            serializationObject.spriteManagers = [];
+            for (index = 0; index < scene.spriteManagers.length; index++) {
+                serializationObject.spriteManagers.push(scene.spriteManagers[index].serialize(true));
+            }
         }
 
         return serializationObject;

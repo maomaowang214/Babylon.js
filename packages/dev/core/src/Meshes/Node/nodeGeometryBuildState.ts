@@ -147,6 +147,9 @@ export class NodeGeometryBuildState {
                 }
                 return Vector4.FromArray(this.geometryContext.tangents as ArrayLike<number>, index * 4);
             case NodeGeometryContextualSources.UV:
+                if (this.executionContext.getOverrideUVs1ContextualValue) {
+                    return this.executionContext.getOverrideUVs1ContextualValue();
+                }
                 if (!this.geometryContext || !this.geometryContext.uvs) {
                     return Vector2.Zero();
                 }
@@ -269,6 +272,7 @@ export class NodeGeometryBuildState {
         }
 
         if (errorMessage) {
+            // eslint-disable-next-line no-throw-literal
             throw "Build of NodeGeometry failed:\n" + errorMessage;
         }
     }

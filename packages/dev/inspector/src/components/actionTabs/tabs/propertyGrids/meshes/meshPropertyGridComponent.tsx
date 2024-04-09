@@ -43,6 +43,7 @@ import "core/Physics/v1/physicsEngineComponent";
 
 import { ParentPropertyGridComponent } from "../parentPropertyGridComponent";
 import { Tools } from "core/Misc/tools";
+import { PhysicsBodyGridComponent } from "./physics/physicsBodyGridComponent";
 
 interface IMeshPropertyGridComponentProps {
     globalState: GlobalState;
@@ -102,7 +103,6 @@ export class MeshPropertyGridComponent extends React.Component<
         const material = new StandardMaterial("wireframeOver", scene);
         material.reservedDataStore = { hidden: true };
         wireframeOver.material = material;
-        material.zOffset = 1;
         material.disableLighting = true;
         material.backFaceCulling = false;
         material.emissiveColor = Color3.White();
@@ -558,12 +558,7 @@ export class MeshPropertyGridComponent extends React.Component<
                         propertyName="alphaIndex"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <CheckBoxLineComponent
-                        label="开启阴影"
-                        target={mesh}
-                        propertyName="receiveShadows"
-                        onPropertyChangedObservable={this.props.onPropertyChangedObservable}
-                    />
+                    <CheckBoxLineComponent label="开启阴影" target={mesh} propertyName="receiveShadows" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     {mesh.isVerticesDataPresent(VertexBuffer.ColorKind) && (
                         <CheckBoxLineComponent
                             label="顶点颜色设置"
@@ -573,12 +568,7 @@ export class MeshPropertyGridComponent extends React.Component<
                         />
                     )}
                     {mesh.isVerticesDataPresent(VertexBuffer.ColorKind) && (
-                        <CheckBoxLineComponent
-                            label="顶点指数"
-                            target={mesh}
-                            propertyName="hasVertexAlpha"
-                            onPropertyChangedObservable={this.props.onPropertyChangedObservable}
-                        />
+                        <CheckBoxLineComponent label="顶点指数" target={mesh} propertyName="hasVertexAlpha" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     )}
                     {scene.fogMode !== Scene.FOGMODE_NONE && (
                         <CheckBoxLineComponent label="雾" target={mesh} propertyName="applyFog" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
@@ -678,7 +668,15 @@ export class MeshPropertyGridComponent extends React.Component<
                         <TextLineComponent label="类型" value={this.convertPhysicsTypeToString()} />
                     </LineContainerComponent>
                 )}
-                <LineContainerComponent title="遮挡" closed={true} selection={this.props.globalState}>
+                {mesh.physicsBody && (
+                    <PhysicsBodyGridComponent
+                        lockObject={this.props.lockObject}
+                        globalState={this.props.globalState}
+                        body={mesh.physicsBody}
+                        onPropertyChangedObservable={this.props.onPropertyChangedObservable}
+                    />
+                )}
+                <LineContainerComponent title="OCCLUSIONS" closed={true} selection={this.props.globalState}>
                     <OptionsLineComponent
                         label="类型"
                         options={occlusionTypeOptions}
@@ -739,12 +737,7 @@ export class MeshPropertyGridComponent extends React.Component<
                 </LineContainerComponent>
                 {!mesh.isAnInstance && (
                     <LineContainerComponent title="轮廓 & 叠加层" closed={true} selection={this.props.globalState}>
-                        <CheckBoxLineComponent
-                            label="渲染叠加层"
-                            target={mesh}
-                            propertyName="renderOverlay"
-                            onPropertyChangedObservable={this.props.onPropertyChangedObservable}
-                        />
+                        <CheckBoxLineComponent label="渲染叠加层" target={mesh} propertyName="renderOverlay" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                         <Color3LineComponent
                             lockObject={this.props.lockObject}
                             label="叠加层颜色"
@@ -752,12 +745,7 @@ export class MeshPropertyGridComponent extends React.Component<
                             propertyName="overlayColor"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
-                        <CheckBoxLineComponent
-                            label="渲染轮廓"
-                            target={mesh}
-                            propertyName="renderOutline"
-                            onPropertyChangedObservable={this.props.onPropertyChangedObservable}
-                        />
+                        <CheckBoxLineComponent label="渲染轮廓" target={mesh} propertyName="renderOutline" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                         <Color3LineComponent
                             lockObject={this.props.lockObject}
                             label="轮廓颜色"
@@ -769,15 +757,11 @@ export class MeshPropertyGridComponent extends React.Component<
                 )}
                 <LineContainerComponent title="调试" closed={true} selection={this.props.globalState}>
                     {!mesh.isAnInstance && <CheckBoxLineComponent label="显示法线" isSelected={() => displayNormals} onSelect={() => this.displayNormals()} />}
-                    {!mesh.isAnInstance && (
-                        <CheckBoxLineComponent label="显示顶点颜色" isSelected={() => displayVertexColors} onSelect={() => this.displayVertexColors()} />
-                    )}
+                    {!mesh.isAnInstance && <CheckBoxLineComponent label="显示顶点颜色" isSelected={() => displayVertexColors} onSelect={() => this.displayVertexColors()} />}
                     {mesh.isVerticesDataPresent(VertexBuffer.NormalKind) && (
                         <CheckBoxLineComponent label="渲染顶点法线" isSelected={() => renderNormalVectors} onSelect={() => this.renderNormalVectors()} />
                     )}
-                    {!mesh.isAnInstance && (
-                        <CheckBoxLineComponent label="网格上渲染线框" isSelected={() => renderWireframeOver} onSelect={() => this.renderWireframeOver()} />
-                    )}
+                    {!mesh.isAnInstance && <CheckBoxLineComponent label="网格上渲染线框" isSelected={() => renderWireframeOver} onSelect={() => this.renderWireframeOver()} />}
                     {!mesh.isAnInstance && mesh.skeleton && (
                         <CheckBoxLineComponent label="显示骨骼重量" isSelected={() => displayBoneWeights} onSelect={() => this.displayBoneWeights()} />
                     )}

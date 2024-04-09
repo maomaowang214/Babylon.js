@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/require-returns-check */
 import type { Observer } from "../Misc/observable";
 import { Observable } from "../Misc/observable";
 import { Tools, AsyncLoop } from "../Misc/tools";
@@ -30,7 +31,7 @@ import { MultiMaterial } from "../Materials/multiMaterial";
 import { SceneLoaderFlags } from "../Loading/sceneLoaderFlags";
 import type { Skeleton } from "../Bones/skeleton";
 import { Constants } from "../Engines/constants";
-import { SerializationHelper } from "../Misc/decorators";
+import { SerializationHelper } from "../Misc/decorators.serialization";
 import { Logger } from "../Misc/logger";
 import { GetClass, RegisterClass } from "../Misc/typeStore";
 import { _WarnImport } from "../Misc/devTools";
@@ -48,6 +49,7 @@ import type { IPhysicsEnabledObject, PhysicsImpostor } from "../Physics/v1/physi
 import type { ICreateCapsuleOptions } from "./Builders/capsuleBuilder";
 import type { LinesMesh } from "./linesMesh";
 import type { GroundMesh } from "./groundMesh";
+import type { DataBuffer } from "core/Buffers/dataBuffer";
 
 /**
  * @internal
@@ -96,8 +98,8 @@ class _InstanceDataStorage {
 export class _InstancesBatch {
     public mustReturn = false;
     public visibleInstances = new Array<Nullable<Array<InstancedMesh>>>();
-    public renderSelf = new Array<boolean>();
-    public hardwareInstancedRendering = new Array<boolean>();
+    public renderSelf: boolean[] = [];
+    public hardwareInstancedRendering: boolean[] = [];
 }
 
 /**
@@ -370,7 +372,7 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
     }
 
     public get hasThinInstances(): boolean {
-        return (this._thinInstanceDataStorage.instancesCount ?? 0) > 0;
+        return (this.forcedInstanceCount || this._thinInstanceDataStorage.instancesCount || 0) > 0;
     }
 
     // Members
@@ -387,7 +389,7 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
      * Note also that the order of the InstancedMesh wihin the array is not significant and might change.
      * @see https://doc.babylonjs.com/features/featuresDeepDive/mesh/copies/instances
      */
-    public instances = new Array<InstancedMesh>();
+    public instances: InstancedMesh[] = [];
 
     /**
      * Gets the file containing delay loading data for this mesh
@@ -669,7 +671,7 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
             this.parent = source.parent;
 
             // Pivot
-            this.setPivotMatrix(source.getPivotMatrix());
+            this.setPivotMatrix(source.getPivotMatrix(), this._postMultiplyPivotMatrix);
 
             this.id = name + "." + source.id;
 
@@ -1167,7 +1169,7 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
      */
     public getVerticesDataKinds(bypassInstanceData?: boolean): string[] {
         if (!this._geometry) {
-            const result = new Array<string>();
+            const result: string[] = [];
             if (this._delayInfo) {
                 this._delayInfo.forEach(function (kind) {
                     result.push(kind);
@@ -1681,6 +1683,20 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
         oldGeometry.releaseForMesh(this, true);
         geometry.applyToMesh(this);
         return this;
+    }
+
+    /**
+     * Sets the index buffer of this mesh.
+     * @param indexBuffer Defines the index buffer to use for this mesh
+     * @param totalVertices Defines the total number of vertices used by the buffer
+     * @param totalIndices Defines the total number of indices in the index buffer
+     */
+    public setIndexBuffer(indexBuffer: DataBuffer, totalVertices: number, totalIndices: number): void {
+        let geometry = this._geometry;
+        if (!geometry) {
+            geometry = new Geometry(Geometry.RandomId(), this.getScene(), undefined, undefined, this);
+        }
+        geometry.setIndexBuffer(indexBuffer, totalVertices, totalIndices);
     }
 
     /**
@@ -2324,8 +2340,8 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
 
             this._internalMeshDataInfo._effectiveMaterial = material;
         } else if (
-            (material._storeEffectOnSubMeshes && !subMesh.effect?._wasPreviouslyReady) ||
-            (!material._storeEffectOnSubMeshes && !material.getEffect()?._wasPreviouslyReady)
+            (material._storeEffectOnSubMeshes && !subMesh._drawWrapper?._wasPreviouslyReady) ||
+            (!material._storeEffectOnSubMeshes && !material._getDrawWrapper()._wasPreviouslyReady)
         ) {
             if (oldCamera) {
                 oldCamera.maxZ = oldCameraMaxZ;
@@ -2364,7 +2380,13 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
 
         let sideOrientation: Nullable<number>;
 
-        if (!instanceDataStorage.isFrozen && (this._internalMeshDataInfo._effectiveMaterial.backFaceCulling || this.overrideMaterialSideOrientation !== null)) {
+        if (
+            !instanceDataStorage.isFrozen &&
+            (this._internalMeshDataInfo._effectiveMaterial.backFaceCulling ||
+                this.overrideMaterialSideOrientation !== null ||
+                (this._internalMeshDataInfo._effectiveMaterial as any).twoSidedLighting)
+        ) {
+            // Note: if two sided lighting is enabled, we need to ensure that the normal will point in the right direction even if the determinant of the world matrix is negative
             const mainDeterminant = effectiveMesh._getWorldMatrixDeterminant();
             sideOrientation = this.overrideMaterialSideOrientation;
             if (sideOrientation == null) {
@@ -2530,7 +2552,7 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
         let maxUsedWeights: number = 0;
         let numberNotNormalized: number = 0;
         const numInfluences: number = matricesWeightsExtra === null ? 4 : 8;
-        const usedWeightCounts = new Array<number>();
+        const usedWeightCounts: number[] = [];
         for (let a = 0; a <= numInfluences; a++) {
             usedWeightCounts[a] = 0;
         }
@@ -2711,7 +2733,7 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
      * @returns an array of IAnimatable
      */
     public getAnimatables(): IAnimatable[] {
-        const results = new Array<IAnimatable>();
+        const results: IAnimatable[] = [];
 
         if (this.material) {
             results.push(this.material);
@@ -2762,6 +2784,17 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
                     .toArray(data, index);
             }
             this.setVerticesData(VertexBuffer.NormalKind, data, (<VertexBuffer>this.getVertexBuffer(VertexBuffer.NormalKind)).isUpdatable());
+        }
+
+        // Tangents
+        if (this.isVerticesDataPresent(VertexBuffer.TangentKind)) {
+            data = <FloatArray>this.getVerticesData(VertexBuffer.TangentKind);
+            for (index = 0; index < data.length; index += 4) {
+                Vector3.TransformNormalFromFloatsToRef(data[index], data[index + 1], data[index + 2], transform, temp)
+                    .normalize()
+                    .toArray(data, index);
+            }
+            this.setVerticesData(VertexBuffer.TangentKind, data, (<VertexBuffer>this.getVertexBuffer(VertexBuffer.TangentKind)).isUpdatable());
         }
 
         // flip faces?
@@ -2934,6 +2967,7 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
      * @param uvOffset is an optional vector2 used to offset UV.
      * @param uvScale is an optional vector2 used to scale UV.
      * @param forceUpdate defines whether or not to force an update of the generated buffers. This is useful to apply on a deserialized model for instance.
+     * @param onError defines a callback called when an error occurs during the processing of the request.
      * @returns the Mesh.
      */
     public applyDisplacementMap(
@@ -2943,7 +2977,8 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
         onSuccess?: (mesh: Mesh) => void,
         uvOffset?: Vector2,
         uvScale?: Vector2,
-        forceUpdate = false
+        forceUpdate = false,
+        onError?: (message?: string, exception?: any) => void
     ): Mesh {
         const scene = this.getScene();
 
@@ -2967,7 +3002,7 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
             }
         };
 
-        Tools.LoadImage(url, onload, () => {}, scene.offlineProvider);
+        Tools.LoadImage(url, onload, onError ? onError : () => {}, scene.offlineProvider);
         return this;
     }
 
@@ -3406,7 +3441,7 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
 
             for (let i = 0; i < currentIndices.length; i += 3) {
                 facet = [currentIndices[i], currentIndices[i + 1], currentIndices[i + 2]]; //facet vertex indices
-                pstring = new Array();
+                pstring = [];
                 for (let j = 0; j < 3; j++) {
                     pstring[j] = "";
                     for (let k = 0; k < 3; k++) {
@@ -3554,11 +3589,11 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
             return this;
         }
 
-        const vectorPositions = new Array<Vector3>();
+        const vectorPositions: Vector3[] = [];
         for (let pos = 0; pos < positions.length; pos = pos + 3) {
             vectorPositions.push(Vector3.FromArray(positions, pos));
         }
-        const dupes = new Array<number>();
+        const dupes: number[] = [];
 
         AsyncLoop.SyncAsyncForLoop(
             vectorPositions.length,
@@ -3594,6 +3629,7 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
     /**
      * Serialize current mesh
      * @param serializationObject defines the object which will receive the serialization data
+     * @returns the serialized object
      */
     public serialize(serializationObject: any = {}): any {
         serializationObject.name = this.name;
@@ -3629,8 +3665,12 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
 
         serializationObject.billboardMode = this.billboardMode;
         serializationObject.visibility = this.visibility;
+        serializationObject.alwaysSelectAsActiveMesh = this.alwaysSelectAsActiveMesh;
 
         serializationObject.checkCollisions = this.checkCollisions;
+        serializationObject.ellipsoid = this.ellipsoid.asArray();
+        serializationObject.ellipsoidOffset = this.ellipsoidOffset.asArray();
+        serializationObject.doNotSyncBoundingInfo = this.doNotSyncBoundingInfo;
         serializationObject.isBlocker = this.isBlocker;
         serializationObject.overrideMaterialSideOrientation = this.overrideMaterialSideOrientation;
 
@@ -3981,6 +4021,7 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
         mesh.setEnabled(parsedMesh.isEnabled);
         mesh.isVisible = parsedMesh.isVisible;
         mesh.infiniteDistance = parsedMesh.infiniteDistance;
+        mesh.alwaysSelectAsActiveMesh = !!parsedMesh.alwaysSelectAsActiveMesh;
 
         mesh.showBoundingBox = parsedMesh.showBoundingBox;
         mesh.showSubMeshesBoundingBox = parsedMesh.showSubMeshesBoundingBox;
@@ -4008,7 +4049,19 @@ export class Mesh extends AbstractMesh implements IGetSetVerticesData {
         }
 
         mesh.checkCollisions = parsedMesh.checkCollisions;
-        mesh.overrideMaterialSideOrientation = parsedMesh.overrideMaterialSideOrientation;
+        mesh.doNotSyncBoundingInfo = !!parsedMesh.doNotSyncBoundingInfo;
+
+        if (parsedMesh.ellipsoid) {
+            mesh.ellipsoid = Vector3.FromArray(parsedMesh.ellipsoid);
+        }
+
+        if (parsedMesh.ellipsoidOffset) {
+            mesh.ellipsoidOffset = Vector3.FromArray(parsedMesh.ellipsoidOffset);
+        }
+
+        if (parsedMesh.overrideMaterialSideOrientation !== undefined) {
+            mesh.overrideMaterialSideOrientation = parsedMesh.overrideMaterialSideOrientation;
+        }
 
         if (parsedMesh.isBlocker !== undefined) {
             mesh.isBlocker = parsedMesh.isBlocker;

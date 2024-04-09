@@ -12,19 +12,19 @@ export class NodeMaterialBuildState {
     /**
      * Gets the list of emitted attributes
      */
-    public attributes = new Array<string>();
+    public attributes: string[] = [];
     /**
      * Gets the list of emitted uniforms
      */
-    public uniforms = new Array<string>();
+    public uniforms: string[] = [];
     /**
      * Gets the list of emitted constants
      */
-    public constants = new Array<string>();
+    public constants: string[] = [];
     /**
      * Gets the list of emitted samplers
      */
-    public samplers = new Array<string>();
+    public samplers: string[] = [];
     /**
      * Gets the list of emitted functions
      */
@@ -124,7 +124,7 @@ export class NodeMaterialBuildState {
         }
 
         this.compilationString = "precision highp float;\n" + this.compilationString;
-        this.compilationString = "#if defined(WEBGL2) || defines(WEBGPU)\nprecision highp sampler2DArray;\n#endif\n" + this.compilationString;
+        this.compilationString = "#if defined(WEBGL2) || defined(WEBGPU)\nprecision highp sampler2DArray;\n#endif\n" + this.compilationString;
 
         if (isFragmentMode) {
             this.compilationString =

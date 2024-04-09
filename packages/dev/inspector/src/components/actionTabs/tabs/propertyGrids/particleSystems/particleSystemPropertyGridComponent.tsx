@@ -369,12 +369,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                         propertyName="gravity"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <CheckBoxLineComponent
-                        label="广告牌"
-                        target={system}
-                        propertyName="isBillboardBased"
-                        onPropertyChangedObservable={this.props.onPropertyChangedObservable}
-                    />
+                    <CheckBoxLineComponent label="广告牌" target={system} propertyName="isBillboardBased" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     <CheckBoxLineComponent label="本地" target={system} propertyName="isLocal" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     <CheckBoxLineComponent
                         label="强制深度写入"
@@ -883,12 +878,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                         propertyName="endSpriteCellID"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <CheckBoxLineComponent
-                        label="动画循环"
-                        target={system}
-                        propertyName="spriteCellLoop"
-                        onPropertyChangedObservable={this.props.onPropertyChangedObservable}
-                    />
+                    <CheckBoxLineComponent label="动画循环" target={system} propertyName="spriteCellLoop" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     <CheckBoxLineComponent
                         label="随机起始单元格索引"
                         target={system}

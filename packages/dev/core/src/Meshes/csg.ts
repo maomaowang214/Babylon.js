@@ -73,6 +73,7 @@ class Vertex {
      * override this to interpolate additional properties.
      * @param other the vertex to interpolate against
      * @param t The factor used to linearly interpolate between the vertices
+     * @returns The new interpolated vertex
      */
     public interpolate(other: Vertex, t: number): Vertex {
         return new Vertex(
@@ -87,13 +88,16 @@ class Vertex {
 /**
  * Represents a plane in 3D space.
  */
-class Plane {
+class CSGPlane {
     /**
      * Initializes the plane
      * @param normal The normal for the plane
      * @param w
      */
-    constructor(public normal: Vector3, public w: number) {}
+    constructor(
+        public normal: Vector3,
+        public w: number
+    ) {}
 
     /**
      * `CSG.Plane.EPSILON` is the tolerance used by `splitPolygon()` to decide if a
@@ -106,8 +110,9 @@ class Plane {
      * @param a Point a
      * @param b Point b
      * @param c Point c
+     * @returns A new plane
      */
-    public static FromPoints(a: Vector3, b: Vector3, c: Vector3): Nullable<Plane> {
+    public static FromPoints(a: Vector3, b: Vector3, c: Vector3): Nullable<CSGPlane> {
         const v0 = c.subtract(a);
         const v1 = b.subtract(a);
 
@@ -116,15 +121,15 @@ class Plane {
         }
 
         const n = Vector3.Normalize(Vector3.Cross(v0, v1));
-        return new Plane(n, Vector3.Dot(n, a));
+        return new CSGPlane(n, Vector3.Dot(n, a));
     }
 
     /**
      * Clone, or make a deep copy of the plane
      * @returns a new Plane
      */
-    public clone(): Plane {
-        return new Plane(this.normal.clone(), this.w);
+    public clone(): CSGPlane {
+        return new CSGPlane(this.normal.clone(), this.w);
     }
 
     /**
@@ -147,7 +152,7 @@ class Plane {
      * @param front Will contain the polygons in front of the plane
      * @param back Will contain the polygons begind the plane
      */
-    public splitPolygon(polygon: Polygon, coplanarFront: Polygon[], coplanarBack: Polygon[], front: Polygon[], back: Polygon[]): void {
+    public splitPolygon(polygon: CSGPolygon, coplanarFront: CSGPolygon[], coplanarBack: CSGPolygon[], front: CSGPolygon[], back: CSGPolygon[]): void {
         const COPLANAR = 0;
         const FRONT = 1;
         const BACK = 2;
@@ -161,7 +166,7 @@ class Plane {
         let t: number;
         for (i = 0; i < polygon.vertices.length; i++) {
             t = Vector3.Dot(this.normal, polygon.vertices[i].pos) - this.w;
-            const type = t < -Plane.EPSILON ? BACK : t > Plane.EPSILON ? FRONT : COPLANAR;
+            const type = t < -CSGPlane.EPSILON ? BACK : t > CSGPlane.EPSILON ? FRONT : COPLANAR;
             polygonType |= type;
             types.push(type);
         }
@@ -199,16 +204,16 @@ class Plane {
                         b.push(v.clone());
                     }
                 }
-                let poly: Polygon;
+                let poly: CSGPolygon;
                 if (f.length >= 3) {
-                    poly = new Polygon(f, polygon.shared);
+                    poly = new CSGPolygon(f, polygon.shared);
                     if (poly.plane) {
                         front.push(poly);
                     }
                 }
 
                 if (b.length >= 3) {
-                    poly = new Polygon(b, polygon.shared);
+                    poly = new CSGPolygon(b, polygon.shared);
 
                     if (poly.plane) {
                         back.push(poly);
@@ -229,7 +234,7 @@ class Plane {
  * polygons that are clones of each other or were split from the same polygon.
  * This can be used to define per-polygon properties (such as surface color)
  */
-class Polygon {
+class CSGPolygon {
     /**
      * Vertices of the polygon
      */
@@ -241,7 +246,7 @@ class Polygon {
     /**
      * A plane formed from the vertices of the polygon
      */
-    public plane: Plane;
+    public plane: CSGPlane;
 
     /**
      * Initializes the polygon
@@ -251,15 +256,16 @@ class Polygon {
     constructor(vertices: Vertex[], shared: any) {
         this.vertices = vertices;
         this.shared = shared;
-        this.plane = <Plane>Plane.FromPoints(vertices[0].pos, vertices[1].pos, vertices[2].pos);
+        this.plane = <CSGPlane>CSGPlane.FromPoints(vertices[0].pos, vertices[1].pos, vertices[2].pos);
     }
 
     /**
      * Clones, or makes a deep copy, or the polygon
+     * @returns A new CSGPolygon
      */
-    public clone(): Polygon {
+    public clone(): CSGPolygon {
         const vertices = this.vertices.map((v) => v.clone());
-        return new Polygon(vertices, this.shared);
+        return new CSGPolygon(vertices, this.shared);
     }
 
     /**
@@ -281,16 +287,16 @@ class Polygon {
  * no distinction between internal and leaf nodes
  */
 class Node {
-    private _plane: Nullable<Plane> = null;
+    private _plane: Nullable<CSGPlane> = null;
     private _front: Nullable<Node> = null;
     private _back: Nullable<Node> = null;
-    private _polygons = new Array<Polygon>();
+    private _polygons = new Array<CSGPolygon>();
 
     /**
      * Initializes the node
      * @param polygons A collection of polygons held in the node
      */
-    constructor(polygons?: Array<Polygon>) {
+    constructor(polygons?: Array<CSGPolygon>) {
         if (polygons) {
             this.build(polygons);
         }
@@ -336,12 +342,12 @@ class Node {
      * @param polygons Polygons to remove from the BSP
      * @returns Polygons clipped from the BSP
      */
-    clipPolygons(polygons: Polygon[]): Polygon[] {
+    clipPolygons(polygons: CSGPolygon[]): CSGPolygon[] {
         if (!this._plane) {
             return polygons.slice();
         }
-        let front = new Array<Polygon>(),
-            back = new Array<Polygon>();
+        let front: CSGPolygon[] = [],
+            back = [] as CSGPolygon[];
         for (let i = 0; i < polygons.length; i++) {
             this._plane.splitPolygon(polygons[i], front, back, front, back);
         }
@@ -375,7 +381,7 @@ class Node {
      * Return a list of all polygons in this BSP tree
      * @returns List of all polygons in this BSP tree
      */
-    allPolygons(): Polygon[] {
+    allPolygons(): CSGPolygon[] {
         let polygons = this._polygons.slice();
         if (this._front) {
             polygons = polygons.concat(this._front.allPolygons());
@@ -393,15 +399,15 @@ class Node {
      * (no heuristic is used to pick a good split)
      * @param polygons Polygons used to construct the BSP tree
      */
-    build(polygons: Polygon[]): void {
+    build(polygons: CSGPolygon[]): void {
         if (!polygons.length) {
             return;
         }
         if (!this._plane) {
             this._plane = polygons[0].plane.clone();
         }
-        const front = new Array<Polygon>(),
-            back = new Array<Polygon>();
+        const front: CSGPolygon[] = [],
+            back = [] as CSGPolygon[];
         for (let i = 0; i < polygons.length; i++) {
             this._plane.splitPolygon(polygons[i], this._polygons, this._polygons, front, back);
         }
@@ -424,7 +430,7 @@ class Node {
  * Class for building Constructive Solid Geometry
  */
 export class CSG {
-    private _polygons = new Array<Polygon>();
+    private _polygons = new Array<CSGPolygon>();
     /**
      * The world matrix
      */
@@ -448,12 +454,12 @@ export class CSG {
 
     /**
      * Convert a VertexData to CSG
-     * @param mesh defines the VertexData to convert to CSG
+     * @param data defines the VertexData to convert to CSG
      * @returns the new CSG
      */
     public static FromVertexData(data: VertexData): CSG {
-        let vertex: Vertex, polygon: Polygon, vertices: Vertex[];
-        const polygons = new Array<Polygon>();
+        let vertex: Vertex, polygon: CSGPolygon, vertices: Vertex[];
+        const polygons: CSGPolygon[] = [];
 
         const indices = data.indices;
         const positions = data.positions;
@@ -462,6 +468,7 @@ export class CSG {
         const vertColors = data.colors;
 
         if (!indices || !positions) {
+            // eslint-disable-next-line no-throw-literal
             throw "BABYLON.CSG: VertexData must at least contain positions and indices";
         }
 
@@ -481,7 +488,7 @@ export class CSG {
                 vertices.push(vertex);
             }
 
-            polygon = new Polygon(vertices, { subMeshId: 0, meshId: currentCSGMeshId, materialIndex: 0 });
+            polygon = new CSGPolygon(vertices, { subMeshId: 0, meshId: currentCSGMeshId, materialIndex: 0 });
 
             // To handle the case of degenerated triangle
             // polygon.plane == null <=> the polygon does not represent 1 single plane <=> the triangle is degenerated
@@ -513,9 +520,9 @@ export class CSG {
             uv: Vector2 | undefined = undefined,
             position: Vector3,
             vertColor: Color4 | undefined = undefined,
-            polygon: Polygon,
+            polygon: CSGPolygon,
             vertices: Vertex[];
-        const polygons = new Array<Polygon>();
+        const polygons: CSGPolygon[] = [];
         let matrix: Matrix,
             meshPosition: Vector3,
             meshRotation: Vector3,
@@ -536,6 +543,7 @@ export class CSG {
                 invertWinding = mesh.material.sideOrientation === Constants.MATERIAL_ClockWiseSideOrientation;
             }
         } else {
+            // eslint-disable-next-line no-throw-literal
             throw "BABYLON.CSG: Wrong Mesh type, must be BABYLON.Mesh";
         }
 
@@ -572,7 +580,7 @@ export class CSG {
                     vertices.push(vertex);
                 }
 
-                polygon = new Polygon(vertices, { subMeshId: sm, meshId: currentCSGMeshId, materialIndex: subMeshes[sm].materialIndex });
+                polygon = new CSGPolygon(vertices, { subMeshId: sm, meshId: currentCSGMeshId, materialIndex: subMeshes[sm].materialIndex });
 
                 // To handle the case of degenerated triangle
                 // polygon.plane == null <=> the polygon does not represent 1 single plane <=> the triangle is degenerated
@@ -596,8 +604,9 @@ export class CSG {
     /**
      * Construct a CSG solid from a list of `CSG.Polygon` instances.
      * @param polygons Polygons used to construct a CSG solid
+     * @returns A new CSG solid
      */
-    private static _FromPolygons(polygons: Polygon[]): CSG {
+    private static _FromPolygons(polygons: CSGPolygon[]): CSG {
         const csg = new CSG();
         csg._polygons = polygons;
         return csg;
@@ -765,9 +774,11 @@ export class CSG {
     /**
      * Build vertex data from CSG
      * Coordinates here are in world space
+     * @param onBeforePolygonProcessing called before each polygon is being processed
+     * @param onAfterPolygonProcessing called after each polygon has been processed
      * @returns the final vertex data
      */
-    public toVertexData(onBeforePolygonProcessing: Nullable<(polygon: Polygon) => void> = null, onAfterPolygonProcessing: Nullable<() => void> = null): VertexData {
+    public toVertexData(onBeforePolygonProcessing: Nullable<(polygon: CSGPolygon) => void> = null, onAfterPolygonProcessing: Nullable<() => void> = null): VertexData {
         const matrix = this.matrix.clone();
         matrix.invert();
 
@@ -942,7 +953,7 @@ export class CSG {
             let materialIndexOffset = 0,
                 materialMaxIndex;
 
-            mesh.subMeshes = new Array<SubMesh>();
+            mesh.subMeshes = [] as SubMesh[];
 
             for (const m in subMeshDict) {
                 materialMaxIndex = -1;

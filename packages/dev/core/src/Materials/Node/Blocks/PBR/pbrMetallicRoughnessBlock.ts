@@ -3,7 +3,6 @@ import { NodeMaterialBlockConnectionPointTypes } from "../../Enums/nodeMaterialB
 import type { NodeMaterialBuildState } from "../../nodeMaterialBuildState";
 import type { NodeMaterialConnectionPoint } from "../../nodeMaterialBlockConnectionPoint";
 import { NodeMaterialConnectionPointDirection } from "../../nodeMaterialBlockConnectionPoint";
-import { MaterialHelper } from "../../../materialHelper";
 import { NodeMaterialBlockTargets } from "../../Enums/nodeMaterialBlockTargets";
 import type { NodeMaterial, NodeMaterialDefines } from "../../nodeMaterial";
 import { NodeMaterialSystemValues } from "../../Enums/nodeMaterialSystemValues";
@@ -31,6 +30,15 @@ import type { RefractionBlock } from "./refractionBlock";
 import type { PerturbNormalBlock } from "../Fragment/perturbNormalBlock";
 import { Constants } from "../../../../Engines/constants";
 import { Color3, TmpColors } from "../../../../Maths/math.color";
+import { Logger } from "core/Misc/logger";
+import {
+    BindLight,
+    BindLights,
+    PrepareDefinesForLight,
+    PrepareDefinesForLights,
+    PrepareDefinesForMultiview,
+    PrepareUniformsAndSamplersForLight,
+} from "../../../materialHelper.functions";
 
 const mapOutputToVariable: { [name: string]: [string, string] } = {
     ambientClr: ["finalAmbient", ""],
@@ -62,7 +70,7 @@ export class PBRMetallicRoughnessBlock extends NodeMaterialBlock {
 
         if (that.worldPosition.isConnected) {
             that.generateOnlyFragmentCode = !that.generateOnlyFragmentCode;
-            console.error("The worldPosition input must not be connected to be able to switch!");
+            Logger.Error("The worldPosition input must not be connected to be able to switch!");
             return false;
         }
 
@@ -354,6 +362,8 @@ export class PBRMetallicRoughnessBlock extends NodeMaterialBlock {
             { label: "Sheen Reflectance", value: 85 },
             { label: "Luminance Over Alpha", value: 86 },
             { label: "Alpha", value: 87 },
+            { label: "Albedo color", value: 88 },
+            { label: "Ambient occlusion color", value: 89 },
         ],
     })
     public debugMode = 0;
@@ -759,11 +769,11 @@ export class PBRMetallicRoughnessBlock extends NodeMaterialBlock {
 
         if (!this.light) {
             // Lights
-            MaterialHelper.PrepareDefinesForLights(scene, mesh, defines, true, nodeMaterial.maxSimultaneousLights);
+            PrepareDefinesForLights(scene, mesh, defines, true, nodeMaterial.maxSimultaneousLights);
             defines._needNormals = true;
 
             // Multiview
-            MaterialHelper.PrepareDefinesForMultiview(scene, defines);
+            PrepareDefinesForMultiview(scene, defines);
         } else {
             const state = {
                 needNormals: false,
@@ -773,7 +783,7 @@ export class PBRMetallicRoughnessBlock extends NodeMaterialBlock {
                 specularEnabled: false,
             };
 
-            MaterialHelper.PrepareDefinesForLight(scene, mesh, this.light, this._lightId, defines, true, state);
+            PrepareDefinesForLight(scene, mesh, this.light, this._lightId, defines, true, state);
 
             if (state.needRebuild) {
                 defines.rebuild();
@@ -787,14 +797,7 @@ export class PBRMetallicRoughnessBlock extends NodeMaterialBlock {
                 break;
             }
             const onlyUpdateBuffersList = state.uniforms.indexOf("vLightData" + lightIndex) >= 0;
-            MaterialHelper.PrepareUniformsAndSamplersForLight(
-                lightIndex,
-                state.uniforms,
-                state.samplers,
-                defines["PROJECTEDLIGHTTEXTURE" + lightIndex],
-                uniformBuffers,
-                onlyUpdateBuffersList
-            );
+            PrepareUniformsAndSamplersForLight(lightIndex, state.uniforms, state.samplers, defines["PROJECTEDLIGHTTEXTURE" + lightIndex], uniformBuffers, onlyUpdateBuffersList);
         }
     }
 
@@ -820,9 +823,9 @@ export class PBRMetallicRoughnessBlock extends NodeMaterialBlock {
         const scene = mesh.getScene();
 
         if (!this.light) {
-            MaterialHelper.BindLights(scene, mesh, effect, true, nodeMaterial.maxSimultaneousLights);
+            BindLights(scene, mesh, effect, true, nodeMaterial.maxSimultaneousLights);
         } else {
-            MaterialHelper.BindLight(this.light, this._lightId, scene, effect, true);
+            BindLight(this.light, this._lightId, scene, effect, true);
         }
 
         effect.setTexture(this._environmentBrdfSamplerName, this._environmentBRDFTexture);
@@ -1116,9 +1119,7 @@ export class PBRMetallicRoughnessBlock extends NodeMaterialBlock {
         state._emitFunctionFromInclude("imageProcessingDeclaration", comments);
         state._emitFunctionFromInclude("imageProcessingFunctions", comments);
 
-        state._emitFunctionFromInclude("shadowsFragmentFunctions", comments, {
-            replaceStrings: [{ search: /vPositionW/g, replace: worldPosVarName + ".xyz" }],
-        });
+        state._emitFunctionFromInclude("shadowsFragmentFunctions", comments);
 
         state._emitFunctionFromInclude("pbrDirectLightingSetupFunctions", comments, {
             replaceStrings: [{ search: /vPositionW/g, replace: worldPosVarName + ".xyz" }],
@@ -1331,11 +1332,15 @@ export class PBRMetallicRoughnessBlock extends NodeMaterialBlock {
 
         if (this.light) {
             state.compilationString += state._emitCodeFromInclude("lightFragment", comments, {
-                replaceStrings: [{ search: /{X}/g, replace: this._lightId.toString() }],
+                replaceStrings: [
+                    { search: /{X}/g, replace: this._lightId.toString() },
+                    { search: /vPositionW/g, replace: worldPosVarName + ".xyz" },
+                ],
             });
         } else {
             state.compilationString += state._emitCodeFromInclude("lightFragment", comments, {
                 repeatKey: "maxSimultaneousLights",
+                substitutionVars: `vPositionW,${worldPosVarName}.xyz`,
             });
         }
 
@@ -1397,7 +1402,7 @@ export class PBRMetallicRoughnessBlock extends NodeMaterialBlock {
                         state.compilationString += `#endif\n`;
                     }
                 } else {
-                    console.error(`There's no remapping for the ${output.name} end point! No code generated`);
+                    Logger.Error(`There's no remapping for the ${output.name} end point! No code generated`);
                 }
             }
         }

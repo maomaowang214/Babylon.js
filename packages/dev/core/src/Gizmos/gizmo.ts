@@ -106,8 +106,18 @@ export interface IGizmo extends IDisposable {
      * When set null, default value will be used (Quaternion(0, 0, 0, 1))
      */
     customRotationQuaternion: Nullable<Quaternion>;
-    /** Disposes and replaces the current meshes in the gizmo with the specified mesh */
+    /**
+     * Disposes and replaces the current meshes in the gizmo with the specified mesh
+     * @param mesh The mesh to replace the default mesh of the gizmo
+     */
     setCustomMesh(mesh: Mesh): void;
+
+    /**
+     * Additional transform applied to the gizmo.
+     * It's useful when the gizmo is attached to a bone: if the bone is part of a skeleton attached to a mesh, you should define the mesh as additionalTransformNode if you want the gizmo to be displayed at the bone's correct location.
+     * Otherwise, as the gizmo is relative to the skeleton root, the mesh transformation will not be taken into account.
+     */
+    additionalTransformNode?: TransformNode | undefined;
 }
 /**
  * Renders gizmos on top of an existing scene which provide controls for position, rotation, etc.
@@ -120,6 +130,7 @@ export class Gizmo implements IGizmo {
     protected _attachedMesh: Nullable<AbstractMesh> = null;
     protected _attachedNode: Nullable<Node> = null;
     protected _customRotationQuaternion: Nullable<Quaternion> = null;
+    protected _additionalTransformNode?: TransformNode;
     /**
      * Ratio for the scale of the gizmo (Default: 1)
      */
@@ -135,6 +146,13 @@ export class Gizmo implements IGizmo {
      * Only valid for TransformNode derived classes (Mesh, AbstractMesh, ...)
      */
     public static PreserveScaling = false;
+
+    /**
+     * There are 2 ways to preserve scaling: using mesh scaling or absolute scaling. Depending of hierarchy, non uniform scaling and LH or RH coordinates. One is preferable than the other.
+     * If the scaling to be preserved is the local scaling, then set this value to false.
+     * Default is true which means scaling to be preserved is absolute one (with hierarchy applied)
+     */
+    public static UseAbsoluteScaling = true;
 
     /**
      * Ratio for the scale of the gizmo (Default: 1)
@@ -193,6 +211,7 @@ export class Gizmo implements IGizmo {
      */
     public setCustomMesh(mesh: Mesh) {
         if (mesh.getScene() != this.gizmoLayer.utilityLayerScene) {
+            // eslint-disable-next-line no-throw-literal
             throw "When setting a custom mesh on a gizmo, the custom meshes scene must be the same as the gizmos (eg. gizmo.gizmoLayer.utilityLayerScene)";
         }
         this._rootMesh.getChildMeshes().forEach((c) => {
@@ -200,6 +219,19 @@ export class Gizmo implements IGizmo {
         });
         mesh.parent = this._rootMesh;
         this._customMeshSet = true;
+    }
+
+    /**
+     * Additional transform applied to the gizmo.
+     * It's useful when the gizmo is attached to a bone: if the bone is part of a skeleton attached to a mesh, you should define the mesh as additionalTransformNode if you want the gizmo to be displayed at the bone's correct location.
+     * Otherwise, as the gizmo is relative to the skeleton root, the mesh transformation will not be taken into account.
+     */
+    public get additionalTransformNode() {
+        return this._additionalTransformNode;
+    }
+
+    public set additionalTransformNode(value: TransformNode | undefined) {
+        this._additionalTransformNode = value;
     }
 
     protected _updateGizmoRotationToMatchAttachedMesh = true;
@@ -366,8 +398,30 @@ export class Gizmo implements IGizmo {
                 this._rootMesh.scaling.setAll(this.scaleRatio);
             }
         }
+
+        if (this.additionalTransformNode) {
+            this._rootMesh.computeWorldMatrix(true);
+            this._rootMesh.getWorldMatrix().multiplyToRef(this.additionalTransformNode.getWorldMatrix(), TmpVectors.Matrix[0]);
+            TmpVectors.Matrix[0].decompose(this._rootMesh.scaling, this._rootMesh.rotationQuaternion!, this._rootMesh.position);
+        }
     }
 
+    /**
+     * if transform has a pivot and is not using PostMultiplyPivotMatrix, then the worldMatrix contains the pivot matrix (it's not cancelled at the end)
+     * so, when extracting the world matrix component, the translation (and other components) is containing the pivot translation.
+     * And the pivot is applied each frame. Removing it anyway here makes it applied only in computeWorldMatrix.
+     * @param transform local transform that needs to be transform by the pivot inverse matrix
+     * @param localMatrix local matrix that needs to be transform by the pivot inverse matrix
+     * @param result resulting matrix transformed by pivot inverse if the transform node is using pivot without using post Multiply Pivot Matrix
+     */
+    protected _handlePivotMatrixInverse(transform: TransformNode, localMatrix: Matrix, result: Matrix): void {
+        if (transform.isUsingPivotMatrix() && !transform.isUsingPostMultiplyPivotMatrix()) {
+            transform.getPivotMatrix().invertToRef(TmpVectors.Matrix[5]);
+            TmpVectors.Matrix[5].multiplyToRef(localMatrix, result);
+            return;
+        }
+        result.copyFrom(localMatrix);
+    }
     /**
      * computes the rotation/scaling/position of the transform once the Node world matrix has changed.
      */
@@ -430,7 +484,15 @@ export class Gizmo implements IGizmo {
                 const localMat = TmpVectors.Matrix[1];
                 transform.parent.getWorldMatrix().invertToRef(parentInv);
                 this._attachedNode.getWorldMatrix().multiplyToRef(parentInv, localMat);
-                localMat.decompose(TmpVectors.Vector3[0], TmpVectors.Quaternion[0], transform.position);
+                const matrixToDecompose = TmpVectors.Matrix[4];
+                this._handlePivotMatrixInverse(transform, localMat, matrixToDecompose);
+                matrixToDecompose.decompose(
+                    TmpVectors.Vector3[0],
+                    TmpVectors.Quaternion[0],
+                    transform.position,
+                    Gizmo.PreserveScaling ? transform : undefined,
+                    Gizmo.UseAbsoluteScaling
+                );
                 TmpVectors.Quaternion[0].normalize();
                 if (transform.isUsingPivotMatrix()) {
                     // Calculate the local matrix without the translation.
@@ -457,7 +519,15 @@ export class Gizmo implements IGizmo {
                     transform.position.subtractInPlace(TmpVectors.Vector3[1]);
                 }
             } else {
-                this._attachedNode._worldMatrix.decompose(TmpVectors.Vector3[0], TmpVectors.Quaternion[0], transform.position, Gizmo.PreserveScaling ? transform : undefined);
+                const matrixToDecompose = TmpVectors.Matrix[4];
+                this._handlePivotMatrixInverse(transform, this._attachedNode._worldMatrix, matrixToDecompose);
+                matrixToDecompose.decompose(
+                    TmpVectors.Vector3[0],
+                    TmpVectors.Quaternion[0],
+                    transform.position,
+                    Gizmo.PreserveScaling ? transform : undefined,
+                    Gizmo.UseAbsoluteScaling
+                );
             }
             TmpVectors.Vector3[0].scaleInPlace(1.0 / transform.scalingDeterminant);
             transform.scaling.copyFrom(TmpVectors.Vector3[0]);
