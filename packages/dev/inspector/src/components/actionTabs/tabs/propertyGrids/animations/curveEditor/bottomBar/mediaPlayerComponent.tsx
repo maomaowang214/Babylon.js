@@ -112,7 +112,7 @@ export class MediaPlayerComponent extends React.Component<IMediaPlayerComponentP
         return (
             <div id="media-player">
                 <ControlButtonComponent
-                    tooltip="倒回到所选时间轴的第一帧"
+                    tooltip="Rewind to the first frame of the selected timeline"
                     id="start-key"
                     context={this.props.context}
                     globalState={this.props.globalState}
@@ -121,7 +121,7 @@ export class MediaPlayerComponent extends React.Component<IMediaPlayerComponentP
                     onClick={() => this._onFirstKey()}
                 />
                 <ControlButtonComponent
-                    tooltip="倒回到前一帧"
+                    tooltip="Rewind to the previous frame"
                     id="prev-frame"
                     context={this.props.context}
                     globalState={this.props.globalState}
@@ -130,7 +130,7 @@ export class MediaPlayerComponent extends React.Component<IMediaPlayerComponentP
                     onClick={() => this._onPrevFrame()}
                 />
                 <ControlButtonComponent
-                    tooltip="倒回到前一个关键帧"
+                    tooltip="Rewind to the previous key frame"
                     id="first-key"
                     context={this.props.context}
                     globalState={this.props.globalState}
@@ -140,7 +140,7 @@ export class MediaPlayerComponent extends React.Component<IMediaPlayerComponentP
                 />
                 {((this.props.context.isPlaying && this.props.context.forwardAnimation) || !this.props.context.isPlaying) && (
                     <ControlButtonComponent
-                        tooltip="倒放"
+                        tooltip="Play backwards"
                         id="rev-key"
                         context={this.props.context}
                         globalState={this.props.globalState}
@@ -151,7 +151,7 @@ export class MediaPlayerComponent extends React.Component<IMediaPlayerComponentP
                 )}
                 {this.props.context.isPlaying && !this.props.context.forwardAnimation && (
                     <ControlButtonComponent
-                        tooltip="停止"
+                        tooltip="Stop"
                         id="stop-key"
                         context={this.props.context}
                         globalState={this.props.globalState}
@@ -162,7 +162,7 @@ export class MediaPlayerComponent extends React.Component<IMediaPlayerComponentP
                 )}
                 {((this.props.context.isPlaying && !this.props.context.forwardAnimation) || !this.props.context.isPlaying) && (
                     <ControlButtonComponent
-                        tooltip="向前"
+                        tooltip="Play forwards"
                         id="fwd-key"
                         context={this.props.context}
                         globalState={this.props.globalState}
@@ -173,7 +173,7 @@ export class MediaPlayerComponent extends React.Component<IMediaPlayerComponentP
                 )}
                 {this.props.context.isPlaying && this.props.context.forwardAnimation && (
                     <ControlButtonComponent
-                        tooltip="停止"
+                        tooltip="Stop"
                         id="stop-key"
                         context={this.props.context}
                         globalState={this.props.globalState}
@@ -183,7 +183,7 @@ export class MediaPlayerComponent extends React.Component<IMediaPlayerComponentP
                     />
                 )}
                 <ControlButtonComponent
-                    tooltip="进入下一个关键帧"
+                    tooltip="Advance to the next key frame"
                     id="next-key"
                     context={this.props.context}
                     globalState={this.props.globalState}
@@ -192,7 +192,7 @@ export class MediaPlayerComponent extends React.Component<IMediaPlayerComponentP
                     onClick={() => this._onNextKey()}
                 />
                 <ControlButtonComponent
-                    tooltip="进入下一帧"
+                    tooltip="Advance to the next frame"
                     id="next-frame"
                     context={this.props.context}
                     globalState={this.props.globalState}
@@ -201,7 +201,7 @@ export class MediaPlayerComponent extends React.Component<IMediaPlayerComponentP
                     onClick={() => this._onNextFrame()}
                 />
                 <ControlButtonComponent
-                    tooltip="前进到所选时间轴的最后一帧"
+                    tooltip="Advance to the last frame of the selected timeline"
                     id="end-key"
                     context={this.props.context}
                     globalState={this.props.globalState}

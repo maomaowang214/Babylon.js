@@ -152,18 +152,18 @@ export class SkeletonPropertyGridComponent extends React.Component<ISkeletonProp
         const skeleton = this.props.skeleton;
 
         const debugModeOptions = [
-            { label: "线", value: SkeletonViewer.DISPLAY_LINES },
-            { label: "球体", value: SkeletonViewer.DISPLAY_SPHERES },
-            { label: "球体和锥体", value: SkeletonViewer.DISPLAY_SPHERE_AND_SPURS },
+            { label: "Lines", value: SkeletonViewer.DISPLAY_LINES },
+            { label: "Spheres", value: SkeletonViewer.DISPLAY_SPHERES },
+            { label: "Sphere and Spurs", value: SkeletonViewer.DISPLAY_SPHERE_AND_SPURS },
         ];
 
         let displayOptions;
         if (this._skeletonViewerDisplayOptions.displayMode > SkeletonViewer.DISPLAY_LINES) {
             displayOptions = (
-                <LineContainerComponent title="显示属性" selection={this.props.globalState}>
+                <LineContainerComponent title="DISPLAY OPTIONS" selection={this.props.globalState}>
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="球体尺寸"
+                        label="sphereBaseSize"
                         target={this._skeletonViewerDisplayOptions}
                         propertyName="sphereBaseSize"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -173,7 +173,7 @@ export class SkeletonPropertyGridComponent extends React.Component<ISkeletonProp
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="球体缩放单元"
+                        label="sphereScaleUnit"
                         target={this._skeletonViewerDisplayOptions}
                         propertyName="sphereScaleUnit"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -183,7 +183,7 @@ export class SkeletonPropertyGridComponent extends React.Component<ISkeletonProp
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="球体系数"
+                        label="sphereFactor"
                         target={this._skeletonViewerDisplayOptions}
                         propertyName="sphereFactor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -193,7 +193,7 @@ export class SkeletonPropertyGridComponent extends React.Component<ISkeletonProp
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="中点"
+                        label="midStep"
                         target={this._skeletonViewerDisplayOptions}
                         propertyName="midStep"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -203,7 +203,7 @@ export class SkeletonPropertyGridComponent extends React.Component<ISkeletonProp
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="中间步系数"
+                        label="midStepFactor"
                         target={this._skeletonViewerDisplayOptions}
                         propertyName="midStepFactor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -225,21 +225,21 @@ export class SkeletonPropertyGridComponent extends React.Component<ISkeletonProp
                     lockObject={this.props.lockObject}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="常规" selection={this.props.globalState}>
+                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
                     <TextLineComponent label="ID" value={skeleton.id} />
-                    <TextLineComponent label="骨骼计数" value={skeleton.bones.length.toString()} />
+                    <TextLineComponent label="Bone count" value={skeleton.bones.length.toString()} />
                     <CheckBoxLineComponent
-                        label="使用纹理存储矩阵"
+                        label="Use texture to store matrices"
                         target={skeleton}
                         propertyName="useTextureToStoreBoneMatrices"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <ButtonLineComponent label="返回到重置" onClick={() => skeleton.returnToRest()} />
+                    <ButtonLineComponent label="Return to rest" onClick={() => skeleton.returnToRest()} />
                 </LineContainerComponent>
-                <LineContainerComponent title="调试" selection={this.props.globalState}>
-                    <CheckBoxLineComponent label="启用" isSelected={() => this._skeletonViewersEnabled} onSelect={() => this.switchSkeletonViewers()} />
+                <LineContainerComponent title="DEBUG" selection={this.props.globalState}>
+                    <CheckBoxLineComponent label="Enabled" isSelected={() => this._skeletonViewersEnabled} onSelect={() => this.switchSkeletonViewers()} />
                     <OptionsLineComponent
-                        label="显示模式"
+                        label="displayMode"
                         options={debugModeOptions}
                         target={this._skeletonViewerDisplayOptions}
                         propertyName="displayMode"

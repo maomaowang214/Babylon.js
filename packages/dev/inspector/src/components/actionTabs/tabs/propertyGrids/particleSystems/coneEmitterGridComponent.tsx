@@ -27,7 +27,7 @@ export class ConeEmitterGridComponent extends React.Component<IConeEmitterGridCo
             <>
                 <SliderLineComponent
                     lockObject={this.props.lockObject}
-                    label="半径范围"
+                    label="Radius range"
                     target={emitter}
                     propertyName="radiusRange"
                     minimum={0}
@@ -37,7 +37,7 @@ export class ConeEmitterGridComponent extends React.Component<IConeEmitterGridCo
                 />
                 <SliderLineComponent
                     lockObject={this.props.lockObject}
-                    label="高度范围"
+                    label="Height range"
                     target={emitter}
                     propertyName="heightRange"
                     minimum={0}
@@ -46,14 +46,14 @@ export class ConeEmitterGridComponent extends React.Component<IConeEmitterGridCo
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
                 <CheckBoxLineComponent
-                    label="只能从刷出点发射"
+                    label="Emit from spawn point only"
                     target={emitter}
                     propertyName="emitFromSpawnPointOnly"
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
                 <SliderLineComponent
                     lockObject={this.props.lockObject}
-                    label="方向随机函数发生器"
+                    label="Direction randomizer"
                     target={emitter}
                     propertyName="directionRandomizer"
                     minimum={0}

@@ -37,23 +37,23 @@ export class BonePropertyGridComponent extends React.Component<IBonePropertyGrid
 
         return (
             <>
-                <LineContainerComponent title="常规" selection={this.props.globalState}>
-                    <TextLineComponent label="名称" value={bone.name} />
-                    <TextLineComponent label="索引" value={bone.getIndex().toString()} />
-                    <TextLineComponent label="唯一 ID" value={bone.uniqueId.toString()} />
+                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
+                    <TextLineComponent label="Name" value={bone.name} />
+                    <TextLineComponent label="Index" value={bone.getIndex().toString()} />
+                    <TextLineComponent label="Unique ID" value={bone.uniqueId.toString()} />
                     {bone.getParent() && (
                         <TextLineComponent
-                            label="父"
+                            label="Parent"
                             value={bone.getParent()!.name}
                             onLink={() => this.props.globalState.onSelectionChangedObservable.notifyObservers(bone.getParent())}
                         />
                     )}
-                    {bone.getTransformNode() && <TextLineComponent label="链接节点" value={bone.getTransformNode()!.name} onLink={() => this.onTransformNodeLink()} />}
+                    {bone.getTransformNode() && <TextLineComponent label="Linked node" value={bone.getTransformNode()!.name} onLink={() => this.onTransformNodeLink()} />}
                 </LineContainerComponent>
-                <LineContainerComponent title="转换" selection={this.props.globalState}>
+                <LineContainerComponent title="TRANSFORMATIONS" selection={this.props.globalState}>
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="坐标"
+                        label="Position"
                         target={bone}
                         propertyName="position"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -61,7 +61,7 @@ export class BonePropertyGridComponent extends React.Component<IBonePropertyGrid
                     {!bone.rotationQuaternion && (
                         <Vector3LineComponent
                             lockObject={this.props.lockObject}
-                            label="旋转"
+                            label="Rotation"
                             useEuler={this.props.globalState.onlyUseEulers}
                             target={bone}
                             propertyName="rotation"
@@ -72,7 +72,7 @@ export class BonePropertyGridComponent extends React.Component<IBonePropertyGrid
                     {bone.rotationQuaternion && (
                         <QuaternionLineComponent
                             lockObject={this.props.lockObject}
-                            label="旋转"
+                            label="Rotation"
                             useEuler={this.props.globalState.onlyUseEulers}
                             target={bone}
                             propertyName="rotationQuaternion"
@@ -81,7 +81,7 @@ export class BonePropertyGridComponent extends React.Component<IBonePropertyGrid
                     )}
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="缩放"
+                        label="Scaling"
                         target={bone}
                         propertyName="scaling"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}

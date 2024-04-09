@@ -67,10 +67,10 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
         const csmGenerator = generator instanceof CascadedShadowGenerator;
         const camera = light.getScene().activeCamera;
 
-        const typeGeneratorOptions = [{ label: "阴影生成器", value: 0 }];
+        const typeGeneratorOptions = [{ label: "Shadow Generator", value: 0 }];
 
         if (light instanceof DirectionalLight) {
-            typeGeneratorOptions.push({ label: "级联阴影生成器", value: 1 });
+            typeGeneratorOptions.push({ label: "Cascaded Shadow Generator", value: 1 });
         }
 
         const mapSizeOptions = [
@@ -95,17 +95,17 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
                 { label: "PCF", value: ShadowGenerator.FILTER_PCF },
                 { label: "PCSS", value: ShadowGenerator.FILTER_PCSS },
                 { label: "Poisson", value: ShadowGenerator.FILTER_POISSONSAMPLING },
-                { label: "指数", value: ShadowGenerator.FILTER_EXPONENTIALSHADOWMAP },
-                { label: "模糊指数", value: ShadowGenerator.FILTER_BLUREXPONENTIALSHADOWMAP },
-                { label: "关闭指数", value: ShadowGenerator.FILTER_CLOSEEXPONENTIALSHADOWMAP },
-                { label: "关闭模糊指数", value: ShadowGenerator.FILTER_BLURCLOSEEXPONENTIALSHADOWMAP },
+                { label: "Exponential", value: ShadowGenerator.FILTER_EXPONENTIALSHADOWMAP },
+                { label: "Blurred exponential", value: ShadowGenerator.FILTER_BLUREXPONENTIALSHADOWMAP },
+                { label: "Close exponential", value: ShadowGenerator.FILTER_CLOSEEXPONENTIALSHADOWMAP },
+                { label: "Blurred close exponential", value: ShadowGenerator.FILTER_BLURCLOSEEXPONENTIALSHADOWMAP },
             ];
         }
 
         const filteringQualityOptions = [
-            { label: "低", value: ShadowGenerator.QUALITY_LOW },
-            { label: "中", value: ShadowGenerator.QUALITY_MEDIUM },
-            { label: "高", value: ShadowGenerator.QUALITY_HIGH },
+            { label: "Low", value: ShadowGenerator.QUALITY_LOW },
+            { label: "Medium", value: ShadowGenerator.QUALITY_MEDIUM },
+            { label: "High", value: ShadowGenerator.QUALITY_HIGH },
         ];
 
         const numCascadesOptions = [
@@ -121,9 +121,9 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
 
         return (
             <div>
-                <LineContainerComponent title="阴影" selection={this.props.globalState}>
+                <LineContainerComponent title="SHADOWS" selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="已启用阴影"
+                        label="Shadows enabled"
                         target={light}
                         propertyName="shadowEnabled"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -132,14 +132,14 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
                         <>
                             <FloatLineComponent
                                 lockObject={this.props.lockObject}
-                                label="平面附近的阴影"
+                                label="Shadows near plane"
                                 target={light}
                                 propertyName="shadowMinZ"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <FloatLineComponent
                                 lockObject={this.props.lockObject}
-                                label="阴影远平面"
+                                label="Shadows far plane"
                                 target={light}
                                 propertyName="shadowMaxZ"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -148,32 +148,32 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
                     )}
                 </LineContainerComponent>
                 {generator == null && (
-                    <LineContainerComponent title="阴影生成器" selection={this.props.globalState}>
-                        <OptionsLineComponent label="类型" options={typeGeneratorOptions} target={internals} propertyName="generatorType" />
-                        <OptionsLineComponent label="地图大小" options={mapSizeOptions} target={internals} propertyName="mapSize" />
-                        <ButtonLineComponent label="创建生成器" onClick={() => this.createShadowGenerator()} />
+                    <LineContainerComponent title="SHADOW GENERATOR" selection={this.props.globalState}>
+                        <OptionsLineComponent label="Type" options={typeGeneratorOptions} target={internals} propertyName="generatorType" />
+                        <OptionsLineComponent label="Map size" options={mapSizeOptions} target={internals} propertyName="mapSize" />
+                        <ButtonLineComponent label="Create generator" onClick={() => this.createShadowGenerator()} />
                     </LineContainerComponent>
                 )}
                 {generator !== null && (
-                    <LineContainerComponent title="阴影生成器" selection={this.props.globalState}>
-                        <ButtonLineComponent label="删除生成器" onClick={() => this.disposeShadowGenerator()} />
+                    <LineContainerComponent title="SHADOW GENERATOR" selection={this.props.globalState}>
+                        <ButtonLineComponent label="Dispose generator" onClick={() => this.disposeShadowGenerator()} />
                         {csmGenerator && (
                             <>
                                 <OptionsLineComponent
-                                    label="在级联"
+                                    label="Num cascades"
                                     options={numCascadesOptions}
                                     target={generator}
                                     propertyName="numCascades"
                                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                                 />
                                 <CheckBoxLineComponent
-                                    label="调试模式"
+                                    label="Debug mode"
                                     target={generator}
                                     propertyName="debug"
                                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                                 />
                                 <CheckBoxLineComponent
-                                    label="稳定级联"
+                                    label="Stabilize cascades"
                                     target={generator}
                                     propertyName="stabilizeCascades"
                                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -190,7 +190,7 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
                                 />
                                 <SliderLineComponent
                                     lockObject={this.props.lockObject}
-                                    label="级联混合"
+                                    label="Cascade blend"
                                     minimum={0}
                                     maximum={1.0}
                                     step={0.01}
@@ -199,20 +199,20 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
                                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                                 />
                                 <CheckBoxLineComponent
-                                    label="深度夹"
+                                    label="Depth clamp"
                                     target={generator}
                                     propertyName="depthClamp"
                                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                                 />
                                 <CheckBoxLineComponent
-                                    label="自动计算深度边界"
+                                    label="Auto-Calc depth bounds"
                                     target={generator}
                                     propertyName="autoCalcDepthBounds"
                                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                                 />
                                 <SliderLineComponent
                                     lockObject={this.props.lockObject}
-                                    label="阴影最大Z"
+                                    label="Shadow MaxZ"
                                     minimum={near}
                                     maximum={far}
                                     step={0.5}
@@ -233,14 +233,14 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
                         />
                         <FloatLineComponent
                             lockObject={this.props.lockObject}
-                            label="正常的偏差"
+                            label="Normal bias"
                             target={generator}
                             propertyName="normalBias"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="黑暗"
+                            label="Darkness"
                             target={generator}
                             minimum={0}
                             maximum={1}
@@ -249,13 +249,13 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <CheckBoxLineComponent
-                            label="允许透明阴影"
+                            label="Allow transparent shadows"
                             target={generator}
                             propertyName="transparencyShadow"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                         <OptionsLineComponent
-                            label="过滤器"
+                            label="Filter"
                             options={blurModeOptions}
                             onSelect={() => {
                                 this.forceUpdate();
@@ -266,7 +266,7 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
                         />
                         {(filter === ShadowGenerator.FILTER_PCF || filter === ShadowGenerator.FILTER_PCSS) && (
                             <OptionsLineComponent
-                                label="过滤性能"
+                                label="Filtering quality"
                                 options={filteringQualityOptions}
                                 onSelect={() => {
                                     this.forceUpdate();
@@ -279,7 +279,7 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
                         {filter === ShadowGenerator.FILTER_PCSS && (
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="半影比率"
+                                label="Penumbra ratio"
                                 minimum={0}
                                 maximum={0.5}
                                 step={0.001}
@@ -290,7 +290,7 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
                         )}
                         {!csmGenerator && (filter === ShadowGenerator.FILTER_BLUREXPONENTIALSHADOWMAP || filter === ShadowGenerator.FILTER_BLURCLOSEEXPONENTIALSHADOWMAP) && (
                             <CheckBoxLineComponent
-                                label="使用内核模糊"
+                                label="Use kernel blur"
                                 target={generator}
                                 propertyName="useKernelBlur"
                                 onValueChanged={() => this.forceUpdate()}
@@ -302,7 +302,7 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
                             !generator.useKernelBlur && (
                                 <SliderLineComponent
                                     lockObject={this.props.lockObject}
-                                    label="模糊框偏移"
+                                    label="Blur box offset"
                                     target={generator}
                                     propertyName="blurBoxOffset"
                                     minimum={1}
@@ -316,7 +316,7 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
                             generator.useKernelBlur && (
                                 <SliderLineComponent
                                     lockObject={this.props.lockObject}
-                                    label="模糊的内核"
+                                    label="Blur kernel"
                                     target={generator}
                                     propertyName="blurKernel"
                                     minimum={1}
@@ -329,7 +329,7 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
                             (filter === ShadowGenerator.FILTER_BLUREXPONENTIALSHADOWMAP || filter === ShadowGenerator.FILTER_EXPONENTIALSHADOWMAP) && (
                                 <FloatLineComponent
                                     lockObject={this.props.lockObject}
-                                    label="深度范围内"
+                                    label="Depth scale"
                                     target={generator}
                                     propertyName="depthScale"
                                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -339,7 +339,7 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
                             (filter === ShadowGenerator.FILTER_BLUREXPONENTIALSHADOWMAP || filter === ShadowGenerator.FILTER_EXPONENTIALSHADOWMAP) && (
                                 <SliderLineComponent
                                     lockObject={this.props.lockObject}
-                                    label="模糊的规模"
+                                    label="Blur scale"
                                     target={generator}
                                     propertyName="blurScale"
                                     minimum={1}
@@ -351,7 +351,7 @@ export class CommonShadowLightPropertyGridComponent extends React.Component<ICom
                         {csmGenerator && filter === ShadowGenerator.FILTER_PCSS && (
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="半影黑暗"
+                                label="Penumbra darkness"
                                 minimum={0}
                                 maximum={1.0}
                                 step={0.01}

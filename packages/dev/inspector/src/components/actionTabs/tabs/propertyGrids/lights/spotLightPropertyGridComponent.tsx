@@ -34,31 +34,31 @@ export class SpotLightPropertyGridComponent extends React.Component<ISpotLightPr
                     light={light}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="布设" selection={this.props.globalState}>
+                <LineContainerComponent title="SETUP" selection={this.props.globalState}>
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="扩散"
+                        label="Diffuse"
                         target={light}
                         propertyName="diffuse"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="镜面"
+                        label="Specular"
                         target={light}
                         propertyName="specular"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="坐标"
+                        label="Position"
                         target={light}
                         propertyName="position"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="方向"
+                        label="Direction"
                         target={light}
                         propertyName="direction"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -66,7 +66,7 @@ export class SpotLightPropertyGridComponent extends React.Component<ISpotLightPr
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
                         useEuler={this.props.globalState.onlyUseEulers}
-                        label="角度"
+                        label="Angle"
                         target={light}
                         propertyName="angle"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -74,14 +74,14 @@ export class SpotLightPropertyGridComponent extends React.Component<ISpotLightPr
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
                         useEuler={this.props.globalState.onlyUseEulers}
-                        label="内角"
+                        label="Inner angle"
                         target={light}
                         propertyName="innerAngle"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="指数"
+                        label="Exponent"
                         target={light}
                         propertyName="exponent"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}

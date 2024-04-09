@@ -35,13 +35,13 @@ export class CommonRenderingPipelinePropertyGridComponent extends React.Componen
                     lockObject={this.props.lockObject}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="常规" selection={this.props.globalState}>
-                    <TextLineComponent label="名称" value={renderPipeline.name} />
-                    <TextLineComponent label="类型" value={renderPipeline.getClassName()} />
+                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
+                    <TextLineComponent label="Name" value={renderPipeline.name} />
+                    <TextLineComponent label="Class" value={renderPipeline.getClassName()} />
                     {renderPipelineAsAny.samples !== undefined && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="样品"
+                            label="Samples"
                             minimum={1}
                             maximum={64}
                             step={1}

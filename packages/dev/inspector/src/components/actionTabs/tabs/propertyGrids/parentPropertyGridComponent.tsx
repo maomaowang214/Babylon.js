@@ -50,13 +50,13 @@ export class ParentPropertyGridComponent extends React.Component<IParentProperty
             <>
                 {node.parent && (
                     <TextLineComponent
-                        label="链接到父级"
+                        label="Link to parent"
                         value={node.parent.name}
                         onLink={() => this.props.globalState.onSelectionChangedObservable.notifyObservers(node.parent)}
                     />
                 )}
                 <OptionsLineComponent
-                    label="父"
+                    label="Parent"
                     options={nodeOptions}
                     target={node}
                     propertyName="parent"

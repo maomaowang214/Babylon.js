@@ -52,7 +52,7 @@ export class NodeMaterialPropertyGridComponent extends React.Component<INodeMate
         }
 
         return (
-            <LineContainerComponent title="纹理" selection={this.props.globalState}>
+            <LineContainerComponent title="TEXTURES" selection={this.props.globalState}>
                 {textureBlocks.map((textureBlock, i) => {
                     return (
                         <TextureLinkLineComponent
@@ -203,7 +203,7 @@ export class NodeMaterialPropertyGridComponent extends React.Component<INodeMate
 
         const inputBlockContainer =
             configurableInputBlocks.length > 0 ? (
-                <LineContainerComponent title="输入" selection={this.props.globalState}>
+                <LineContainerComponent title="INPUTS" selection={this.props.globalState}>
                     {" "}
                     {configurableInputBlocks
                         .filter((block) => !block.groupInInspector)
@@ -249,9 +249,9 @@ export class NodeMaterialPropertyGridComponent extends React.Component<INodeMate
                     material={material}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="配置" selection={this.props.globalState}>
-                    <CheckBoxLineComponent label="忽略阿尔法" target={material} propertyName="ignoreAlpha" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
-                    <ButtonLineComponent label="节点材质编辑器" onClick={() => this.edit()} />
+                <LineContainerComponent title="CONFIGURATION" selection={this.props.globalState}>
+                    <CheckBoxLineComponent label="Ignore alpha" target={material} propertyName="ignoreAlpha" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <ButtonLineComponent label="Node Material Editor" onClick={() => this.edit()} />
                 </LineContainerComponent>
                 {this.renderInputValues()}
                 {this.renderTextures()}

@@ -10,8 +10,8 @@ export const PerformancePlayheadButtonComponent: React.FC<IPerformancePlayheadBu
     };
 
     return (
-        <button className="performancePlayheadButton" onClick={onReturnToPlayheadClick} title="返回播放头">
-            返回
+        <button className="performancePlayheadButton" onClick={onReturnToPlayheadClick} title="Return to Playhead">
+            Return
         </button>
     );
 };

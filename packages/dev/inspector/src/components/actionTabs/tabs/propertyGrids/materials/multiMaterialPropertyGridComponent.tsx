@@ -36,10 +36,10 @@ export class MultiMaterialPropertyGridComponent extends React.Component<IMultiMa
         const material = this.props.material;
 
         return (
-            <LineContainerComponent title="子集" selection={this.props.globalState}>
+            <LineContainerComponent title="CHILDREN" selection={this.props.globalState}>
                 {material.subMaterials.map((mat, i) => {
                     if (mat) {
-                        return <TextLineComponent key={"材料 #" + i} label={"材料 #" + i} value={mat.name} onLink={() => this.onMaterialLink(mat)} />;
+                        return <TextLineComponent key={"Material #" + i} label={"Material #" + i} value={mat.name} onLink={() => this.onMaterialLink(mat)} />;
                     }
                     return null;
                 })}

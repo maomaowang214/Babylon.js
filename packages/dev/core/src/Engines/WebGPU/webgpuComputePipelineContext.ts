@@ -20,12 +20,10 @@ export class WebGPUComputePipelineContext implements IComputePipelineContext {
     }
 
     public get isReady(): boolean {
-        if (this.isAsync) {
-            // When async mode is implemented, this should return true if the pipeline is ready
-            return false;
+        if (this.stage) {
+            return true;
         }
 
-        // In synchronous mode, we return false, the readiness being determined by ComputeEffect
         return false;
     }
 

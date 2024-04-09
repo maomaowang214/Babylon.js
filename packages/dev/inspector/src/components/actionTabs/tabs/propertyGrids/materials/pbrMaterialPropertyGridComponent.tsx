@@ -174,76 +174,77 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
         const debugMode = [
             { label: "None", value: 0 },
             // Geometry
-            { label: "标准化位置", value: 1 },
-            { label: "法线", value: 2 },
-            { label: "切线", value: 3 },
-            { label: "双切线", value: 4 },
-            { label: "凹凸法线", value: 5 },
+            { label: "Normalized position", value: 1 },
+            { label: "Normals", value: 2 },
+            { label: "Tangents", value: 3 },
+            { label: "Bitangents", value: 4 },
+            { label: "Bump Normals", value: 5 },
             { label: "UV1", value: 6 },
             { label: "UV2", value: 7 },
-            { label: "漆法线", value: 8 },
-            { label: "漆切线", value: 9 },
-            { label: "漆 双切线", value: 10 },
-            { label: "各向异性法线", value: 11 },
-            { label: "各向异性切线", value: 12 },
-            { label: "各向异性双切线", value: 13 },
+            { label: "ClearCoat Normals", value: 8 },
+            { label: "ClearCoat Tangents", value: 9 },
+            { label: "ClearCoat Bitangents", value: 10 },
+            { label: "Anisotropic Normals", value: 11 },
+            { label: "Anisotropic Tangents", value: 12 },
+            { label: "Anisotropic Bitangents", value: 13 },
             // Maps
-            { label: "反照率图", value: 20 },
-            { label: "环境图", value: 21 },
-            { label: "不透明图", value: 22 },
-            { label: "放射性图", value: 23 },
-            { label: "光照图", value: 24 },
-            { label: "金属图", value: 25 },
-            { label: "反射率图", value: 26 },
-            { label: "漆图", value: 27 },
-            { label: "漆色彩图", value: 28 },
-            { label: "光泽图", value: 29 },
-            { label: "各向异性图", value: 30 },
-            { label: "厚度图", value: 31 },
-            { label: "凹凸图", value: 32 },
+            { label: "Albedo Map", value: 20 },
+            { label: "Ambient Map", value: 21 },
+            { label: "Opacity Map", value: 22 },
+            { label: "Emissive Map", value: 23 },
+            { label: "Light Map", value: 24 },
+            { label: "Metallic Map", value: 25 },
+            { label: "Reflectivity Map", value: 26 },
+            { label: "ClearCoat Map", value: 27 },
+            { label: "ClearCoat Tint Map", value: 28 },
+            { label: "Sheen Map", value: 29 },
+            { label: "Anisotropic Map", value: 30 },
+            { label: "Thickness Map", value: 31 },
+            { label: "Bump Map", value: 32 },
             // Env
-            { label: "环境折射", value: 40 },
-            { label: "环境反射", value: 41 },
-            { label: "环境漆", value: 42 },
+            { label: "Env Refraction", value: 40 },
+            { label: "Env Reflection", value: 41 },
+            { label: "Env Clear Coat", value: 42 },
             // Lighting
-            { label: "直接漫反射", value: 50 },
-            { label: "直接镜面反射", value: 51 },
-            { label: "直接漆", value: 52 },
-            { label: "直接光泽", value: 53 },
-            { label: "环境辐照度", value: 54 },
+            { label: "Direct Diffuse", value: 50 },
+            { label: "Direct Specular", value: 51 },
+            { label: "Direct Clear Coat", value: 52 },
+            { label: "Direct Sheen", value: 53 },
+            { label: "Env Irradiance", value: 54 },
             // Lighting Params
-            { label: "表面反照率", value: 60 },
-            { label: "反射系数 0", value: 61 },
-            { label: "金属", value: 62 },
-            { label: "金属 F0", value: 71 },
-            { label: "粗糙度", value: 63 },
-            { label: "阿尔法G", value: 64 },
-            { label: "金标法V", value: 65 },
-            { label: "实验确定的颜色", value: 66 },
-            { label: "实验确定粗糙度", value: 67 },
-            { label: "实验确定金标法V", value: 68 },
-            { label: "透光率", value: 69 },
-            { label: "折射透光率", value: 70 },
-            { label: "光泽度", value: 72 },
-            { label: "基本色", value: 73 },
-            { label: "高光颜色", value: 74 },
-            { label: "放射性的颜色", value: 75 },
+            { label: "Surface Albedo", value: 60 },
+            { label: "Reflectance 0", value: 61 },
+            { label: "Metallic", value: 62 },
+            { label: "Metallic F0", value: 71 },
+            { label: "Roughness", value: 63 },
+            { label: "AlphaG", value: 64 },
+            { label: "NdotV", value: 65 },
+            { label: "ClearCoat Color", value: 66 },
+            { label: "ClearCoat Roughness", value: 67 },
+            { label: "ClearCoat NdotV", value: 68 },
+            { label: "Transmittance", value: 69 },
+            { label: "Refraction Transmittance", value: 70 },
+            { label: "Glossiness", value: 72 },
+            { label: "Base Color", value: 73 },
+            { label: "Specular Color", value: 74 },
+            { label: "Emissive Color", value: 75 },
             // Misc
-            { label: "搜索引擎优化", value: 80 },
-            { label: "边缘谐波振荡", value: 81 },
-            { label: "能量因数", value: 82 },
-            { label: "镜面反射率", value: 83 },
-            { label: "漆反射率", value: 84 },
-            { label: "光泽反射", value: 85 },
-            { label: "阿尔法亮度", value: 86 },
-            { label: "阿尔法", value: 87 },
-            { label: "反照率阿尔法", value: 88 },
+            { label: "SEO", value: 80 },
+            { label: "EHO", value: 81 },
+            { label: "Energy Factor", value: 82 },
+            { label: "Specular Reflectance", value: 83 },
+            { label: "Clear Coat Reflectance", value: 84 },
+            { label: "Sheen Reflectance", value: 85 },
+            { label: "Luminance Over Alpha", value: 86 },
+            { label: "Alpha", value: 87 },
+            { label: "Albedo Alpha", value: 88 },
+            { label: "Ambient occlusion color", value: 89 },
         ];
 
         const realTimeFilteringQualityOptions = [
-            { label: "低", value: Constants.TEXTURE_FILTERING_QUALITY_LOW },
-            { label: "中", value: Constants.TEXTURE_FILTERING_QUALITY_MEDIUM },
-            { label: "高", value: Constants.TEXTURE_FILTERING_QUALITY_HIGH },
+            { label: "Low", value: Constants.TEXTURE_FILTERING_QUALITY_LOW },
+            { label: "Medium", value: Constants.TEXTURE_FILTERING_QUALITY_MEDIUM },
+            { label: "High", value: Constants.TEXTURE_FILTERING_QUALITY_HIGH },
         ];
 
         (material.sheen as any)._useRoughness = (material.sheen as any)._useRoughness ?? material.sheen.roughness !== null;
@@ -263,10 +264,10 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
                 {this.renderTextures(this._onDebugSelectionChangeObservable)}
-                <LineContainerComponent title="灯光 & 颜色" selection={this.props.globalState}>
+                <LineContainerComponent title="LIGHTING & COLORS" selection={this.props.globalState}>
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="反照率"
+                        label="Albedo"
                         target={material}
                         propertyName="albedoColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -274,7 +275,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="反射率"
+                        label="Reflectivity"
                         target={material}
                         propertyName="reflectivityColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -282,7 +283,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="微观表面"
+                        label="Micro-surface"
                         target={material}
                         propertyName="microSurface"
                         minimum={0}
@@ -292,7 +293,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="放射性"
+                        label="Emissive"
                         target={material}
                         propertyName="emissiveColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -300,23 +301,23 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="环境光"
+                        label="Ambient"
                         target={material}
                         propertyName="ambientColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         isLinear={true}
                     />
                     <CheckBoxLineComponent
-                        label="使用物理光衰减"
+                        label="Use physical light falloff"
                         target={material}
                         propertyName="usePhysicalLightFalloff"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="金属的工作流程" selection={this.props.globalState}>
+                <LineContainerComponent title="METALLIC WORKFLOW" selection={this.props.globalState}>
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="金属"
+                        label="Metallic"
                         target={material}
                         propertyName="metallic"
                         minimum={0}
@@ -326,7 +327,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="粗糙度"
+                        label="Roughness"
                         target={material}
                         propertyName="roughness"
                         minimum={0}
@@ -336,7 +337,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="折射率"
+                        label="Index of Refraction"
                         target={material}
                         propertyName="indexOfRefraction"
                         minimum={1}
@@ -346,7 +347,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="F0 因素"
+                        label="F0 Factor"
                         target={material}
                         propertyName="metallicF0Factor"
                         minimum={0}
@@ -356,20 +357,20 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="反射的颜色"
+                        label="Reflectance Color"
                         target={material}
                         propertyName="metallicReflectanceColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         isLinear={true}
                     />
                     <CheckBoxLineComponent
-                        label="只使用来自金属反射纹理的金属"
+                        label="Use only metallic from MetallicReflectance texture"
                         target={material}
                         propertyName="useOnlyMetallicFromMetallicReflectanceTexture"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <TextureLinkLineComponent
-                        label="金属反射纹理"
+                        label="MetallicReflectance Texture"
                         texture={material.metallicReflectanceTexture}
                         onTextureCreated={(texture) => (material.metallicReflectanceTexture = texture)}
                         onTextureRemoved={() => (material.metallicReflectanceTexture = null)}
@@ -378,7 +379,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         onDebugSelectionChangeObservable={this._onDebugSelectionChangeObservable}
                     />
                     <TextureLinkLineComponent
-                        label="反射结构"
+                        label="Reflectance Texture"
                         texture={material.reflectanceTexture}
                         onTextureCreated={(texture) => (material.reflectanceTexture = texture)}
                         onTextureRemoved={() => (material.reflectanceTexture = null)}
@@ -387,9 +388,9 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         onDebugSelectionChangeObservable={this._onDebugSelectionChangeObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="漆" selection={this.props.globalState}>
+                <LineContainerComponent title="CLEAR COAT" selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="启用"
+                        label="Enabled"
                         target={material.clearCoat}
                         propertyName="isEnabled"
                         onValueChanged={() => this.forceUpdate()}
@@ -399,7 +400,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         <div className="fragment">
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="强度"
+                                label="Intensity"
                                 target={material.clearCoat}
                                 propertyName="intensity"
                                 minimum={0}
@@ -409,7 +410,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="粗糙度"
+                                label="Roughness"
                                 target={material.clearCoat}
                                 propertyName="roughness"
                                 minimum={0}
@@ -419,7 +420,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="折射率"
+                                label="IOR"
                                 target={material.clearCoat}
                                 propertyName="indexOfRefraction"
                                 minimum={1.0}
@@ -428,13 +429,13 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <CheckBoxLineComponent
-                                label="重新映射 F0"
+                                label="Remap F0"
                                 target={material.clearCoat}
                                 propertyName="remapF0OnInterfaceChange"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <TextureLinkLineComponent
-                                label="漆"
+                                label="Clear coat"
                                 texture={material.clearCoat.texture}
                                 onTextureCreated={(texture) => (material.clearCoat.texture = texture)}
                                 onTextureRemoved={() => (material.clearCoat.texture = null)}
@@ -443,7 +444,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                                 onDebugSelectionChangeObservable={this._onDebugSelectionChangeObservable}
                             />
                             <TextureLinkLineComponent
-                                label="粗糙度"
+                                label="Roughness"
                                 texture={material.clearCoat.textureRoughness}
                                 onTextureCreated={(texture) => (material.clearCoat.textureRoughness = texture)}
                                 onTextureRemoved={() => (material.clearCoat.textureRoughness = null)}
@@ -452,7 +453,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                                 onDebugSelectionChangeObservable={this._onDebugSelectionChangeObservable}
                             />
                             <TextureLinkLineComponent
-                                label="凹凸"
+                                label="Bump"
                                 texture={material.clearCoat.bumpTexture}
                                 onTextureCreated={(texture) => (material.clearCoat.bumpTexture = texture)}
                                 onTextureRemoved={() => (material.clearCoat.bumpTexture = null)}
@@ -463,7 +464,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             {material.clearCoat.bumpTexture && (
                                 <SliderLineComponent
                                     lockObject={this.props.lockObject}
-                                    label="凹凸强度"
+                                    label="Bump strength"
                                     target={material.clearCoat.bumpTexture}
                                     propertyName="level"
                                     minimum={0}
@@ -473,13 +474,13 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                                 />
                             )}
                             <CheckBoxLineComponent
-                                label="使用主纹理的粗糙度"
+                                label="Use roughness from main texture"
                                 target={material.clearCoat}
                                 propertyName="useRoughnessFromMainTexture"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <CheckBoxLineComponent
-                                label="色调"
+                                label="Tint"
                                 target={material.clearCoat}
                                 propertyName="isTintEnabled"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -487,7 +488,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             {material.clearCoat.isEnabled && material.clearCoat.isTintEnabled && (
                                 <Color3LineComponent
                                     lockObject={this.props.lockObject}
-                                    label="颜色"
+                                    label="Tint Color"
                                     target={material.clearCoat}
                                     propertyName="tintColor"
                                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -497,7 +498,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             {material.clearCoat.isEnabled && material.clearCoat.isTintEnabled && (
                                 <SliderLineComponent
                                     lockObject={this.props.lockObject}
-                                    label="远距离"
+                                    label="At Distance"
                                     target={material.clearCoat}
                                     propertyName="tintColorAtDistance"
                                     minimum={0}
@@ -509,7 +510,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             {material.clearCoat.isEnabled && material.clearCoat.isTintEnabled && (
                                 <SliderLineComponent
                                     lockObject={this.props.lockObject}
-                                    label="色彩厚度"
+                                    label="Tint Thickness"
                                     target={material.clearCoat}
                                     propertyName="tintThickness"
                                     minimum={0}
@@ -520,7 +521,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             )}
                             {material.clearCoat.isEnabled && material.clearCoat.isTintEnabled && (
                                 <TextureLinkLineComponent
-                                    label="色彩"
+                                    label="Tint"
                                     texture={material.clearCoat.tintTexture}
                                     onTextureCreated={(texture) => (material.clearCoat.tintTexture = texture)}
                                     onTextureRemoved={() => (material.clearCoat.tintTexture = null)}
@@ -532,9 +533,9 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         </div>
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="渐变色" selection={this.props.globalState}>
+                <LineContainerComponent title="IRIDESCENCE" selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="启用"
+                        label="Enabled"
                         target={material.iridescence}
                         propertyName="isEnabled"
                         onValueChanged={() => this.forceUpdate()}
@@ -544,7 +545,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         <div className="fragment">
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="强度"
+                                label="Intensity"
                                 target={material.iridescence}
                                 propertyName="intensity"
                                 minimum={0}
@@ -554,7 +555,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="折射率"
+                                label="IOR"
                                 target={material.iridescence}
                                 propertyName="indexOfRefraction"
                                 minimum={1.0}
@@ -564,7 +565,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="最小厚度"
+                                label="Min Thickness"
                                 target={material.iridescence}
                                 propertyName="minimumThickness"
                                 minimum={0}
@@ -574,7 +575,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="最大厚度"
+                                label="Max Thickness"
                                 target={material.iridescence}
                                 propertyName="maximumThickness"
                                 minimum={0}
@@ -583,7 +584,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <TextureLinkLineComponent
-                                label="彩虹色"
+                                label="Iridescence"
                                 texture={material.iridescence.texture}
                                 onTextureCreated={(texture) => (material.iridescence.texture = texture)}
                                 onTextureRemoved={() => (material.iridescence.texture = null)}
@@ -592,7 +593,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                                 onDebugSelectionChangeObservable={this._onDebugSelectionChangeObservable}
                             />
                             <TextureLinkLineComponent
-                                label="厚度"
+                                label="Thickness"
                                 texture={material.iridescence.thicknessTexture}
                                 onTextureCreated={(texture) => (material.iridescence.thicknessTexture = texture)}
                                 onTextureRemoved={() => (material.iridescence.thicknessTexture = null)}
@@ -603,9 +604,9 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         </div>
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="各向异性" selection={this.props.globalState}>
+                <LineContainerComponent title="ANISOTROPIC" selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="启用"
+                        label="Enabled"
                         target={material.anisotropy}
                         propertyName="isEnabled"
                         onValueChanged={() => this.forceUpdate()}
@@ -614,7 +615,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     {material.anisotropy.isEnabled && (
                         <div className="fragment">
                             <CheckBoxLineComponent
-                                label="传统模式"
+                                label="Legacy Mode"
                                 target={material.anisotropy}
                                 propertyName="legacy"
                                 onValueChanged={() => this.forceUpdate()}
@@ -622,7 +623,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="强度"
+                                label="Intensity"
                                 target={material.anisotropy}
                                 propertyName="intensity"
                                 minimum={0}
@@ -632,13 +633,13 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             />
                             <Vector2LineComponent
                                 lockObject={this.props.lockObject}
-                                label="方向"
+                                label="Direction"
                                 target={material.anisotropy}
                                 propertyName="direction"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <TextureLinkLineComponent
-                                label="各向异性"
+                                label="Anisotropic"
                                 texture={material.anisotropy.texture}
                                 onTextureCreated={(texture) => (material.anisotropy.texture = texture)}
                                 onTextureRemoved={() => (material.anisotropy.texture = null)}
@@ -649,9 +650,9 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         </div>
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="光泽" selection={this.props.globalState}>
+                <LineContainerComponent title="SHEEN" selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="启用"
+                        label="Enabled"
                         target={material.sheen}
                         propertyName="isEnabled"
                         onValueChanged={() => this.forceUpdate()}
@@ -660,14 +661,14 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     {material.sheen.isEnabled && (
                         <div className="fragment">
                             <CheckBoxLineComponent
-                                label="链接到反照度"
+                                label="Link to Albedo"
                                 target={material.sheen}
                                 propertyName="linkSheenWithAlbedo"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="强度"
+                                label="Intensity"
                                 target={material.sheen}
                                 propertyName="intensity"
                                 minimum={0}
@@ -677,14 +678,14 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             />
                             <Color3LineComponent
                                 lockObject={this.props.lockObject}
-                                label="颜色"
+                                label="Color"
                                 target={material.sheen}
                                 propertyName="color"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                                 isLinear={true}
                             />
                             <TextureLinkLineComponent
-                                label="光泽度"
+                                label="Sheen"
                                 texture={material.sheen.texture}
                                 onTextureCreated={(texture) => (material.sheen.texture = texture)}
                                 onTextureRemoved={() => (material.sheen.texture = null)}
@@ -693,7 +694,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                                 onDebugSelectionChangeObservable={this._onDebugSelectionChangeObservable}
                             />
                             <TextureLinkLineComponent
-                                label="粗糙度"
+                                label="Roughness"
                                 texture={material.sheen.textureRoughness}
                                 onTextureCreated={(texture) => (material.sheen.textureRoughness = texture)}
                                 onTextureRemoved={() => (material.sheen.textureRoughness = null)}
@@ -701,11 +702,11 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                                 onSelectionChangedObservable={this.props.onSelectionChangedObservable}
                                 onDebugSelectionChangeObservable={this._onDebugSelectionChangeObservable}
                             />
-                            <CheckBoxLineComponent label="使用粗糙度" target={material.sheen} propertyName="_useRoughness" />
+                            <CheckBoxLineComponent label="Use roughness" target={material.sheen} propertyName="_useRoughness" />
                             {(material.sheen as any)._useRoughness && (
                                 <SliderLineComponent
                                     lockObject={this.props.lockObject}
-                                    label="粗糙度"
+                                    label="Roughness"
                                     target={material.sheen}
                                     propertyName="roughness"
                                     minimum={0}
@@ -715,13 +716,13 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                                 />
                             )}
                             <CheckBoxLineComponent
-                                label="使用主纹理的粗糙度"
+                                label="Use roughness from main texture"
                                 target={material.sheen}
                                 propertyName="useRoughnessFromMainTexture"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <CheckBoxLineComponent
-                                label="反照率比例"
+                                label="Albedo scaling"
                                 target={material.sheen}
                                 propertyName="albedoScaling"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -729,9 +730,9 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         </div>
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="次表面" selection={this.props.globalState}>
+                <LineContainerComponent title="SUBSURFACE" selection={this.props.globalState}>
                     <TextureLinkLineComponent
-                        label="厚度"
+                        label="Thickness"
                         texture={material.subSurface.thicknessTexture}
                         onTextureCreated={(texture) => (material.subSurface.thicknessTexture = texture)}
                         onTextureRemoved={() => (material.subSurface.thicknessTexture = null)}
@@ -741,7 +742,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="最小厚度"
+                        label="Min Thickness"
                         target={material.subSurface}
                         propertyName="minimumThickness"
                         minimum={0}
@@ -751,7 +752,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="最大厚度"
+                        label="Max Thickness"
                         target={material.subSurface}
                         propertyName="maximumThickness"
                         minimum={0}
@@ -760,21 +761,21 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="厚度遮罩"
+                        label="Mask From Thickness"
                         target={material.subSurface}
                         propertyName="useMaskFromThicknessTexture"
                         onValueChanged={() => this.forceUpdate()}
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="glTF-Style 纹理"
+                        label="glTF-Style Textures"
                         target={material.subSurface}
                         propertyName="useGltfStyleTextures"
                         onValueChanged={() => this.forceUpdate()}
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="使用厚度作为深度"
+                        label="Use Thickness as Depth"
                         target={material.subSurface}
                         propertyName="useThicknessAsDepth"
                         onValueChanged={() => this.forceUpdate()}
@@ -782,7 +783,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="色调"
+                        label="Tint Color"
                         target={material.subSurface}
                         propertyName="tintColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -790,7 +791,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
 
                     <CheckBoxLineComponent
-                        label="光散射启用"
+                        label="Scattering Enabled"
                         target={material.subSurface}
                         propertyName="isScatteringEnabled"
                         onValueChanged={() => this.forceUpdate()}
@@ -800,7 +801,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         <div className="fragment">
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="单位米数"
+                                label="Meters per unit"
                                 target={material.getScene().subSurfaceConfiguration!}
                                 propertyName="metersPerUnit"
                                 minimum={0.01}
@@ -811,7 +812,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         </div>
                     )}
                     <CheckBoxLineComponent
-                        label="已启用折射"
+                        label="Refraction Enabled"
                         target={material.subSurface}
                         propertyName="isRefractionEnabled"
                         onValueChanged={() => this.forceUpdate()}
@@ -821,7 +822,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         <div className="fragment">
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="强度"
+                                label="Intensity"
                                 target={material.subSurface}
                                 propertyName="refractionIntensity"
                                 minimum={0}
@@ -830,7 +831,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <TextureLinkLineComponent
-                                label="折射强度"
+                                label="Refraction Intensity"
                                 texture={material.subSurface.refractionIntensityTexture}
                                 onTextureCreated={(texture) => (material.subSurface.refractionIntensityTexture = texture)}
                                 onTextureRemoved={() => (material.subSurface.refractionIntensityTexture = null)}
@@ -839,7 +840,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                                 onDebugSelectionChangeObservable={this._onDebugSelectionChangeObservable}
                             />
                             <TextureLinkLineComponent
-                                label="折射"
+                                label="Refraction"
                                 texture={material.subSurface.refractionTexture}
                                 onTextureCreated={(texture) => (material.subSurface.refractionTexture = texture)}
                                 onTextureRemoved={() => (material.subSurface.refractionTexture = null)}
@@ -849,7 +850,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="体积折射率"
+                                label="Volume Index of Refraction"
                                 target={material.subSurface}
                                 propertyName="volumeIndexOfRefraction"
                                 minimum={1}
@@ -859,7 +860,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="远距离着色"
+                                label="Tint at Distance"
                                 target={material.subSurface}
                                 propertyName="tintColorAtDistance"
                                 minimum={0}
@@ -868,13 +869,13 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <CheckBoxLineComponent
-                                label="将折射与透明度联系起来"
+                                label="Link refraction with transparency"
                                 target={material.subSurface}
                                 propertyName="linkRefractionWithTransparency"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <CheckBoxLineComponent
-                                label="使用反照率着色表面透明度"
+                                label="Use albedo to tint surface transparency"
                                 target={material.subSurface}
                                 propertyName="useAlbedoToTintRefraction"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -914,7 +915,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         <div className="fragment">
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="强度"
+                                label="Intensity"
                                 target={material.subSurface}
                                 propertyName="translucencyIntensity"
                                 minimum={0}
@@ -924,14 +925,14 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             />
                             <Color3LineComponent
                                 lockObject={this.props.lockObject}
-                                label="扩散距离"
+                                label="Diffusion Distance"
                                 target={material.subSurface}
                                 propertyName="diffusionDistance"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                                 isLinear={true}
                             />
                             <CheckBoxLineComponent
-                                label="使用反照率着色表面半透明"
+                                label="Use albedo to tint surface translucency"
                                 target={material.subSurface}
                                 propertyName="useAlbedoToTintTranslucency"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -939,10 +940,10 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         </div>
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="标准" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="LEVELS" closed={true} selection={this.props.globalState}>
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="环境"
+                        label="Environment"
                         target={material}
                         propertyName="environmentIntensity"
                         minimum={0}
@@ -952,7 +953,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="镜面"
+                        label="Specular"
                         target={material}
                         propertyName="specularIntensity"
                         minimum={0}
@@ -962,7 +963,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="发射"
+                        label="Emissive"
                         target={material}
                         propertyName="emissiveIntensity"
                         minimum={0}
@@ -972,7 +973,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="直接"
+                        label="Direct"
                         target={material}
                         propertyName="directIntensity"
                         minimum={0}
@@ -983,7 +984,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     {material.bumpTexture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="撞击的力量"
+                            label="Bump strength"
                             target={material.bumpTexture}
                             propertyName="level"
                             minimum={0}
@@ -995,7 +996,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     {material.ambientTexture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="环境的力量"
+                            label="Ambient strength"
                             target={material}
                             propertyName="ambientTextureStrength"
                             minimum={0}
@@ -1007,7 +1008,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     {material.reflectionTexture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="反射强度"
+                            label="Reflection strength"
                             target={material.reflectionTexture}
                             propertyName="level"
                             minimum={0}
@@ -1019,7 +1020,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     {material.clearCoat.texture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="漆"
+                            label="Clear coat"
                             target={material.clearCoat.texture}
                             propertyName="level"
                             minimum={0}
@@ -1031,7 +1032,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     {material.clearCoat.bumpTexture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="凹凸漆"
+                            label="Clear coat bump"
                             target={material.clearCoat.bumpTexture}
                             propertyName="level"
                             minimum={0}
@@ -1043,7 +1044,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     {material.clearCoat.tintTexture && false /* level is not used for the clear coat tint texture */ && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="漆色调"
+                            label="Clear coat tint"
                             target={material.clearCoat.tintTexture}
                             propertyName="level"
                             minimum={0}
@@ -1055,7 +1056,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     {material.anisotropy.texture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="各向异性"
+                            label="Anisotropic"
                             target={material.anisotropy.texture}
                             propertyName="level"
                             minimum={0}
@@ -1067,7 +1068,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     {material.sheen.texture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="光泽"
+                            label="Sheen"
                             target={material.sheen.texture}
                             propertyName="level"
                             minimum={0}
@@ -1079,7 +1080,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     {material.subSurface.thicknessTexture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="厚度"
+                            label="Thickness"
                             target={material.subSurface.thicknessTexture}
                             propertyName="level"
                             minimum={0}
@@ -1091,7 +1092,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     {material.subSurface.refractionTexture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="折射"
+                            label="Refraction"
                             target={material.subSurface.refractionTexture}
                             propertyName="level"
                             minimum={0}
@@ -1104,7 +1105,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         <>
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="详细漫反射图"
+                                label="Detailmap diffuse"
                                 target={material.detailMap}
                                 propertyName="diffuseBlendLevel"
                                 minimum={0}
@@ -1114,7 +1115,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="详细凹凸图"
+                                label="Detailmap bump"
                                 target={material.detailMap}
                                 propertyName="bumpLevel"
                                 minimum={0}
@@ -1124,7 +1125,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="详细粗糙图"
+                                label="Detailmap roughness"
                                 target={material.detailMap}
                                 propertyName="roughnessBlendLevel"
                                 minimum={0}
@@ -1135,96 +1136,106 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                         </>
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="抹灰" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="RENDERING" closed={true} selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="来自反照率的阿尔法"
+                        label="Alpha from albedo"
                         target={material}
                         propertyName="useAlphaFromAlbedoTexture"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="灰度环境光"
+                        label="Ambient in grayscale"
                         target={material}
                         propertyName="useAmbientInGrayScale"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="阿尔法上的辐射"
+                        label="Radiance over alpha"
                         target={material}
                         propertyName="useRadianceOverAlpha"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="参考图阿尔法的微观表面"
+                        label="Micro-surface from ref. map alpha"
                         target={material}
                         propertyName="useMicroSurfaceFromReflectivityMapAlpha"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="阿尔法上的镜面反射"
+                        label="Specular over alpha"
                         target={material}
                         propertyName="useSpecularOverAlpha"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="镜面反射抗锯齿"
+                        label="Specular anti-aliasing"
                         target={material}
                         propertyName="enableSpecularAntiAliasing"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="实时筛选"
+                        label="Realtime Filtering"
                         target={material}
                         propertyName="realTimeFiltering"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <OptionsLineComponent
                         allowNullValue={true}
-                        label="实时过滤质量"
+                        label="Realtime Filtering quality"
                         options={realTimeFilteringQualityOptions}
                         target={material}
                         propertyName="realTimeFilteringQuality"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="法线贴图" closed={true} selection={this.props.globalState}>
-                    <CheckBoxLineComponent label="反转X轴" target={material} propertyName="invertNormalMapX" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
-                    <CheckBoxLineComponent label="反转Y轴" target={material} propertyName="invertNormalMapY" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
-                </LineContainerComponent>
-                <LineContainerComponent title="高级" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="NORMAL MAP" closed={true} selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="节能"
+                        label="Invert X axis"
+                        target={material}
+                        propertyName="invertNormalMapX"
+                        onPropertyChangedObservable={this.props.onPropertyChangedObservable}
+                    />
+                    <CheckBoxLineComponent
+                        label="Invert Y axis"
+                        target={material}
+                        propertyName="invertNormalMapY"
+                        onPropertyChangedObservable={this.props.onPropertyChangedObservable}
+                    />
+                </LineContainerComponent>
+                <LineContainerComponent title="ADVANCED" closed={true} selection={this.props.globalState}>
+                    <CheckBoxLineComponent
+                        label="Energy Conservation"
                         target={material.brdf}
                         propertyName="useEnergyConservation"
                         onValueChanged={() => this.forceUpdate()}
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="球面谐波"
+                        label="Spherical Harmonics"
                         target={material.brdf}
                         propertyName="useSphericalHarmonics"
                         onValueChanged={() => this.forceUpdate()}
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="辐射遮挡"
+                        label="Radiance occlusion"
                         target={material}
                         propertyName="useRadianceOcclusion"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="地平线遮挡 "
+                        label="Horizon occlusion "
                         target={material}
                         propertyName="useHorizonOcclusion"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <CheckBoxLineComponent label="熄灭" target={material} propertyName="unlit" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <CheckBoxLineComponent label="Unlit" target={material} propertyName="unlit" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                 </LineContainerComponent>
-                <LineContainerComponent title="调试" closed={true} selection={this.props.globalState}>
-                    <OptionsLineComponent label="调试模式" options={debugMode} target={material} propertyName="debugMode" />
+                <LineContainerComponent title="DEBUG" closed={true} selection={this.props.globalState}>
+                    <OptionsLineComponent label="Debug mode" options={debugMode} target={material} propertyName="debugMode" />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="分裂的位置"
+                        label="Split position"
                         target={material}
                         propertyName="debugLimit"
                         minimum={-1}
@@ -1234,7 +1245,7 @@ export class PBRMaterialPropertyGridComponent extends React.Component<IPBRMateri
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="输出的因素"
+                        label="Output factor"
                         target={material}
                         propertyName="debugFactor"
                         minimum={0}

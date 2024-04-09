@@ -39,7 +39,7 @@ class TreeItemExpandableHeaderComponent extends React.Component<ITreeItemExpanda
                     </div>
                     <div className="text-value">{this.props.label}</div>
                 </div>
-                <div className="expandAll icon" onClick={() => this.expandAll()} title={this.props.isExpanded ? "折叠" : "展开"}>
+                <div className="expandAll icon" onClick={() => this.expandAll()} title={this.props.isExpanded ? "Collapse all" : "Expand all"}>
                     {expandAll}
                 </div>
             </div>

@@ -82,7 +82,7 @@ export class SpriteManagerPropertyGridComponent extends React.Component<ISpriteM
         const spriteManager = this.props.spriteManager;
         const scene = spriteManager.scene;
 
-        const snippedId = window.prompt("请输入要使用的代码片段ID");
+        const snippedId = window.prompt("Please enter the snippet ID to use");
 
         if (!snippedId) {
             return;
@@ -96,7 +96,7 @@ export class SpriteManagerPropertyGridComponent extends React.Component<ISpriteM
                 this.props.globalState.onSelectionChangedObservable.notifyObservers(newManager);
             })
             .catch((err) => {
-                alert("无法加载精灵管理器: " + err);
+                alert("Unable to load your sprite manager: " + err);
             });
     }
 
@@ -128,7 +128,7 @@ export class SpriteManagerPropertyGridComponent extends React.Component<ISpriteM
                         });
                     }
 
-                    alert("精灵管理器保存ID: " + spriteManager.snippetId + " (请注意，id也保存到剪贴板中)");
+                    alert("Sprite manager saved with ID: " + spriteManager.snippetId + " (please note that the id was also saved to your clipboard)");
                 } else {
                     alert("Unable to save your sprite manager");
                 }
@@ -154,57 +154,57 @@ export class SpriteManagerPropertyGridComponent extends React.Component<ISpriteM
         const spriteManager = this.props.spriteManager;
 
         const alphaModeOptions = [
-            { label: "组合", value: Constants.ALPHA_COMBINE },
-            { label: "一对一", value: Constants.ALPHA_ONEONE },
-            { label: "加", value: Constants.ALPHA_ADD },
-            { label: "减", value: Constants.ALPHA_SUBTRACT },
-            { label: "乘", value: Constants.ALPHA_MULTIPLY },
-            { label: "最大化", value: Constants.ALPHA_MAXIMIZED },
-            { label: "预乘", value: Constants.ALPHA_PREMULTIPLIED },
+            { label: "Combine", value: Constants.ALPHA_COMBINE },
+            { label: "One one", value: Constants.ALPHA_ONEONE },
+            { label: "Add", value: Constants.ALPHA_ADD },
+            { label: "Subtract", value: Constants.ALPHA_SUBTRACT },
+            { label: "Multiply", value: Constants.ALPHA_MULTIPLY },
+            { label: "Maximized", value: Constants.ALPHA_MAXIMIZED },
+            { label: "Pre-multiplied", value: Constants.ALPHA_PREMULTIPLIED },
         ];
 
         return (
             <>
-                <LineContainerComponent title="常规" selection={this.props.globalState}>
+                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
                     <TextInputLineComponent
                         lockObject={this.props.lockObject}
-                        label="名称"
+                        label="Name"
                         target={spriteManager}
                         propertyName="name"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <TextLineComponent label="唯一ID" value={spriteManager.uniqueId.toString()} />
-                    <TextLineComponent label="容积" value={spriteManager.capacity.toString()} />
-                    <TextureLinkLineComponent label="纹理" texture={spriteManager.texture} onSelectionChangedObservable={this.props.onSelectionChangedObservable} />
-                    {spriteManager.sprites.length < spriteManager.capacity && <ButtonLineComponent label="添加新精灵" onClick={() => this.addNewSprite()} />}
-                    <ButtonLineComponent label="删除" onClick={() => this.disposeManager()} />
+                    <TextLineComponent label="Unique ID" value={spriteManager.uniqueId.toString()} />
+                    <TextLineComponent label="Capacity" value={spriteManager.capacity.toString()} />
+                    <TextureLinkLineComponent label="Texture" texture={spriteManager.texture} onSelectionChangedObservable={this.props.onSelectionChangedObservable} />
+                    {spriteManager.sprites.length < spriteManager.capacity && <ButtonLineComponent label="Add new sprite" onClick={() => this.addNewSprite()} />}
+                    <ButtonLineComponent label="Dispose" onClick={() => this.disposeManager()} />
                 </LineContainerComponent>
-                <LineContainerComponent title="文件" selection={this.props.globalState}>
-                    <FileButtonLineComponent label="加载" onClick={(file) => this.loadFromFile(file)} accept=".json" />
-                    <ButtonLineComponent label="保存" onClick={() => this.saveToFile()} />
+                <LineContainerComponent title="FILE" selection={this.props.globalState}>
+                    <FileButtonLineComponent label="Load" onClick={(file) => this.loadFromFile(file)} accept=".json" />
+                    <ButtonLineComponent label="Save" onClick={() => this.saveToFile()} />
                 </LineContainerComponent>
-                <LineContainerComponent title="片段" selection={this.props.globalState}>
-                    {spriteManager.snippetId && <TextLineComponent label="片段 ID" value={spriteManager.snippetId} />}
-                    <ButtonLineComponent label="从服务器加载片段" onClick={() => this.loadFromSnippet()} />
-                    <ButtonLineComponent label="保存片段到服务器" onClick={() => this.saveToSnippet()} />
+                <LineContainerComponent title="SNIPPET" selection={this.props.globalState}>
+                    {spriteManager.snippetId && <TextLineComponent label="Snippet ID" value={spriteManager.snippetId} />}
+                    <ButtonLineComponent label="Load from snippet server" onClick={() => this.loadFromSnippet()} />
+                    <ButtonLineComponent label="Save to snippet server" onClick={() => this.saveToSnippet()} />
                 </LineContainerComponent>
-                <LineContainerComponent title="属性" selection={this.props.globalState}>
-                    <CheckBoxLineComponent label="可选中" target={spriteManager} propertyName="isPickable" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                <LineContainerComponent title="PROPERTIES" selection={this.props.globalState}>
+                    <CheckBoxLineComponent label="Pickable" target={spriteManager} propertyName="isPickable" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     <CheckBoxLineComponent
-                        label="雾启用"
+                        label="Fog enabled"
                         target={spriteManager}
                         propertyName="fogEnabled"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="无深度写入"
+                        label="No depth write"
                         target={spriteManager}
                         propertyName="disableDepthWrite"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="渲染组ID"
+                        label="Rendering group ID"
                         decimalCount={0}
                         target={spriteManager}
                         propertyName="renderingGroupId"
@@ -214,7 +214,7 @@ export class SpriteManagerPropertyGridComponent extends React.Component<ISpriteM
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <OptionsLineComponent
-                        label="阿尔法模式"
+                        label="Alpha mode"
                         options={alphaModeOptions}
                         target={spriteManager}
                         propertyName="blendMode"
@@ -222,10 +222,10 @@ export class SpriteManagerPropertyGridComponent extends React.Component<ISpriteM
                         onSelect={(value) => this.setState({ blendMode: value })}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="单元格" selection={this.props.globalState}>
+                <LineContainerComponent title="CELLS" selection={this.props.globalState}>
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="单元格宽度"
+                        label="Cell width"
                         isInteger={true}
                         target={spriteManager}
                         propertyName="cellWidth"
@@ -234,7 +234,7 @@ export class SpriteManagerPropertyGridComponent extends React.Component<ISpriteM
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="单元格高度"
+                        label="Cell height"
                         isInteger={true}
                         target={spriteManager}
                         propertyName="cellHeight"

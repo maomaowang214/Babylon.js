@@ -146,37 +146,37 @@ export class SpritePropertyGridComponent extends React.Component<ISpriteProperty
 
         return (
             <>
-                <LineContainerComponent title="常规" selection={this.props.globalState}>
+                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
                     <TextInputLineComponent
                         lockObject={this.props.lockObject}
-                        label="名称"
+                        label="Name"
                         target={sprite}
                         propertyName="name"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <TextLineComponent label="唯一 ID" value={sprite.uniqueId.toString()} />
-                    <TextLineComponent label="链接到管理器" value={manager.name} onLink={() => this.onManagerLink()} />
-                    <CheckBoxLineComponent label="可见" target={sprite} propertyName="isVisible" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
-                    <ButtonLineComponent label="删除" onClick={() => this.disposeSprite()} />
+                    <TextLineComponent label="Unique ID" value={sprite.uniqueId.toString()} />
+                    <TextLineComponent label="Link to manager" value={manager.name} onLink={() => this.onManagerLink()} />
+                    <CheckBoxLineComponent label="Visible" target={sprite} propertyName="isVisible" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <ButtonLineComponent label="Dispose" onClick={() => this.disposeSprite()} />
                 </LineContainerComponent>
-                <LineContainerComponent title="属性" selection={this.props.globalState}>
+                <LineContainerComponent title="PROPERTIES" selection={this.props.globalState}>
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="坐标"
+                        label="Position"
                         target={sprite}
                         propertyName="position"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <CheckBoxLineComponent label="可选" target={sprite} propertyName="isPickable" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <CheckBoxLineComponent label="Pickable" target={sprite} propertyName="isPickable" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     <CheckBoxLineComponent
-                        label="用阿尔法选择"
+                        label="Use alpha for picking"
                         target={sprite}
                         propertyName="useAlphaForPicking"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Color4LineComponent
                         lockObject={this.props.lockObject}
-                        label="颜色"
+                        label="Color"
                         target={sprite}
                         propertyName="color"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -184,7 +184,7 @@ export class SpritePropertyGridComponent extends React.Component<ISpriteProperty
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
                         useEuler={this.props.globalState.onlyUseEulers}
-                        label="角度"
+                        label="Angle"
                         target={sprite}
                         propertyName="angle"
                         minimum={0}
@@ -193,7 +193,7 @@ export class SpritePropertyGridComponent extends React.Component<ISpriteProperty
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="单元格" selection={this.props.globalState}>
+                <LineContainerComponent title="CELL" selection={this.props.globalState}>
                     <canvas
                         ref={this._canvasRef}
                         className="preview"
@@ -207,7 +207,7 @@ export class SpritePropertyGridComponent extends React.Component<ISpriteProperty
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="单元格索引"
+                        label="Cell index"
                         decimalCount={0}
                         target={sprite}
                         propertyName="cellIndex"
@@ -217,12 +217,12 @@ export class SpritePropertyGridComponent extends React.Component<ISpriteProperty
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         onChange={() => this.forceUpdate()}
                     />
-                    <CheckBoxLineComponent label="反U轴" target={sprite} propertyName="invertU" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
-                    <CheckBoxLineComponent label="反V轴" target={sprite} propertyName="invertV" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <CheckBoxLineComponent label="Invert U axis" target={sprite} propertyName="invertU" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <CheckBoxLineComponent label="Invert V axis" target={sprite} propertyName="invertV" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                 </LineContainerComponent>
-                <LineContainerComponent title="尺寸" selection={this.props.globalState}>
+                <LineContainerComponent title="SCALE" selection={this.props.globalState}>
                     <FloatLineComponent
-                        label="宽"
+                        label="Width"
                         lockObject={this.props.lockObject}
                         target={sprite}
                         propertyName="width"
@@ -230,7 +230,7 @@ export class SpritePropertyGridComponent extends React.Component<ISpriteProperty
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
-                        label="高"
+                        label="Height"
                         lockObject={this.props.lockObject}
                         target={sprite}
                         propertyName="height"
@@ -238,9 +238,9 @@ export class SpritePropertyGridComponent extends React.Component<ISpriteProperty
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="动画" selection={this.props.globalState}>
+                <LineContainerComponent title="ANIMATION" selection={this.props.globalState}>
                     <FloatLineComponent
-                        label="起始单元格"
+                        label="Start cell"
                         isInteger={true}
                         lockObject={this.props.lockObject}
                         target={sprite}
@@ -250,7 +250,7 @@ export class SpritePropertyGridComponent extends React.Component<ISpriteProperty
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
-                        label="结束单元格"
+                        label="End cell"
                         isInteger={true}
                         lockObject={this.props.lockObject}
                         target={sprite}
@@ -259,9 +259,9 @@ export class SpritePropertyGridComponent extends React.Component<ISpriteProperty
                         max={maxCellCount}
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <CheckBoxLineComponent label="循环" target={sprite} propertyName="loopAnimation" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <CheckBoxLineComponent label="Loop" target={sprite} propertyName="loopAnimation" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     <FloatLineComponent
-                        label="延迟"
+                        label="Delay"
                         lockObject={this.props.lockObject}
                         target={sprite}
                         propertyName="delay"
@@ -270,7 +270,7 @@ export class SpritePropertyGridComponent extends React.Component<ISpriteProperty
                         isInteger={true}
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <ButtonLineComponent label={sprite.animationStarted ? "停止" : "开始"} onClick={() => this.switchPlayStopState()} />
+                    <ButtonLineComponent label={sprite.animationStarted ? "Stop" : "Start"} onClick={() => this.switchPlayStopState()} />
                 </LineContainerComponent>
             </>
         );

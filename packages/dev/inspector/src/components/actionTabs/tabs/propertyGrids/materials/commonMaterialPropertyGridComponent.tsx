@@ -39,60 +39,60 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
         material.depthFunction = material.depthFunction ?? 0;
 
         const orientationOptions = [
-            { label: "顺时针", value: Material.ClockWiseSideOrientation },
-            { label: "逆时针", value: Material.CounterClockWiseSideOrientation },
+            { label: "Clockwise", value: Material.ClockWiseSideOrientation },
+            { label: "Counterclockwise", value: Material.CounterClockWiseSideOrientation },
         ];
 
         const transparencyModeOptions = [
-            { label: "<未定义>", value: Null_Value },
-            { label: "不透明", value: PBRMaterial.PBRMATERIAL_OPAQUE },
-            { label: "Alpha测试", value: PBRMaterial.PBRMATERIAL_ALPHATEST },
-            { label: "Alpha混合", value: PBRMaterial.PBRMATERIAL_ALPHABLEND },
-            { label: "Alpha混合和测试", value: PBRMaterial.PBRMATERIAL_ALPHATESTANDBLEND },
+            { label: "<Not Defined>", value: Null_Value },
+            { label: "Opaque", value: PBRMaterial.PBRMATERIAL_OPAQUE },
+            { label: "Alpha test", value: PBRMaterial.PBRMATERIAL_ALPHATEST },
+            { label: "Alpha blend", value: PBRMaterial.PBRMATERIAL_ALPHABLEND },
+            { label: "Alpha blend and test", value: PBRMaterial.PBRMATERIAL_ALPHATESTANDBLEND },
         ];
 
         const alphaModeOptions = [
-            { label: "融合", value: Constants.ALPHA_COMBINE },
-            { label: "一对一", value: Constants.ALPHA_ONEONE },
-            { label: "加", value: Constants.ALPHA_ADD },
-            { label: "减", value: Constants.ALPHA_SUBTRACT },
-            { label: "乘", value: Constants.ALPHA_MULTIPLY },
-            { label: "最大", value: Constants.ALPHA_MAXIMIZED },
-            { label: "预相乘", value: Constants.ALPHA_PREMULTIPLIED },
+            { label: "Combine", value: Constants.ALPHA_COMBINE },
+            { label: "One one", value: Constants.ALPHA_ONEONE },
+            { label: "Add", value: Constants.ALPHA_ADD },
+            { label: "Subtract", value: Constants.ALPHA_SUBTRACT },
+            { label: "Multiply", value: Constants.ALPHA_MULTIPLY },
+            { label: "Maximized", value: Constants.ALPHA_MAXIMIZED },
+            { label: "Pre-multiplied", value: Constants.ALPHA_PREMULTIPLIED },
         ];
 
         const depthfunctionOptions = [
-            { label: "<引擎默认值>", value: 0 },
-            { label: "绝不", value: Engine.NEVER },
-            { label: "常用", value: Engine.ALWAYS },
-            { label: "相等", value: Engine.EQUAL },
-            { label: "小于", value: Engine.LESS },
-            { label: "小于或等于", value: Engine.LEQUAL },
-            { label: "大于", value: Engine.GREATER },
-            { label: "大于或等于", value: Engine.GEQUAL },
-            { label: "不等于", value: Engine.NOTEQUAL },
+            { label: "<Engine Default>", value: 0 },
+            { label: "Never", value: Engine.NEVER },
+            { label: "Always", value: Engine.ALWAYS },
+            { label: "Equal", value: Engine.EQUAL },
+            { label: "Less", value: Engine.LESS },
+            { label: "Less or equal", value: Engine.LEQUAL },
+            { label: "Greater", value: Engine.GREATER },
+            { label: "Greater or equal", value: Engine.GEQUAL },
+            { label: "Not equal", value: Engine.NOTEQUAL },
         ];
 
         const stencilFunctionOptions = [
-            { label: "绝不", value: Constants.NEVER },
-            { label: "常用", value: Constants.ALWAYS },
-            { label: "相等", value: Constants.EQUAL },
-            { label: "小于", value: Constants.LESS },
-            { label: "小于或等于", value: Constants.LEQUAL },
-            { label: "大于", value: Constants.GREATER },
-            { label: "大于或等于", value: Constants.GEQUAL },
-            { label: "不等于", value: Constants.NOTEQUAL },
+            { label: "Never", value: Constants.NEVER },
+            { label: "Always", value: Constants.ALWAYS },
+            { label: "Equal", value: Constants.EQUAL },
+            { label: "Less", value: Constants.LESS },
+            { label: "Less or equal", value: Constants.LEQUAL },
+            { label: "Greater", value: Constants.GREATER },
+            { label: "Greater or equal", value: Constants.GEQUAL },
+            { label: "Not equal", value: Constants.NOTEQUAL },
         ];
 
         const stencilOperationOptions = [
-            { label: "保持活力", value: Constants.KEEP },
-            { label: "调校到0", value: Constants.ZERO },
-            { label: "更替", value: Constants.REPLACE },
-            { label: "增加", value: Constants.INCR },
-            { label: "减少", value: Constants.DECR },
-            { label: "倒置", value: Constants.INVERT },
-            { label: "增加包装", value: Constants.INCR_WRAP },
-            { label: "减少包装", value: Constants.DECR_WRAP },
+            { label: "Keep", value: Constants.KEEP },
+            { label: "Zero", value: Constants.ZERO },
+            { label: "Replace", value: Constants.REPLACE },
+            { label: "Incr", value: Constants.INCR },
+            { label: "Decr", value: Constants.DECR },
+            { label: "Invert", value: Constants.INVERT },
+            { label: "Incr wrap", value: Constants.INCR_WRAP },
+            { label: "Decr wrap", value: Constants.DECR_WRAP },
         ];
 
         return (
@@ -103,25 +103,25 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                     lockObject={this.props.lockObject}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="常规" selection={this.props.globalState}>
+                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
                     <TextLineComponent label="ID" value={material.id} />
                     <TextInputLineComponent
                         lockObject={this.props.lockObject}
-                        label="名称"
+                        label="Name"
                         target={material}
                         propertyName="name"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <TextLineComponent label="唯一 ID" value={material.uniqueId.toString()} />
-                    <TextLineComponent label="类型" value={material.getClassName()} />
+                    <TextLineComponent label="Unique ID" value={material.uniqueId.toString()} />
+                    <TextLineComponent label="Class" value={material.getClassName()} />
                     <CheckBoxLineComponent
-                        label="隐面消除"
+                        label="Backface culling"
                         target={material}
                         propertyName="backFaceCulling"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <OptionsLineComponent
-                        label="朝向"
+                        label="Orientation"
                         options={orientationOptions}
                         target={material}
                         propertyName="sideOrientation"
@@ -129,25 +129,25 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                         onSelect={(value) => this.setState({ mode: value })}
                     />
                     <CheckBoxLineComponent
-                        label="禁用照明"
+                        label="Disable lighting"
                         target={material}
                         propertyName="disableLighting"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="禁用颜色写入"
+                        label="Disable color write"
                         target={material}
                         propertyName="disableColorWrite"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="禁用深度写入"
+                        label="Disable depth write"
                         target={material}
                         propertyName="disableDepthWrite"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <OptionsLineComponent
-                        label="深度函数"
+                        label="Depth function"
                         options={depthfunctionOptions}
                         target={material}
                         propertyName="depthFunction"
@@ -155,16 +155,16 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                         onSelect={(value) => this.setState({ depthFunction: value })}
                     />
                     <CheckBoxLineComponent
-                        label="需要深度预处理"
+                        label="Need depth pre-pass"
                         target={material}
                         propertyName="needDepthPrePass"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <CheckBoxLineComponent label="线框" target={material} propertyName="wireframe" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
-                    <CheckBoxLineComponent label="点云" target={material} propertyName="pointsCloud" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <CheckBoxLineComponent label="Wireframe" target={material} propertyName="wireframe" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <CheckBoxLineComponent label="Point cloud" target={material} propertyName="pointsCloud" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="点的大小"
+                        label="Point size"
                         target={material}
                         propertyName="pointSize"
                         minimum={0}
@@ -174,7 +174,7 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Z-偏移因子"
+                        label="Z-offset Factor"
                         target={material}
                         propertyName="zOffset"
                         minimum={-10}
@@ -184,7 +184,7 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="Z-偏移单位"
+                        label="Z-offset Units"
                         target={material}
                         propertyName="zOffsetUnits"
                         minimum={-10}
@@ -193,17 +193,17 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <ButtonLineComponent
-                        label="删除"
+                        label="Dispose"
                         onClick={() => {
                             material.dispose();
                             this.props.globalState.onSelectionChangedObservable.notifyObservers(null);
                         }}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="透明度" selection={this.props.globalState}>
+                <LineContainerComponent title="TRANSPARENCY" selection={this.props.globalState}>
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="阿尔法"
+                        label="Alpha"
                         target={material}
                         propertyName="alpha"
                         minimum={0}
@@ -214,7 +214,7 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                     {(material as any).transparencyMode !== undefined && (
                         <OptionsLineComponent
                             allowNullValue={true}
-                            label="透明模式"
+                            label="Transparency mode"
                             options={transparencyModeOptions}
                             target={material}
                             propertyName="transparencyMode"
@@ -223,7 +223,7 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                         />
                     )}
                     <OptionsLineComponent
-                        label="阿尔法模式"
+                        label="Alpha mode"
                         options={alphaModeOptions}
                         target={material}
                         propertyName="alphaMode"
@@ -232,7 +232,7 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                     />
                     {(material as any).diffuseTexture && (
                         <CheckBoxLineComponent
-                            label="漫反射纹理具有阿尔法"
+                            label="Diffuse texture has alpha"
                             target={(material as any).diffuseTexture}
                             propertyName="hasAlpha"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -240,7 +240,7 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                     )}
                     {(material as any).useAlphaFromDiffuseTexture !== undefined && (
                         <CheckBoxLineComponent
-                            label="使用漫反射纹理的阿尔法"
+                            label="Use alpha from diffuse texture"
                             target={material}
                             propertyName="useAlphaFromDiffuseTexture"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -248,7 +248,7 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                     )}
                     {(material as any).albedoTexture && (
                         <CheckBoxLineComponent
-                            label="反照率纹理有阿尔法"
+                            label="Albedo texture has alpha"
                             target={(material as any).albedoTexture}
                             propertyName="hasAlpha"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -256,14 +256,14 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                     )}
                     {(material as any).useAlphaFromAlbedoTexture !== undefined && (
                         <CheckBoxLineComponent
-                            label="使用来自反照率纹理的阿尔法"
+                            label="Use alpha from albedo texture"
                             target={material}
                             propertyName="useAlphaFromAlbedoTexture"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                     )}
                     <CheckBoxLineComponent
-                        label="单独的筛选通道"
+                        label="Separate culling pass"
                         target={material}
                         propertyName="separateCullingPass"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -271,9 +271,9 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                 </LineContainerComponent>
                 {material.stencil && (
                     <>
-                        <LineContainerComponent title="模板" selection={this.props.globalState}>
+                        <LineContainerComponent title="STENCIL" selection={this.props.globalState}>
                             <CheckBoxLineComponent
-                                label="激活"
+                                label="Enabled"
                                 target={material.stencil}
                                 propertyName="enabled"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -281,13 +281,13 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                             <HexLineComponent
                                 isInteger
                                 lockObject={this.props.lockObject}
-                                label="面罩"
+                                label="Mask"
                                 target={material.stencil}
                                 propertyName="mask"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <OptionsLineComponent
-                                label="函数"
+                                label="Function"
                                 options={stencilFunctionOptions}
                                 target={material.stencil}
                                 propertyName="func"
@@ -297,7 +297,7 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                             <FloatLineComponent
                                 isInteger
                                 lockObject={this.props.lockObject}
-                                label="参考函数"
+                                label="Function reference"
                                 target={material.stencil}
                                 propertyName="funcRef"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -305,13 +305,13 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                             <HexLineComponent
                                 isInteger
                                 lockObject={this.props.lockObject}
-                                label="函数掩码"
+                                label="Function mask"
                                 target={material.stencil}
                                 propertyName="funcMask"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <OptionsLineComponent
-                                label="模板失效"
+                                label="Op stencil fail"
                                 options={stencilOperationOptions}
                                 target={material.stencil}
                                 propertyName="opStencilFail"
@@ -319,7 +319,7 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                                 onSelect={(value) => this.setState({ opStencilFail: value })}
                             />
                             <OptionsLineComponent
-                                label="操作深度失败"
+                                label="Op depth fail"
                                 options={stencilOperationOptions}
                                 target={material.stencil}
                                 propertyName="opDepthFail"
@@ -327,7 +327,7 @@ export class CommonMaterialPropertyGridComponent extends React.Component<ICommon
                                 onSelect={(value) => this.setState({ opDepthFail: value })}
                             />
                             <OptionsLineComponent
-                                label="操作模板+深度通道"
+                                label="Op stencil+depth pass"
                                 options={stencilOperationOptions}
                                 target={material.stencil}
                                 propertyName="opStencilDepthPass"

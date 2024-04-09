@@ -94,24 +94,24 @@ export class TargetedAnimationGridComponent extends React.Component<ITargetedAni
 
         return (
             <>
-                <LineContainerComponent title="常规" selection={this.props.globalState}>
+                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
                     <TextLineComponent label="Class" value={targetedAnimation.getClassName()} />
                     <TextInputLineComponent
                         lockObject={this.props.lockObject}
-                        label="名称"
+                        label="Name"
                         target={targetedAnimation.animation}
                         propertyName="name"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     {targetedAnimation.target.name && (
                         <TextLineComponent
-                            label="目标"
+                            label="Target"
                             value={targetedAnimation.target.name}
                             onLink={() => this.props.globalState.onSelectionChangedObservable.notifyObservers(targetedAnimation)}
                         />
                     )}
                     {this._animationCurveEditorContext && <AnimationCurveEditorComponent globalState={this.props.globalState} context={this._animationCurveEditorContext} />}
-                    <ButtonLineComponent label="删除" onClick={this.deleteAnimation} />
+                    <ButtonLineComponent label="Dispose" onClick={this.deleteAnimation} />
                 </LineContainerComponent>
             </>
         );

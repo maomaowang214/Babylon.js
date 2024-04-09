@@ -133,7 +133,7 @@ export class PropertyGridTabComponent extends PaneComponent {
         const entity = this.props.selectedEntity;
 
         if (!entity) {
-            return <div className="infoMessage">请在场景资源管理器中选择一个实体.</div>;
+            return <div className="infoMessage">Please select an entity in the scene explorer.</div>;
         }
 
         if (entity.getClassName) {

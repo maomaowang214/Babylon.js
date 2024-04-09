@@ -69,7 +69,7 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
         const isFileDDS = file.name.toLowerCase().indexOf(".dds") > 0;
         const isFileEnv = file.name.toLowerCase().indexOf(".env") > 0;
         if (!isFileDDS && !isFileEnv) {
-            console.error("无法更新环境纹理。请选择dds或env文件.");
+            Logger.Error("Unable to update environment texture. Please select a dds or env file.");
             return;
         }
 
@@ -144,64 +144,69 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
         const imageProcessing = scene.imageProcessingConfiguration;
 
         const toneMappingOptions = [
-            { label: "常规", value: ImageProcessingConfiguration.TONEMAPPING_STANDARD },
+            { label: "Standard", value: ImageProcessingConfiguration.TONEMAPPING_STANDARD },
             { label: "ACES", value: ImageProcessingConfiguration.TONEMAPPING_ACES },
         ];
 
         const vignetteModeOptions = [
-            { label: "乘", value: ImageProcessingConfiguration.VIGNETTEMODE_MULTIPLY },
-            { label: "不透明", value: ImageProcessingConfiguration.VIGNETTEMODE_OPAQUE },
+            { label: "Multiply", value: ImageProcessingConfiguration.VIGNETTEMODE_MULTIPLY },
+            { label: "Opaque", value: ImageProcessingConfiguration.VIGNETTEMODE_OPAQUE },
         ];
 
         return (
             <>
-                <LineContainerComponent title="呈现模式" selection={this.props.globalState}>
+                <LineContainerComponent title="RENDERING MODE" selection={this.props.globalState}>
                     <RadioButtonLineComponent
                         onSelectionChangedObservable={this._renderingModeGroupObservable}
-                        label="点"
+                        label="Point"
                         isSelected={() => scene.forcePointsCloud}
                         onSelect={() => this.setRenderingModes(true, false)}
                     />
                     <RadioButtonLineComponent
                         onSelectionChangedObservable={this._renderingModeGroupObservable}
-                        label="线框"
+                        label="Wireframe"
                         isSelected={() => scene.forceWireframe}
                         onSelect={() => this.setRenderingModes(false, true)}
                     />
                     <RadioButtonLineComponent
                         onSelectionChangedObservable={this._renderingModeGroupObservable}
-                        label="固体"
+                        label="Solid"
                         isSelected={() => !scene.forcePointsCloud && !scene.forceWireframe}
                         onSelect={() => this.setRenderingModes(false, false)}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="环境" selection={this.props.globalState}>
+                <LineContainerComponent title="ENVIRONMENT" selection={this.props.globalState}>
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="清晰颜色"
+                        label="Clear color"
                         target={scene}
                         propertyName="clearColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <CheckBoxLineComponent label="启用透明颜色" target={scene} propertyName="autoClear" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <CheckBoxLineComponent
+                        label="Clear color enabled"
+                        target={scene}
+                        propertyName="autoClear"
+                        onPropertyChangedObservable={this.props.onPropertyChangedObservable}
+                    />
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="环境色"
+                        label="Ambient color"
                         target={scene}
                         propertyName="ambientColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <CheckBoxLineComponent label="环境纹理 (IBL)" isSelected={() => scene.environmentTexture != null} onSelect={() => this.switchIBL()} />
+                    <CheckBoxLineComponent label="Environment texture (IBL)" isSelected={() => scene.environmentTexture != null} onSelect={() => this.switchIBL()} />
                     {scene.environmentTexture && (
-                        <TextureLinkLineComponent label="Env. 纹理" texture={scene.environmentTexture} onSelectionChangedObservable={this.props.onSelectionChangedObservable} />
+                        <TextureLinkLineComponent label="Env. texture" texture={scene.environmentTexture} onSelectionChangedObservable={this.props.onSelectionChangedObservable} />
                     )}
-                    <FileButtonLineComponent label="更新环境纹理" onClick={(file) => this.updateEnvironmentTexture(file)} accept=".dds, .env" />
+                    <FileButtonLineComponent label="Update environment texture" onClick={(file) => this.updateEnvironmentTexture(file)} accept=".dds, .env" />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
                         minimum={0}
                         maximum={2}
                         step={0.01}
-                        label="IBL 强度"
+                        label="IBL Intensity"
                         target={scene}
                         propertyName="environmentIntensity"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -214,13 +219,13 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
                     />
                 </LineContainerComponent>
                 <AnimationGridComponent globalState={this.props.globalState} animatable={scene} scene={scene} lockObject={this.props.lockObject} />
-                <LineContainerComponent title="材料图像处理" selection={this.props.globalState}>
+                <LineContainerComponent title="MATERIAL IMAGE PROCESSING" selection={this.props.globalState}>
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
                         minimum={0}
                         maximum={4}
                         step={0.1}
-                        label="对比"
+                        label="Contrast"
                         target={imageProcessing}
                         propertyName="contrast"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -230,19 +235,19 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
                         minimum={0}
                         maximum={4}
                         step={0.1}
-                        label="曝光"
+                        label="Exposure"
                         target={imageProcessing}
                         propertyName="exposure"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="色调映射"
+                        label="Tone mapping"
                         target={imageProcessing}
                         propertyName="toneMappingEnabled"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <OptionsLineComponent
-                        label="音调映射类型"
+                        label="Tone mapping type"
                         options={toneMappingOptions}
                         target={imageProcessing}
                         propertyName="toneMappingType"
@@ -250,7 +255,7 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
                         onSelect={(value) => this.setState({ mode: value })}
                     />
                     <CheckBoxLineComponent
-                        label="装饰图案"
+                        label="Vignette"
                         target={imageProcessing}
                         propertyName="vignetteEnabled"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -260,7 +265,7 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
                         minimum={0}
                         maximum={4}
                         step={0.1}
-                        label="装饰图案的重量"
+                        label="Vignette weight"
                         target={imageProcessing}
                         propertyName="vignetteWeight"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -270,7 +275,7 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
                         minimum={0}
                         maximum={1}
                         step={0.1}
-                        label="装饰图案延伸"
+                        label="Vignette stretch"
                         target={imageProcessing}
                         propertyName="vignetteStretch"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -280,7 +285,7 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
                         minimum={0}
                         maximum={Math.PI}
                         step={0.1}
-                        label="装饰图案视场"
+                        label="Vignette FOV"
                         target={imageProcessing}
                         propertyName="vignetteCameraFov"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -290,7 +295,7 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
                         minimum={0}
                         maximum={1}
                         step={0.1}
-                        label="装饰图案中心X"
+                        label="Vignette center X"
                         target={imageProcessing}
                         propertyName="vignetteCenterX"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -300,20 +305,20 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
                         minimum={0}
                         maximum={1}
                         step={0.1}
-                        label="装饰图案中心 Y"
+                        label="Vignette center Y"
                         target={imageProcessing}
                         propertyName="vignetteCenterY"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="装饰图案的颜色"
+                        label="Vignette color"
                         target={imageProcessing}
                         propertyName="vignetteColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <OptionsLineComponent
-                        label="装饰图案混合模式"
+                        label="Vignette blend mode"
                         options={vignetteModeOptions}
                         target={imageProcessing}
                         propertyName="vignetteBlendMode"
@@ -321,7 +326,7 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
                         onSelect={(value) => this.setState({ mode: value })}
                     />
                     <CheckBoxLineComponent
-                        label="混色"
+                        label="Dithering"
                         target={imageProcessing}
                         propertyName="ditheringEnabled"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -331,17 +336,17 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
                         minimum={0}
                         maximum={1}
                         step={0.5 / 255.0}
-                        label="混色强度"
+                        label="Dithering intensity"
                         target={imageProcessing}
                         propertyName="ditheringIntensity"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
                 {dummy !== null && (
-                    <LineContainerComponent title="物理" closed={true} selection={this.props.globalState}>
+                    <LineContainerComponent title="PHYSICS" closed={true} selection={this.props.globalState}>
                         <FloatLineComponent
                             lockObject={this.props.lockObject}
-                            label="时间步骤"
+                            label="Time step"
                             target={dummy}
                             propertyName="timeStep"
                             onChange={(newValue) => this.updateTimeStep(newValue)}
@@ -349,7 +354,7 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
                         />
                         <Vector3LineComponent
                             lockObject={this.props.lockObject}
-                            label="重力"
+                            label="Gravity"
                             target={dummy}
                             propertyName="gravity"
                             onChange={(newValue) => this.updateGravity(newValue)}
@@ -357,17 +362,17 @@ export class ScenePropertyGridComponent extends React.Component<IScenePropertyGr
                         />
                     </LineContainerComponent>
                 )}
-                <LineContainerComponent title="碰撞" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="COLLISIONS" closed={true} selection={this.props.globalState}>
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="重力"
+                        label="Gravity"
                         target={scene}
                         propertyName="gravity"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="阴影" closed={true} selection={this.props.globalState}>
-                    <ButtonLineComponent label="规范化的场景" onClick={() => this.normalizeScene()} />
+                <LineContainerComponent title="SHADOWS" closed={true} selection={this.props.globalState}>
+                    <ButtonLineComponent label="Normalize scene" onClick={() => this.normalizeScene()} />
                 </LineContainerComponent>
             </>
         );

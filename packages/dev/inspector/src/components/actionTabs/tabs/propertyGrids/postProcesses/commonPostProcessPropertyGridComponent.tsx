@@ -38,42 +38,42 @@ export class CommonPostProcessPropertyGridComponent extends React.Component<ICom
                     lockObject={this.props.lockObject}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="常规" selection={this.props.globalState}>
-                    <TextLineComponent label="类型" value={postProcess.getClassName()} />
+                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
+                    <TextLineComponent label="Class" value={postProcess.getClassName()} />
                     <TextInputLineComponent
                         lockObject={this.props.lockObject}
-                        label="名称"
+                        label="Name"
                         target={postProcess}
                         propertyName="name"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    {postProcess.width && <TextLineComponent label="宽度" value={postProcess.width.toString()} />}
-                    {postProcess.height && <TextLineComponent label="高度" value={postProcess.height.toString()} />}
-                    <CheckBoxLineComponent label="自动清除" target={postProcess} propertyName="autoClear" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    {postProcess.width && <TextLineComponent label="Width" value={postProcess.width.toString()} />}
+                    {postProcess.height && <TextLineComponent label="Height" value={postProcess.height.toString()} />}
+                    <CheckBoxLineComponent label="Auto clear" target={postProcess} propertyName="autoClear" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     {postProcess.clearColor && (
                         <Color3LineComponent
                             lockObject={this.props.lockObject}
-                            label="清理颜色"
+                            label="Clear color"
                             target={postProcess}
                             propertyName="clearColor"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                     )}
                     <CheckBoxLineComponent
-                        label="完美像素"
+                        label="Pixel perfect"
                         target={postProcess}
                         propertyName="enablePixelPerfectMode"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="全屏窗口"
+                        label="Fullscreen viewport"
                         target={postProcess}
                         propertyName="forceFullscreenViewport"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="样品"
+                        label="Samples"
                         target={postProcess}
                         propertyName="samples"
                         minimum={1}
@@ -83,7 +83,7 @@ export class CommonPostProcessPropertyGridComponent extends React.Component<ICom
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <ButtonLineComponent
-                        label="删除"
+                        label="Dispose"
                         onClick={() => {
                             postProcess.dispose();
                             this.props.globalState.onSelectionChangedObservable.notifyObservers(null);

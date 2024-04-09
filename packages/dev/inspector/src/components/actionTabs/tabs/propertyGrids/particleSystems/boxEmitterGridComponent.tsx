@@ -25,28 +25,28 @@ export class BoxEmitterGridComponent extends React.Component<IBoxEmitterGridComp
             <>
                 <Vector3LineComponent
                     lockObject={this.props.lockObject}
-                    label="方向 1"
+                    label="Direction 1"
                     target={emitter}
                     propertyName="direction1"
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
                 <Vector3LineComponent
                     lockObject={this.props.lockObject}
-                    label="方向 2"
+                    label="Direction 2"
                     target={emitter}
                     propertyName="direction2"
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
                 <Vector3LineComponent
                     lockObject={this.props.lockObject}
-                    label="最小发射箱"
+                    label="Min emit box"
                     target={emitter}
                     propertyName="minEmitBox"
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
                 <Vector3LineComponent
                     lockObject={this.props.lockObject}
-                    label="最大发射箱"
+                    label="Max emit box"
                     target={emitter}
                     propertyName="maxEmitBox"
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}

@@ -34,8 +34,8 @@ export class CommonCameraPropertyGridComponent extends React.Component<ICommonCa
         const camera = this.props.camera;
 
         const modeOptions = [
-            { label: "透视", value: Camera.PERSPECTIVE_CAMERA },
-            { label: "正交", value: Camera.ORTHOGRAPHIC_CAMERA },
+            { label: "Perspective", value: Camera.PERSPECTIVE_CAMERA },
+            { label: "Orthographic", value: Camera.ORTHOGRAPHIC_CAMERA },
         ];
 
         return (
@@ -46,20 +46,20 @@ export class CommonCameraPropertyGridComponent extends React.Component<ICommonCa
                     lockObject={this.props.lockObject}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="常规" selection={this.props.globalState}>
+                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
                     <TextLineComponent label="ID" value={camera.id} />
                     <TextInputLineComponent
                         lockObject={this.props.lockObject}
-                        label="名称"
+                        label="Name"
                         target={camera}
                         propertyName="name"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <TextLineComponent label="唯一 ID" value={camera.uniqueId.toString()} />
+                    <TextLineComponent label="Unique ID" value={camera.uniqueId.toString()} />
                     <TextLineComponent label="Class" value={camera.getClassName()} />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="近平面"
+                        label="Near plane"
                         target={camera}
                         propertyName="minZ"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -67,14 +67,14 @@ export class CommonCameraPropertyGridComponent extends React.Component<ICommonCa
                     <ParentPropertyGridComponent globalState={this.props.globalState} node={camera} lockObject={this.props.lockObject} />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="远平面"
+                        label="Far plane"
                         target={camera}
                         propertyName="maxZ"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="惯性"
+                        label="Inertia"
                         target={camera}
                         propertyName="inertia"
                         minimum={0}
@@ -85,13 +85,13 @@ export class CommonCameraPropertyGridComponent extends React.Component<ICommonCa
                     <HexLineComponent
                         isInteger
                         lockObject={this.props.lockObject}
-                        label="蒙面图层"
+                        label="Layer mask"
                         target={camera}
                         propertyName="layerMask"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <OptionsLineComponent
-                        label="模式"
+                        label="Mode"
                         options={modeOptions}
                         target={camera}
                         propertyName="mode"
@@ -101,7 +101,7 @@ export class CommonCameraPropertyGridComponent extends React.Component<ICommonCa
                     {camera.mode === Camera.PERSPECTIVE_CAMERA && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="视场"
+                            label="Field of view"
                             target={camera}
                             useEuler={this.props.globalState.onlyUseEulers}
                             propertyName="fov"
@@ -114,7 +114,7 @@ export class CommonCameraPropertyGridComponent extends React.Component<ICommonCa
                     {camera.mode === Camera.ORTHOGRAPHIC_CAMERA && (
                         <FloatLineComponent
                             lockObject={this.props.lockObject}
-                            label="左"
+                            label="Left"
                             target={camera}
                             propertyName="orthoLeft"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -123,7 +123,7 @@ export class CommonCameraPropertyGridComponent extends React.Component<ICommonCa
                     {camera.mode === Camera.ORTHOGRAPHIC_CAMERA && (
                         <FloatLineComponent
                             lockObject={this.props.lockObject}
-                            label="上"
+                            label="Top"
                             target={camera}
                             propertyName="orthoTop"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -132,7 +132,7 @@ export class CommonCameraPropertyGridComponent extends React.Component<ICommonCa
                     {camera.mode === Camera.ORTHOGRAPHIC_CAMERA && (
                         <FloatLineComponent
                             lockObject={this.props.lockObject}
-                            label="右"
+                            label="Right"
                             target={camera}
                             propertyName="orthoRight"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -141,14 +141,14 @@ export class CommonCameraPropertyGridComponent extends React.Component<ICommonCa
                     {camera.mode === Camera.ORTHOGRAPHIC_CAMERA && (
                         <FloatLineComponent
                             lockObject={this.props.lockObject}
-                            label="下"
+                            label="Bottom"
                             target={camera}
                             propertyName="orthoBottom"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                     )}
                     <ButtonLineComponent
-                        label="删除"
+                        label="Dispose"
                         onClick={() => {
                             camera.dispose();
                             this.props.globalState.onSelectionChangedObservable.notifyObservers(null);

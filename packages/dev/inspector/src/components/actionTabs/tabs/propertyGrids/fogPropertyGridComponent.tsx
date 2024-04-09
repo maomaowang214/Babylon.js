@@ -27,7 +27,7 @@ export class FogPropertyGridComponent extends React.Component<IFogPropertyGridCo
 
         const fogModeOptions = [
             { label: "None", value: Scene.FOGMODE_NONE },
-            { label: "线性", value: Scene.FOGMODE_LINEAR },
+            { label: "Linear", value: Scene.FOGMODE_LINEAR },
             { label: "Exp", value: Scene.FOGMODE_EXP },
             { label: "Exp2", value: Scene.FOGMODE_EXP2 },
         ];
@@ -35,7 +35,7 @@ export class FogPropertyGridComponent extends React.Component<IFogPropertyGridCo
         return (
             <div>
                 <OptionsLineComponent
-                    label="雾模式"
+                    label="Fog mode"
                     options={fogModeOptions}
                     target={scene}
                     propertyName="fogMode"
@@ -45,7 +45,7 @@ export class FogPropertyGridComponent extends React.Component<IFogPropertyGridCo
                 {this.state.mode !== Scene.FOGMODE_NONE && (
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="雾颜色"
+                        label="Fog color"
                         target={scene}
                         propertyName="fogColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -54,7 +54,7 @@ export class FogPropertyGridComponent extends React.Component<IFogPropertyGridCo
                 {(this.state.mode === Scene.FOGMODE_EXP || this.state.mode === Scene.FOGMODE_EXP2) && (
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="雾密度"
+                        label="Fog density"
                         target={scene}
                         propertyName="fogDensity"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -63,7 +63,7 @@ export class FogPropertyGridComponent extends React.Component<IFogPropertyGridCo
                 {this.state.mode === Scene.FOGMODE_LINEAR && (
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="雾开始"
+                        label="Fog start"
                         target={scene}
                         propertyName="fogStart"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -72,7 +72,7 @@ export class FogPropertyGridComponent extends React.Component<IFogPropertyGridCo
                 {this.state.mode === Scene.FOGMODE_LINEAR && (
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="雾结束"
+                        label="Fog end"
                         target={scene}
                         propertyName="fogEnd"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}

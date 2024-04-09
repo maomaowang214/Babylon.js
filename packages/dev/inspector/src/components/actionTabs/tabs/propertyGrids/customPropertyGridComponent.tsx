@@ -122,7 +122,7 @@ export class CustomPropertyGridComponent extends React.Component<ICustomProperty
                         onClick={
                             inspectable.callback ||
                             function () {
-                                console.warn("没有添加回调功能");
+                                Logger.Warn("no call back function added");
                             }
                         }
                     />
@@ -138,7 +138,7 @@ export class CustomPropertyGridComponent extends React.Component<ICustomProperty
                         onSelect={
                             inspectable.callback ||
                             function (value) {
-                                console.log(`选项 ${value} 被选中`);
+                                Logger.Warn(`Option ${value} is selected`);
                             }
                         }
                     />
@@ -153,7 +153,7 @@ export class CustomPropertyGridComponent extends React.Component<ICustomProperty
                         onClick={
                             inspectable.fileCallback ||
                             function () {
-                                Logger.Warn("未添加文件回调功能");
+                                Logger.Warn("no file call back function added");
                             }
                         }
                         accept={inspectable.accept || "*"}
@@ -172,7 +172,7 @@ export class CustomPropertyGridComponent extends React.Component<ICustomProperty
         }
 
         return (
-            <LineContainerComponent title="自定义" selection={this.props.globalState}>
+            <LineContainerComponent title="CUSTOM" selection={this.props.globalState}>
                 {inspectables.map((inspectable) => {
                     return this.renderInspectable(inspectable);
                 })}

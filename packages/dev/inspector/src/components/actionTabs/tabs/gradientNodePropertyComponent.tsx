@@ -53,7 +53,7 @@ export class GradientPropertyTabComponent extends React.Component<IPropertyCompo
     render() {
         return (
             <div>
-                <ButtonLineComponent label="添加新步骤" onClick={() => this.addNewStep()} />
+                <ButtonLineComponent label="Add new step" onClick={() => this.addNewStep()} />
                 {this._gradientBlock.colorSteps.map((c, i) => {
                     return (
                         <GradientStepComponent

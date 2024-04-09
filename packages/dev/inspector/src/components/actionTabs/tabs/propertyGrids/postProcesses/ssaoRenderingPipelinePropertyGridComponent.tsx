@@ -36,7 +36,7 @@ export class SSAORenderingPipelinePropertyGridComponent extends React.Component<
                 <LineContainerComponent title="SSAO" selection={this.props.globalState}>
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="强度"
+                        label="Strength"
                         minimum={0}
                         maximum={2}
                         step={0.05}
@@ -46,7 +46,7 @@ export class SSAORenderingPipelinePropertyGridComponent extends React.Component<
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="基础"
+                        label="Base"
                         minimum={0}
                         maximum={1}
                         step={0.05}
@@ -56,7 +56,7 @@ export class SSAORenderingPipelinePropertyGridComponent extends React.Component<
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="半径"
+                        label="Radius"
                         minimum={0.0001}
                         maximum={0.001}
                         step={0.0001}
@@ -67,7 +67,7 @@ export class SSAORenderingPipelinePropertyGridComponent extends React.Component<
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="区域"
+                        label="Area"
                         minimum={0.0001}
                         maximum={0.01}
                         step={0.0001}
@@ -78,7 +78,7 @@ export class SSAORenderingPipelinePropertyGridComponent extends React.Component<
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="下降"
+                        label="Falloff"
                         minimum={0}
                         maximum={0.00001}
                         step={0.000001}

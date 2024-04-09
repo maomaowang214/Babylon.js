@@ -838,7 +838,7 @@ export class AnimationGroup implements IDisposable {
     }
 
     /**
-     * Goes to a specific frame in this animation group. Note that the animation group must be in playing or paused status
+     * Goes to a specific frame in this animation group
      * @param frame the frame number to go to
      * @returns the animationGroup
      */

@@ -223,7 +223,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
         const scene = system.getScene()!;
         const isGpu = system instanceof GPUParticleSystem;
 
-        const snippedId = window.prompt("请输入要使用的代码片段ID");
+        const snippedId = window.prompt("Please enter the snippet ID to use");
 
         if (!snippedId || !scene) {
             return;
@@ -295,21 +295,21 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
         const system = this.props.system;
 
         const blendModeOptions = [
-            { label: "加", value: ParticleSystem.BLENDMODE_ADD },
-            { label: "乘", value: ParticleSystem.BLENDMODE_MULTIPLY },
-            { label: "乘 加", value: ParticleSystem.BLENDMODE_MULTIPLYADD },
-            { label: "一对一", value: ParticleSystem.BLENDMODE_ONEONE },
-            { label: "标准", value: ParticleSystem.BLENDMODE_STANDARD },
+            { label: "Add", value: ParticleSystem.BLENDMODE_ADD },
+            { label: "Multiply", value: ParticleSystem.BLENDMODE_MULTIPLY },
+            { label: "Multiply Add", value: ParticleSystem.BLENDMODE_MULTIPLYADD },
+            { label: "OneOne", value: ParticleSystem.BLENDMODE_ONEONE },
+            { label: "Standard", value: ParticleSystem.BLENDMODE_STANDARD },
         ];
 
         const particleEmitterTypeOptions = [
-            { label: "盒子", value: 0 },
-            { label: "锥", value: 1 },
-            { label: "圆柱体", value: 2 },
-            { label: "半球", value: 3 },
-            { label: "网格", value: 4 },
-            { label: "点", value: 5 },
-            { label: "球体", value: 6 },
+            { label: "Box", value: 0 },
+            { label: "Cone", value: 1 },
+            { label: "Cylinder", value: 2 },
+            { label: "Hemispheric", value: 3 },
+            { label: "Mesh", value: 4 },
+            { label: "Point", value: 5 },
+            { label: "Sphere", value: 6 },
         ];
 
         const meshEmitters = this.props.system.getScene()!.meshes.filter((m) => !!m.name);
@@ -335,21 +335,21 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     lockObject={this.props.lockObject}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="常规" selection={this.props.globalState}>
+                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
                     <TextLineComponent label="ID" value={system.id} />
                     <TextInputLineComponent
                         lockObject={this.props.lockObject}
-                        label="名称"
+                        label="Name"
                         target={system}
                         propertyName="name"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <TextLineComponent label="类型" value={system.getClassName()} />
-                    <TextLineComponent label="容积" value={system.getCapacity().toString()} />
-                    <TextLineComponent label="当前数" value={system.getActiveCount().toString()} />
-                    <TextureLinkLineComponent label="纹理" texture={system.particleTexture} onSelectionChangedObservable={this.props.onSelectionChangedObservable} />
+                    <TextLineComponent label="Class" value={system.getClassName()} />
+                    <TextLineComponent label="Capacity" value={system.getCapacity().toString()} />
+                    <TextLineComponent label="Active count" value={system.getActiveCount().toString()} />
+                    <TextureLinkLineComponent label="Texture" texture={system.particleTexture} onSelectionChangedObservable={this.props.onSelectionChangedObservable} />
                     <OptionsLineComponent
-                        label="混合模式"
+                        label="Blend mode"
                         options={blendModeOptions}
                         target={system}
                         propertyName="blendMode"
@@ -357,29 +357,34 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     />
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="世界坐标偏移"
+                        label="World offset"
                         target={system}
                         propertyName="worldOffset"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="重力"
+                        label="Gravity"
                         target={system}
                         propertyName="gravity"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <CheckBoxLineComponent label="广告牌" target={system} propertyName="isBillboardBased" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
-                    <CheckBoxLineComponent label="本地" target={system} propertyName="isLocal" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     <CheckBoxLineComponent
-                        label="强制深度写入"
+                        label="Is billboard"
+                        target={system}
+                        propertyName="isBillboardBased"
+                        onPropertyChangedObservable={this.props.onPropertyChangedObservable}
+                    />
+                    <CheckBoxLineComponent label="Is local" target={system} propertyName="isLocal" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
+                    <CheckBoxLineComponent
+                        label="Force depth write"
                         target={system}
                         propertyName="forceDepthWrite"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="更新速度"
+                        label="Update speed"
                         target={system}
                         propertyName="updateSpeed"
                         minimum={0}
@@ -389,28 +394,28 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="命令" selection={this.props.globalState}>
+                <LineContainerComponent title="COMMANDS" selection={this.props.globalState}>
                     {this.renderControls()}
                     <ButtonLineComponent
-                        label={"删除"}
+                        label={"Dispose"}
                         onClick={() => {
                             this.props.globalState.onSelectionChangedObservable.notifyObservers(null);
                             system.dispose();
                         }}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="文件" selection={this.props.globalState}>
-                    <FileButtonLineComponent label="加载" onClick={(file) => this.loadFromFile(file)} accept=".json" />
-                    <ButtonLineComponent label="保存" onClick={() => this.saveToFile()} />
+                <LineContainerComponent title="FILE" selection={this.props.globalState}>
+                    <FileButtonLineComponent label="Load" onClick={(file) => this.loadFromFile(file)} accept=".json" />
+                    <ButtonLineComponent label="Save" onClick={() => this.saveToFile()} />
                 </LineContainerComponent>
-                <LineContainerComponent title="片段" selection={this.props.globalState}>
-                    {system.snippetId && <TextLineComponent label="片段 ID" value={system.snippetId} />}
-                    <ButtonLineComponent label="从服务器加载片段" onClick={() => this.loadFromSnippet()} />
-                    <ButtonLineComponent label="保存片段到服务器" onClick={() => this.saveToSnippet()} />
+                <LineContainerComponent title="SNIPPET" selection={this.props.globalState}>
+                    {system.snippetId && <TextLineComponent label="Snippet ID" value={system.snippetId} />}
+                    <ButtonLineComponent label="Load from snippet server" onClick={() => this.loadFromSnippet()} />
+                    <ButtonLineComponent label="Save to snippet server" onClick={() => this.saveToSnippet()} />
                 </LineContainerComponent>
-                <LineContainerComponent title="发射器" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="EMITTER" closed={true} selection={this.props.globalState}>
                     <OptionsLineComponent
-                        label="事件发射"
+                        label="Emitter"
                         options={emitterOptions}
                         target={system}
                         propertyName="emitter"
@@ -452,7 +457,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     />
                     {system.emitter && (system.emitter as Vector3).x === undefined && (
                         <TextLineComponent
-                            label="链接到发射器"
+                            label="Link to emitter"
                             value={(system.emitter as AbstractMesh).name}
                             onLink={() => this.props.globalState.onSelectionChangedObservable.notifyObservers(system.emitter)}
                         />
@@ -460,14 +465,14 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     {system.emitter && (system.emitter as Vector3).x !== undefined && (
                         <Vector3LineComponent
                             lockObject={this.props.lockObject}
-                            label="坐标"
+                            label="Position"
                             target={system}
                             propertyName="emitter"
                             onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         />
                     )}
                     <OptionsLineComponent
-                        label="类型"
+                        label="Type"
                         options={particleEmitterTypeOptions}
                         target={system}
                         propertyName="particleEmitterType"
@@ -530,10 +535,10 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     />
                     {this.renderEmitter()}
                 </LineContainerComponent>
-                <LineContainerComponent title="发射" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="EMISSION" closed={true} selection={this.props.globalState}>
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="速率"
+                        label="Rate"
                         target={system}
                         propertyName="emitRate"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -542,7 +547,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                         <ValueGradientGridComponent
                             globalState={this.props.globalState}
                             gradients={system.getEmitRateGradients()!}
-                            label="速度梯度"
+                            label="Velocity gradients"
                             docLink="https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/tuning_gradients#change-speed-over-lifetime"
                             onCreateRequired={() => {
                                 system.addEmitRateGradient(0, 50, 50);
@@ -555,14 +560,14 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     )}
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="最小发射功率"
+                        label="Min emit power"
                         target={system}
                         propertyName="minEmitPower"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="最大发射功率"
+                        label="Max emit power"
                         target={system}
                         propertyName="maxEmitPower"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -570,7 +575,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     <ValueGradientGridComponent
                         globalState={this.props.globalState}
                         gradients={system.getVelocityGradients()!}
-                        label="速度梯度"
+                        label="Velocity gradients"
                         docLink="https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/tuning_gradients#change-speed-over-lifetime"
                         onCreateRequired={() => {
                             system.addVelocityGradient(0, 0.1, 0.1);
@@ -583,7 +588,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     <ValueGradientGridComponent
                         globalState={this.props.globalState}
                         gradients={system.getLimitVelocityGradients()!}
-                        label="极限速度梯度"
+                        label="Limit velocity gradients"
                         docLink="https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/tuning_gradients#limit-speed-over-lifetime"
                         onCreateRequired={() => {
                             system.addLimitVelocityGradient(0, 0.1, 0.1);
@@ -596,7 +601,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     <ValueGradientGridComponent
                         globalState={this.props.globalState}
                         gradients={system.getDragGradients()!}
-                        label="阻力梯度"
+                        label="Drag gradients"
                         docLink="https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/tuning_gradients#change-drag-over-lifetime"
                         onCreateRequired={() => {
                             system.addDragGradient(0, 0.1, 0.1);
@@ -607,19 +612,19 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                         lockObject={this.props.lockObject}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="尺寸" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="SIZE" closed={true} selection={this.props.globalState}>
                     {(!system.getSizeGradients() || system.getSizeGradients()?.length === 0) && (
                         <>
                             <FloatLineComponent
                                 lockObject={this.props.lockObject}
-                                label="最小尺寸"
+                                label="Min size"
                                 target={system}
                                 propertyName="minSize"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <FloatLineComponent
                                 lockObject={this.props.lockObject}
-                                label="最大尺寸"
+                                label="Max size"
                                 target={system}
                                 propertyName="maxSize"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -628,28 +633,28 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     )}
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="最小缩放 X"
+                        label="Min scale X"
                         target={system}
                         propertyName="minScaleX"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="最大缩放 X"
+                        label="Max scale X"
                         target={system}
                         propertyName="maxScaleX"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="最小缩放 Y"
+                        label="Min scale Y"
                         target={system}
                         propertyName="minScaleY"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="最大缩放 Y"
+                        label="Max scale Y"
                         target={system}
                         propertyName="maxScaleY"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -658,7 +663,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                         <ValueGradientGridComponent
                             globalState={this.props.globalState}
                             gradients={system.getStartSizeGradients()!}
-                            label="起始尺寸渐变"
+                            label="Start size gradients"
                             docLink="https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/tuning_gradients#change-size-over-lifetime"
                             onCreateRequired={() => {
                                 system.addStartSizeGradient(0, 1, 1);
@@ -672,7 +677,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     <ValueGradientGridComponent
                         globalState={this.props.globalState}
                         gradients={system.getSizeGradients()!}
-                        label="大小渐变"
+                        label="Size gradients"
                         docLink="https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/tuning_gradients#change-size-over-lifetime"
                         onCreateRequired={() => {
                             system.addSizeGradient(0, 1, 1);
@@ -683,24 +688,24 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                         lockObject={this.props.lockObject}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="寿命" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="LIFETIME" closed={true} selection={this.props.globalState}>
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="最小寿命"
+                        label="Min lifetime"
                         target={system}
                         propertyName="minLifeTime"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="最大寿命"
+                        label="Max lifetime"
                         target={system}
                         propertyName="maxLifeTime"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="目标停止时间"
+                        label="Target stop duration"
                         target={system}
                         propertyName="targetStopDuration"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -709,7 +714,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                         <ValueGradientGridComponent
                             globalState={this.props.globalState}
                             gradients={system.getLifeTimeGradients()!}
-                            label="寿命梯度"
+                            label="Lifetime gradients"
                             docLink="https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/tuning_gradients#change-lifetime-over-duration"
                             onCreateRequired={() => {
                                 system.addLifeTimeGradient(0, 1, 1);
@@ -721,26 +726,26 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                         />
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="颜色" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="COLORS" closed={true} selection={this.props.globalState}>
                     {(!system.getColorGradients() || system.getColorGradients()?.length === 0) && (
                         <>
                             <Color4LineComponent
                                 lockObject={this.props.lockObject}
-                                label="颜色 1"
+                                label="Color 1"
                                 target={system}
                                 propertyName="color1"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <Color4LineComponent
                                 lockObject={this.props.lockObject}
-                                label="颜色 2"
+                                label="Color 2"
                                 target={system}
                                 propertyName="color2"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <Color4LineComponent
                                 lockObject={this.props.lockObject}
-                                label="死灰色"
+                                label="Color dead"
                                 target={system}
                                 propertyName="colorDead"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -750,7 +755,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     <ValueGradientGridComponent
                         globalState={this.props.globalState}
                         gradients={system.getColorGradients()!}
-                        label="颜色渐变"
+                        label="Color gradients"
                         docLink="https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/tuning_gradients#change-color-over-lifetime"
                         onCreateRequired={() => {
                             system.addColorGradient(0, new Color4(0, 0, 0, 1), new Color4(0, 0, 0, 1));
@@ -763,13 +768,13 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     />
                     {system instanceof ParticleSystem && (
                         <>
-                            <CheckBoxLineComponent label="启用斜坡扩展" target={system} propertyName="useRampGradients" />
+                            <CheckBoxLineComponent label="Enable ramp gradients" target={system} propertyName="useRampGradients" />
                             {system.useRampGradients && (
                                 <>
                                     <ValueGradientGridComponent
                                         globalState={this.props.globalState}
                                         gradients={system.getRampGradients()!}
-                                        label="斜坡梯度"
+                                        label="Ramp gradients"
                                         docLink="https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/ramps_and_blends#ramp-gradients"
                                         onCreateRequired={() => {
                                             system.addRampGradient(0, Color3.White());
@@ -784,7 +789,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                                     <ValueGradientGridComponent
                                         globalState={this.props.globalState}
                                         gradients={system.getColorRemapGradients()!}
-                                        label="颜色重映射渐变"
+                                        label="Color remap gradients"
                                         docLink="https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/ramps_and_blends#ramp-gradients"
                                         onCreateRequired={() => {
                                             system.addColorRemapGradient(0, 1, 1);
@@ -797,7 +802,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                                     <ValueGradientGridComponent
                                         globalState={this.props.globalState}
                                         gradients={system.getAlphaRemapGradients()!}
-                                        label="阿尔法映射梯度"
+                                        label="Alpha remap gradients"
                                         docLink="https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/ramps_and_blends#ramp-gradients"
                                         onCreateRequired={() => {
                                             system.addAlphaRemapGradient(0, 1, 1);
@@ -812,31 +817,31 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                         </>
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="旋转" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="ROTATION" closed={true} selection={this.props.globalState}>
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="最小角速度"
+                        label="Min angular speed"
                         target={system}
                         propertyName="minAngularSpeed"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="最大角速度"
+                        label="Max angular speed"
                         target={system}
                         propertyName="maxAngularSpeed"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="最小初始旋转"
+                        label="Min initial rotation"
                         target={system}
                         propertyName="minInitialRotation"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="最大初始旋转"
+                        label="Max initial rotation"
                         target={system}
                         propertyName="maxInitialRotation"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -844,7 +849,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     <ValueGradientGridComponent
                         globalState={this.props.globalState}
                         gradients={system.getAngularSpeedGradients()!}
-                        label="角速度梯度"
+                        label="Angular speed gradients"
                         docLink="https://doc.babylonjs.com/features/featuresDeepDive/particles/particle_system/tuning_gradients#change-rotation-speed-over-lifetime"
                         onCreateRequired={() => {
                             system.addAngularSpeedGradient(0, 0.1, 0.1);
@@ -855,16 +860,16 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                         lockObject={this.props.lockObject}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="精灵表" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="SPRITESHEET" closed={true} selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="动画工作表已启用"
+                        label="Animation sheet enabled"
                         target={system}
                         propertyName="isAnimationSheetEnabled"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="第一个精灵索引"
+                        label="First sprite index"
                         isInteger={true}
                         target={system}
                         propertyName="startSpriteCellID"
@@ -872,22 +877,27 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="最后一个精灵索引"
+                        label="Last sprite index"
                         isInteger={true}
                         target={system}
                         propertyName="endSpriteCellID"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <CheckBoxLineComponent label="动画循环" target={system} propertyName="spriteCellLoop" onPropertyChangedObservable={this.props.onPropertyChangedObservable} />
                     <CheckBoxLineComponent
-                        label="随机起始单元格索引"
+                        label="Animation Loop"
+                        target={system}
+                        propertyName="spriteCellLoop"
+                        onPropertyChangedObservable={this.props.onPropertyChangedObservable}
+                    />
+                    <CheckBoxLineComponent
+                        label="Random start cell index"
                         target={system}
                         propertyName="spriteRandomStartCell"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="单元格宽度"
+                        label="Cell width"
                         isInteger={true}
                         target={system}
                         propertyName="spriteCellWidth"
@@ -895,7 +905,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="单元格高度"
+                        label="Cell height"
                         isInteger={true}
                         target={system}
                         propertyName="spriteCellHeight"
@@ -903,7 +913,7 @@ export class ParticleSystemPropertyGridComponent extends React.Component<IPartic
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="单元格更换速度"
+                        label="Cell change speed"
                         target={system}
                         propertyName="spriteCellChangeSpeed"
                         minimum={0}

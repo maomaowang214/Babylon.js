@@ -2911,11 +2911,7 @@ export class Vector3 implements Vector<Tuple<number, 3>>, IVector3Like {
 
         const viewportMatrix = MathTmp.Matrix[1];
 
-        const isNDCHalfZRange = EngineStore.LastCreatedEngine?.isNDCHalfZRange;
-        const zScale = isNDCHalfZRange ? 1 : 0.5;
-        const zOffset = isNDCHalfZRange ? 0 : 0.5;
-
-        Matrix.FromValuesToRef(cw / 2.0, 0, 0, 0, 0, -ch / 2.0, 0, 0, 0, 0, zScale, 0, cx + cw / 2.0, ch / 2.0 + cy, zOffset, 1, viewportMatrix);
+        Matrix.FromValuesToRef(cw / 2.0, 0, 0, 0, 0, -ch / 2.0, 0, 0, 0, 0, 0.5, 0, cx + cw / 2.0, ch / 2.0 + cy, 0.5, 1, viewportMatrix);
 
         const matrix = MathTmp.Matrix[0];
         world.multiplyToRef(transform, matrix);
@@ -6561,12 +6557,6 @@ export class Matrix implements Tensor<Tuple<Tuple<number, 4>, 4>>, IMatrixLike {
         return result;
     }
 
-    /**
-     * This method performs component-by-component in-place multiplication, rather than true matrix multiplication.
-     * Use multiply or multiplyToRef for matrix multiplication.
-     * @param other defines the second operand
-     * @returns the current updated matrix
-     */
     public multiplyInPlace(other: DeepImmutable<this>): this {
         const m = this._m,
             otherM = other.m;
@@ -6577,16 +6567,10 @@ export class Matrix implements Tensor<Tuple<Tuple<number, 4>, 4>>, IMatrixLike {
         return this;
     }
 
-    /**
-     * This method performs a component-by-component multiplication of the current matrix with the array of transmitted numbers.
-     * Use multiply or multiplyToRef for matrix multiplication.
-     * @param floats defines the array of numbers to multiply the matrix by
-     * @returns the current updated matrix
-     */
     public multiplyByFloats(...floats: Tuple<number, 16>): this {
         const m = this._m;
         for (let i = 0; i < 16; i++) {
-            m[i] *= floats[i];
+            m[i] = floats[i];
         }
         this.markAsUpdated();
         return this;

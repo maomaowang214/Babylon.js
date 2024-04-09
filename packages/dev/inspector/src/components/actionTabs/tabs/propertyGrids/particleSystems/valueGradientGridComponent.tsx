@@ -110,7 +110,7 @@ export class ValueGradientGridComponent extends React.Component<IValueGradientGr
                                 gradients!.length = 0;
                                 this.updateAndSync();
                             }}
-                            buttonLabel="添加新步骤"
+                            buttonLabel="Add new step"
                             onClick={() => this.addNewStep()}
                         />
                         {gradients.map((g, i) => {
@@ -169,7 +169,7 @@ export class ValueGradientGridComponent extends React.Component<IValueGradientGr
                 )}
                 {(!gradients || gradients.length === 0) && (
                     <ButtonLineComponent
-                        label={"用 " + this.props.label}
+                        label={"Use " + this.props.label}
                         onClick={() => {
                             this.props.onCreateRequired();
                             this.forceUpdate();

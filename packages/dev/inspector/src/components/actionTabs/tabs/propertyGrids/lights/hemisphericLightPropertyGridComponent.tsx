@@ -32,24 +32,24 @@ export class HemisphericLightPropertyGridComponent extends React.Component<IHemi
                     light={light}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="布设" selection={this.props.globalState}>
+                <LineContainerComponent title="SETUP" selection={this.props.globalState}>
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="扩散"
+                        label="Diffuse"
                         target={light}
                         propertyName="diffuse"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="地面"
+                        label="Ground"
                         target={light}
                         propertyName="groundColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Vector3LineComponent
                         lockObject={this.props.lockObject}
-                        label="方向"
+                        label="Direction"
                         target={light}
                         propertyName="direction"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}

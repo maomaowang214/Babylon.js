@@ -10,23 +10,21 @@ import * as React from "react";
 import type { GlobalState } from "../../globalState";
 
 import "core/Rendering/boundingBoxRenderer";
-import { BoundingInfo } from "core/Culling/boundingInfo";
-import type { Scene } from "core/scene";
-import { Animation } from "core/Animations/animation";
-import { FramingBehavior } from "core/Behaviors/Cameras/framingBehavior";
 
 interface IMeshTreeItemComponentProps {
-    mesh: AbstractMesh | any;
+    mesh: AbstractMesh;
     extensibilityGroups?: IExplorerExtensibilityGroup[];
     onClick: () => void;
     globalState: GlobalState;
 }
 
-export class MeshTreeItemComponent extends React.Component<IMeshTreeItemComponentProps, { isBoundingBoxEnabled: boolean; isVisible: boolean; isMapLoation: boolean }> {
+export class MeshTreeItemComponent extends React.Component<IMeshTreeItemComponentProps, { isBoundingBoxEnabled: boolean; isVisible: boolean }> {
     constructor(props: IMeshTreeItemComponentProps) {
         super(props);
+
         const mesh = this.props.mesh;
-        this.state = { isBoundingBoxEnabled: mesh.showBoundingBox, isVisible: this.props.mesh.isVisible, isMapLoation: false };
+
+        this.state = { isBoundingBoxEnabled: mesh.showBoundingBox, isVisible: this.props.mesh.isVisible };
     }
 
     showBoundingBox(): void {
@@ -88,7 +86,6 @@ export class MeshTreeItemComponent extends React.Component<IMeshTreeItemComponen
                 <div className="visibility icon" onClick={() => this.switchVisibility()} title="Show/Hide mesh">
                     {visibilityElement}
                 </div>
-
                 {<ExtensionsComponent target={mesh} extensibilityGroups={this.props.extensibilityGroups} />}
             </div>
         );

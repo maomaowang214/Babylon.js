@@ -33,37 +33,57 @@ export class LayerPropertyGridComponent extends React.Component<ILayerPropertyGr
 
         return (
             <>
-                <LineContainerComponent title="常规" selection={this.props.globalState}>
-                    <TextLineComponent label="类" value={layer.getClassName()} />
+                <LineContainerComponent title="GENERAL" selection={this.props.globalState}>
+                    <TextLineComponent label="Class" value={layer.getClassName()} />
                     <TextInputLineComponent
                         lockObject={this.props.lockObject}
-                        label="名称"
+                        label="Name"
                         target={layer}
                         propertyName="name"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
-                    <SliderLineComponent
-                        lockObject={this.props.lockObject}
-                        label="强度"
-                        target={layer}
-                        propertyName="intensity"
-                        minimum={0}
-                        maximum={2}
-                        step={0.01}
-                        decimalCount={2}
-                        onPropertyChangedObservable={this.props.onPropertyChangedObservable}
-                    />
-                    <SliderLineComponent
-                        lockObject={this.props.lockObject}
-                        label="模糊内核大小"
-                        target={layer}
-                        propertyName="blurKernelSize"
-                        minimum={0}
-                        maximum={64}
-                        step={1}
-                        decimalCount={0}
-                        onPropertyChangedObservable={this.props.onPropertyChangedObservable}
-                    />
+                    {layer.getClassName() === GlowLayer.EffectName && (
+                        <div className="fragment">
+                            <SliderLineComponent
+                                lockObject={this.props.lockObject}
+                                label="Intensity"
+                                target={layer}
+                                propertyName="intensity"
+                                minimum={0}
+                                maximum={2}
+                                step={0.01}
+                                decimalCount={2}
+                                onPropertyChangedObservable={this.props.onPropertyChangedObservable}
+                            />
+                            <SliderLineComponent
+                                lockObject={this.props.lockObject}
+                                label="Blur Kernel Size"
+                                target={layer}
+                                propertyName="blurKernelSize"
+                                minimum={0}
+                                maximum={64}
+                                step={1}
+                                decimalCount={0}
+                                onPropertyChangedObservable={this.props.onPropertyChangedObservable}
+                            />
+                        </div>
+                    )}
+                    {layer.getClassName() === HighlightLayer.EffectName && (
+                        <div className="fragment">
+                            <CheckBoxLineComponent
+                                label="Inner Glow"
+                                target={layer}
+                                propertyName="innerGlow"
+                                onPropertyChangedObservable={this.props.onPropertyChangedObservable}
+                            />
+                            <CheckBoxLineComponent
+                                label="Outer Glow"
+                                target={layer}
+                                propertyName="outerGlow"
+                                onPropertyChangedObservable={this.props.onPropertyChangedObservable}
+                            />
+                        </div>
+                    )}
                 </LineContainerComponent>
             </>
         );

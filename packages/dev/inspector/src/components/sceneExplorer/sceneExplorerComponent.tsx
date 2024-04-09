@@ -50,7 +50,7 @@ export class SceneExplorerFilterComponent extends React.Component<ISceneExplorer
     render() {
         return (
             <div className="filter">
-                <input type="text" placeholder="请输入..." onChange={(evt) => this.props.onFilter(evt.target.value)} />
+                <input type="text" placeholder="Filter" onChange={(evt) => this.props.onFilter(evt.target.value)} />
             </div>
         );
     }
@@ -266,7 +266,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
         if (scene.activeCamera) {
             if (!pipelines.some((p) => p.getClassName() === "DefaultRenderingPipeline")) {
                 defaultMenuItems.push({
-                    label: "添加新的默认渲染管线",
+                    label: "Add new Default Rendering Pipeline",
                     action: () => {
                         const newPipeline = new DefaultRenderingPipeline("Default rendering pipeline", true, scene, scene.cameras);
                         this.props.globalState.onSelectionChangedObservable.notifyObservers(newPipeline);
@@ -276,7 +276,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
 
             if (!pipelines.some((p) => p.getClassName() === "SSAORenderingPipeline")) {
                 defaultMenuItems.push({
-                    label: "添加新的 SSAO 渲染管线",
+                    label: "Add new SSAO Rendering Pipeline",
                     action: () => {
                         const newPipeline = new SSAORenderingPipeline("SSAO rendering pipeline", scene, 1, scene.cameras);
                         this.props.globalState.onSelectionChangedObservable.notifyObservers(newPipeline);
@@ -286,7 +286,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
 
             if (scene.getEngine().getCaps().drawBuffersExtension && !pipelines.some((p) => p.getClassName() === "SSAORenderingPipeline")) {
                 defaultMenuItems.push({
-                    label: "添加新的 SSAO2 渲染管线",
+                    label: "Add new SSAO2 Rendering Pipeline",
                     action: () => {
                         const newPipeline = new SSAO2RenderingPipeline("SSAO2 rendering pipeline", scene, 1, scene.cameras);
                         this.props.globalState.onSelectionChangedObservable.notifyObservers(newPipeline);
@@ -296,7 +296,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
 
             if (scene.getEngine().getCaps().drawBuffersExtension && scene.getEngine().getCaps().texelFetch && !pipelines.some((p) => p.getClassName() === "SSRRenderingPipeline")) {
                 defaultMenuItems.push({
-                    label: "添加新的 SSR 渲染管线",
+                    label: "Add new SSR Rendering Pipeline",
                     action: () => {
                         const newPipeline = new SSRRenderingPipeline("SSR rendering pipeline", scene, scene.cameras);
                         this.props.globalState.onSelectionChangedObservable.notifyObservers(newPipeline);
@@ -315,21 +315,21 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
         const defaultMenuItems: IInspectorContextMenuItem[] = [];
 
         defaultMenuItems.push({
-            label: "添加新的点光源",
+            label: "Add new point light",
             action: () => {
                 const newPointLight = new PointLight("point light", Vector3.Zero(), scene);
                 this.props.globalState.onSelectionChangedObservable.notifyObservers(newPointLight);
             },
         });
         defaultMenuItems.push({
-            label: "添加新的平行光",
+            label: "Add new directional light",
             action: () => {
                 const newDirectionalLight = new DirectionalLight("directional light", new Vector3(-1, -1, -0.5), scene);
                 this.props.globalState.onSelectionChangedObservable.notifyObservers(newDirectionalLight);
             },
         });
         defaultMenuItems.push({
-            label: "添加新的万能相机",
+            label: "Add new free camera",
             action: () => {
                 const newFreeCamera = new FreeCamera("free camera", scene.activeCamera ? scene.activeCamera.globalPosition : new Vector3(0, 0, -5), scene);
 
@@ -345,7 +345,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
             },
         });
         defaultMenuItems.push({
-            label: "添加新网格",
+            label: "Add new mesh from Node Geometry",
             action: () => {
                 const ng = new NodeGeometry("Node Geometry");
                 ng.setToDefault();
@@ -374,21 +374,21 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
         const defaultMenuItems: IInspectorContextMenuItem[] = [];
 
         defaultMenuItems.push({
-            label: "添加新的标准材料",
+            label: "Add new standard material",
             action: () => {
                 const newStdMaterial = new StandardMaterial(getUniqueName("Standard material"), scene);
                 this.props.globalState.onSelectionChangedObservable.notifyObservers(newStdMaterial);
             },
         });
         defaultMenuItems.push({
-            label: "添加新的PBR材料",
+            label: "Add new PBR material",
             action: () => {
                 const newPBRMaterial = new PBRMaterial(getUniqueName("PBR material"), scene);
                 this.props.globalState.onSelectionChangedObservable.notifyObservers(newPBRMaterial);
             },
         });
         defaultMenuItems.push({
-            label: "添加新节点材料",
+            label: "Add new node material",
             action: () => {
                 const newNodeMaterial = new NodeMaterial(getUniqueName("node material"), scene);
                 newNodeMaterial.setToDefault();
@@ -407,7 +407,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
         const defaultMenuItems: IInspectorContextMenuItem[] = [];
 
         defaultMenuItems.push({
-            label: "添加新的精灵管理器",
+            label: "Add new sprite manager",
             action: () => {
                 const newSpriteManager = new SpriteManager("Default sprite manager", "//playground.babylonjs.com/textures/player.png", 500, 64, scene);
                 this.props.globalState.onSelectionChangedObservable.notifyObservers(newSpriteManager);
@@ -424,7 +424,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
         const defaultMenuItems: IInspectorContextMenuItem[] = [];
 
         defaultMenuItems.push({
-            label: "添加新的 CPU 粒子系统",
+            label: "Add new CPU particle system",
             action: () => {
                 const newSystem = ParticleHelper.CreateDefault(Vector3.Zero(), 10000, scene);
                 newSystem.name = "CPU particle system";
@@ -435,7 +435,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
 
         if (GPUParticleSystem.IsSupported) {
             defaultMenuItems.push({
-                label: "添加新的 GPU 粒子系统",
+                label: "Add new GPU particle system",
                 action: () => {
                     const newSystem = ParticleHelper.CreateDefault(Vector3.Zero(), 10000, scene, true);
                     newSystem.name = "GPU particle system";
@@ -543,7 +543,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
                     extensibilityGroups={this.props.extensibilityGroups}
                     selectedEntity={this.state.selectedEntity}
                     items={rootNodes}
-                    label="网格节点"
+                    label="Nodes"
                     offset={1}
                     filter={this.state.filter}
                 />
@@ -553,7 +553,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
                         extensibilityGroups={this.props.extensibilityGroups}
                         selectedEntity={this.state.selectedEntity}
                         items={scene.skeletons}
-                        label="骨骼动画"
+                        label="Skeletons"
                         offset={1}
                         filter={this.state.filter}
                     />
@@ -564,7 +564,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
                     selectedEntity={this.state.selectedEntity}
                     items={materials}
                     contextMenuItems={materialsContextMenus}
-                    label="材质"
+                    label="Materials"
                     offset={1}
                     filter={this.state.filter}
                 />
@@ -573,7 +573,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
                     extensibilityGroups={this.props.extensibilityGroups}
                     selectedEntity={this.state.selectedEntity}
                     items={textures}
-                    label="纹理"
+                    label="Textures"
                     offset={1}
                     filter={this.state.filter}
                 />
@@ -583,7 +583,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
                         extensibilityGroups={this.props.extensibilityGroups}
                         selectedEntity={this.state.selectedEntity}
                         items={postProcesses}
-                        label="后期效果处理"
+                        label="Post-processes"
                         offset={1}
                         filter={this.state.filter}
                     />
@@ -594,7 +594,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
                     contextMenuItems={pipelineContextMenus}
                     selectedEntity={this.state.selectedEntity}
                     items={pipelines}
-                    label="渲染管线"
+                    label="Rendering pipelines"
                     offset={1}
                     filter={this.state.filter}
                 />
@@ -604,7 +604,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
                         extensibilityGroups={this.props.extensibilityGroups}
                         selectedEntity={this.state.selectedEntity}
                         items={scene.effectLayers}
-                        label="效果图层"
+                        label="Effect layers"
                         offset={1}
                         filter={this.state.filter}
                     />
@@ -615,7 +615,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
                     extensibilityGroups={this.props.extensibilityGroups}
                     selectedEntity={this.state.selectedEntity}
                     items={scene.particleSystems}
-                    label="粒子系统"
+                    label="Particle systems"
                     offset={1}
                     filter={this.state.filter}
                 />
@@ -626,7 +626,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
                     extensibilityGroups={this.props.extensibilityGroups}
                     selectedEntity={this.state.selectedEntity}
                     items={scene.spriteManagers}
-                    label="精灵管理器"
+                    label="Sprite managers"
                     offset={1}
                     filter={this.state.filter}
                 />
@@ -636,7 +636,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
                         extensibilityGroups={this.props.extensibilityGroups}
                         selectedEntity={this.state.selectedEntity}
                         items={guiElements}
-                        label="GUI 组件"
+                        label="GUI"
                         offset={1}
                         filter={this.state.filter}
                     />
@@ -647,7 +647,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
                         extensibilityGroups={this.props.extensibilityGroups}
                         selectedEntity={this.state.selectedEntity}
                         items={scene.animationGroups}
-                        label="动画组"
+                        label="Animation groups"
                         offset={1}
                         filter={this.state.filter}
                     />
@@ -658,7 +658,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
                         extensibilityGroups={this.props.extensibilityGroups}
                         selectedEntity={this.state.selectedEntity}
                         items={scene.mainSoundTrack.soundCollection}
-                        label="音频"
+                        label="Sounds"
                         offset={1}
                         filter={this.state.filter}
                     />
@@ -706,7 +706,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
                 <div id="sceneExplorer" tabIndex={0} onKeyDown={(keyEvent) => this.processKeys(keyEvent, allNodes)}>
                     {!this.props.noHeader && (
                         <HeaderComponent
-                            title="场景管理器"
+                            title="SCENE EXPLORER"
                             noClose={this.props.noClose}
                             noExpand={this.props.noExpand}
                             noCommands={this.props.noCommands}
@@ -745,7 +745,7 @@ export class SceneExplorerComponent extends React.Component<ISceneExplorerCompon
             >
                 {!this.props.noHeader && (
                     <HeaderComponent
-                        title="场景集合"
+                        title="SCENE EXPLORER"
                         noClose={this.props.noClose}
                         noExpand={this.props.noExpand}
                         noCommands={this.props.noCommands}

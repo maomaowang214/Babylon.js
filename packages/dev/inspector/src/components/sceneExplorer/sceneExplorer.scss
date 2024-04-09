@@ -45,18 +45,18 @@
     }
 
     #header {
-        // height: 30px;
-        // font-size: 16px;
-        // color: white;
-        // background: #222222;
-        // grid-row: 1;
-        // text-align: center;
-        // display: grid;
-        // grid-template-columns: 30px 1fr 50px;
-        // -webkit-user-select: none;
-        // -moz-user-select: none;
-        // -ms-user-select: none;
-        // user-select: none;
+        height: 30px;
+        font-size: 16px;
+        color: white;
+        background: #222222;
+        grid-row: 1;
+        text-align: center;
+        display: grid;
+        grid-template-columns: 30px 1fr 50px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
 
         #logo {
             position: relative;
@@ -421,72 +421,6 @@
             .extensions {
                 width: 20px;
                 grid-column: 5;
-            }
-
-            // 新增样式
-            .toolsDiv {
-                margin-left: -16px;
-                display: flex;
-                gap: 5px;
-            }
-        }
-
-        .draggableBox {
-            position: absolute;
-            width: 50px;
-            // height: 300px;
-            left: 310px;
-            top: 60px;
-            // background: rgba(0, 0, 0, 0.5);
-            .dragItem1 {
-                display: flex;
-                height: 40px;
-                width: 40px;
-                justify-content: center;
-                align-items: center;
-                background: #444444;
-                border: 1px solid #ffffff;
-                border-top-right-radius: 5px;
-                border-top-left-radius: 5px;
-                font-size: large;
-            }
-            .dragItem2 {
-                display: flex;
-                height: 40px;
-                width: 40px;
-                justify-content: center;
-                align-items: center;
-                background: #444444;
-                border: 1px solid #ffffff;
-                border-bottom-right-radius: 5px;
-                border-bottom-left-radius: 5px;
-                margin-bottom: 10px;
-                font-size: large;
-            }
-            .dragItem3 {
-                display: flex;
-                height: 40px;
-                width: 40px;
-                justify-content: center;
-                align-items: center;
-                background: #444444;
-                border: 1px solid #ffffff;
-                font-size: large;
-            }
-            .selectDrag {
-                background-color: rgba(51, 183, 102, 0.8);
-            }
-            .dragGJ {
-                cursor: move;
-                background: #fff;
-                width: 40px;
-                height: 10px;
-                border-top-left-radius: 2px;
-                border-top-right-radius: 2px;
-                line-height: 10px;
-                text-align: right;
-                color: #222222;
-                z-index: 101;
             }
         }
 

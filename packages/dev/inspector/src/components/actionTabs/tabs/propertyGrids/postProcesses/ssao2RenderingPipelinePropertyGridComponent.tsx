@@ -39,7 +39,7 @@ export class SSAO2RenderingPipelinePropertyGridComponent extends React.Component
                 <LineContainerComponent title="SSAO" selection={this.props.globalState}>
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="强度"
+                        label="Strength"
                         minimum={0}
                         maximum={2}
                         step={0.05}
@@ -49,7 +49,7 @@ export class SSAO2RenderingPipelinePropertyGridComponent extends React.Component
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="基础"
+                        label="Base"
                         minimum={0}
                         maximum={1}
                         step={0.05}
@@ -59,7 +59,7 @@ export class SSAO2RenderingPipelinePropertyGridComponent extends React.Component
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="最大 Z"
+                        label="Max Z"
                         minimum={0}
                         maximum={camera.maxZ}
                         step={1}
@@ -69,7 +69,7 @@ export class SSAO2RenderingPipelinePropertyGridComponent extends React.Component
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="最小Z向"
+                        label="Min Z aspect"
                         minimum={0}
                         maximum={0.5}
                         step={0.01}
@@ -79,7 +79,7 @@ export class SSAO2RenderingPipelinePropertyGridComponent extends React.Component
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="半径"
+                        label="Radius"
                         minimum={0}
                         maximum={10}
                         step={0.05}
@@ -98,22 +98,22 @@ export class SSAO2RenderingPipelinePropertyGridComponent extends React.Component
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="消除干扰">
+                <LineContainerComponent title="Denoiser">
                     <CheckBoxLineComponent
-                        label="绕过模糊"
+                        label="Bypass Blur"
                         propertyName="bypassBlur"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         target={renderPipeline}
                     />
                     <CheckBoxLineComponent
-                        label="昂贵的模糊"
+                        label="Expensive Blur"
                         propertyName="expensiveBlur"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                         target={renderPipeline}
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="案例"
+                        label="Samples"
                         minimum={2}
                         maximum={32}
                         step={1}
@@ -123,7 +123,7 @@ export class SSAO2RenderingPipelinePropertyGridComponent extends React.Component
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="软化"
+                        label="Soften"
                         minimum={0}
                         maximum={1}
                         step={0.01}
@@ -133,7 +133,7 @@ export class SSAO2RenderingPipelinePropertyGridComponent extends React.Component
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="宽容"
+                        label="Tolerance"
                         minimum={0}
                         maximum={1}
                         step={0.01}

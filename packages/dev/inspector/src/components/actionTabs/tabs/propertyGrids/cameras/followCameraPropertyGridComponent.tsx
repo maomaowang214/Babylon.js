@@ -33,82 +33,82 @@ export class FollowCameraPropertyGridComponent extends React.Component<IFollowCa
                     camera={camera}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="变换" selection={this.props.globalState}>
+                <LineContainerComponent title="TRANSFORMS" selection={this.props.globalState}>
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="半径"
+                        label="Radius"
                         target={camera}
                         propertyName="radius"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="旋转偏移"
+                        label="Rotation offset"
                         target={camera}
                         propertyName="rotationOffset"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="高度偏移"
+                        label="Height offset"
                         target={camera}
                         propertyName="heightOffset"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="相机加速"
+                        label="Camera acceleration"
                         target={camera}
                         propertyName="cameraAcceleration"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="限制" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="LIMITS" closed={true} selection={this.props.globalState}>
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="半径下限"
+                        label="Lower radius limit"
                         target={camera}
                         propertyName="lowerRadiusLimit"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="半径上限"
+                        label="Upper radius limit"
                         target={camera}
                         propertyName="upperRadiusLimit"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="旋转偏移下限"
+                        label="Lower rotation offset limit"
                         target={camera}
                         propertyName="lowerRotationOffsetLimit"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="旋转偏移上限"
+                        label="Upper rotation offset limit"
                         target={camera}
                         propertyName="upperRotationOffsetLimit"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="高度偏移下限"
+                        label="Lower height offset limit"
                         target={camera}
                         propertyName="lowerHeightOffsetLimit"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="高度偏移上限"
+                        label="Upper height offset limit"
                         target={camera}
                         propertyName="upperHeightOffsetLimit"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <FloatLineComponent
                         lockObject={this.props.lockObject}
-                        label="最大相机速度"
+                        label="Max camera speed"
                         target={camera}
                         propertyName="maxCameraSpeed"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}

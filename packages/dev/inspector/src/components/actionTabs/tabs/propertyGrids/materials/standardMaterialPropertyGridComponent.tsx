@@ -36,9 +36,9 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
         const onDebugSelectionChangeObservable = this._onDebugSelectionChangeObservable;
 
         return (
-            <LineContainerComponent title="纹理" selection={this.props.globalState}>
+            <LineContainerComponent title="TEXTURES" selection={this.props.globalState}>
                 <TextureLinkLineComponent
-                    label="扩散"
+                    label="Diffuse"
                     texture={material.diffuseTexture}
                     propertyName="diffuseTexture"
                     material={material}
@@ -46,7 +46,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <TextureLinkLineComponent
-                    label="镜面"
+                    label="Specular"
                     texture={material.specularTexture}
                     propertyName="specularTexture"
                     material={material}
@@ -54,7 +54,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <TextureLinkLineComponent
-                    label="反射"
+                    label="Reflection"
                     texture={material.reflectionTexture}
                     propertyName="reflectionTexture"
                     material={material}
@@ -62,7 +62,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <TextureLinkLineComponent
-                    label="折射"
+                    label="Refraction"
                     texture={material.refractionTexture}
                     propertyName="refractionTexture"
                     material={material}
@@ -70,7 +70,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <TextureLinkLineComponent
-                    label="发射"
+                    label="Emissive"
                     texture={material.emissiveTexture}
                     propertyName="emissiveTexture"
                     material={material}
@@ -78,7 +78,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <TextureLinkLineComponent
-                    label="凹凸"
+                    label="Bump"
                     texture={material.bumpTexture}
                     propertyName="bumpTexture"
                     material={material}
@@ -86,7 +86,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <TextureLinkLineComponent
-                    label="透明度"
+                    label="Opacity"
                     texture={material.opacityTexture}
                     propertyName="opacityTexture"
                     material={material}
@@ -94,7 +94,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <TextureLinkLineComponent
-                    label="环境"
+                    label="Ambient"
                     texture={material.ambientTexture}
                     propertyName="ambientTexture"
                     material={material}
@@ -102,7 +102,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <TextureLinkLineComponent
-                    label="光线映射"
+                    label="Lightmap"
                     texture={material.lightmapTexture}
                     propertyName="lightmapTexture"
                     material={material}
@@ -110,7 +110,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <TextureLinkLineComponent
-                    label="细节图"
+                    label="Detailmap"
                     texture={material.detailMap.texture}
                     material={material}
                     onTextureCreated={(texture) => (material.detailMap.texture = texture)}
@@ -119,20 +119,20 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     onDebugSelectionChangeObservable={onDebugSelectionChangeObservable}
                 />
                 <CheckBoxLineComponent
-                    label="使用光照贴图作为阴影贴图"
+                    label="Use lightmap as shadowmap"
                     target={material}
                     propertyName="useLightmapAsShadowmap"
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
                 <CheckBoxLineComponent
-                    label="使用细节图"
+                    label="Use detailmap"
                     target={material.detailMap}
                     propertyName="isEnabled"
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
                 {material.decalMap && (
                     <CheckBoxLineComponent
-                        label="使用贴花贴图"
+                        label="Use decalmap"
                         target={material.decalMap}
                         propertyName="isEnabled"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -154,24 +154,24 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
                 {this.renderTextures()}
-                <LineContainerComponent title="灯光 & 颜色" selection={this.props.globalState}>
+                <LineContainerComponent title="LIGHTING & COLORS" selection={this.props.globalState}>
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="漫反射"
+                        label="Diffuse"
                         target={material}
                         propertyName="diffuseColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="高光贴图"
+                        label="Specular"
                         target={material}
                         propertyName="specularColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="高光强度"
+                        label="Specular power"
                         target={material}
                         propertyName="specularPower"
                         minimum={0}
@@ -181,30 +181,30 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     />
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="发射"
+                        label="Emissive"
                         target={material}
                         propertyName="emissiveColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <Color3LineComponent
                         lockObject={this.props.lockObject}
-                        label="环境"
+                        label="Ambient"
                         target={material}
                         propertyName="ambientColor"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="在阿尔法上使用镜面反射"
+                        label="Use specular over alpha"
                         target={material}
                         propertyName="useSpecularOverAlpha"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="标准" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="LEVELS" closed={true} selection={this.props.globalState}>
                     {material.diffuseTexture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="漫反射级别"
+                            label="Diffuse level"
                             target={material.diffuseTexture}
                             propertyName="level"
                             minimum={0}
@@ -216,7 +216,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     {material.specularTexture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="高光级别"
+                            label="Specular level"
                             target={material.specularTexture}
                             propertyName="level"
                             minimum={0}
@@ -228,7 +228,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     {material.reflectionTexture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="反射级别"
+                            label="Reflection level"
                             target={material.reflectionTexture}
                             propertyName="level"
                             minimum={0}
@@ -240,7 +240,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     {material.refractionTexture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="折射级别"
+                            label="Refraction level"
                             target={material.refractionTexture}
                             propertyName="level"
                             minimum={0}
@@ -252,7 +252,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     {material.emissiveTexture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="发射级别"
+                            label="Emissive level"
                             target={material.emissiveTexture}
                             propertyName="level"
                             minimum={0}
@@ -264,7 +264,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     {material.bumpTexture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="凹凸级别"
+                            label="Bump level"
                             target={material.bumpTexture}
                             propertyName="level"
                             minimum={0}
@@ -276,7 +276,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     {material.opacityTexture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="透明度级别"
+                            label="Opacity level"
                             target={material.opacityTexture}
                             propertyName="level"
                             minimum={0}
@@ -288,7 +288,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     {material.ambientTexture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="环境级别"
+                            label="Ambient level"
                             target={material.ambientTexture}
                             propertyName="level"
                             minimum={0}
@@ -300,7 +300,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                     {material.lightmapTexture && (
                         <SliderLineComponent
                             lockObject={this.props.lockObject}
-                            label="光线映射级别"
+                            label="Lightmap level"
                             target={material.lightmapTexture}
                             propertyName="level"
                             minimum={0}
@@ -313,7 +313,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                         <>
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="细节图扩散"
+                                label="Detailmap diffuse"
                                 target={material.detailMap}
                                 propertyName="diffuseBlendLevel"
                                 minimum={0}
@@ -323,7 +323,7 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="细节图凹凸"
+                                label="Detailmap bump"
                                 target={material.detailMap}
                                 propertyName="bumpLevel"
                                 minimum={0}
@@ -334,15 +334,15 @@ export class StandardMaterialPropertyGridComponent extends React.Component<IStan
                         </>
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="法线贴图" closed={true} selection={this.props.globalState}>
+                <LineContainerComponent title="NORMAL MAP" closed={true} selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="反转X轴"
+                        label="Invert X axis"
                         target={material}
                         propertyName="invertNormalMapX"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="反转Y轴"
+                        label="Invert Y axis"
                         target={material}
                         propertyName="invertNormalMapY"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}

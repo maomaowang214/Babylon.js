@@ -42,10 +42,10 @@ export class ControlTreeItemComponent extends React.Component<IControlTreeItemCo
         return (
             <div className="controlTools">
                 <TreeItemLabelComponent label={name} onClick={() => this.props.onClick()} icon={faObjectGroup} color="greenyellow" />
-                <div className="highlight icon" onClick={() => this.highlight()} title="突出显示此控件">
+                <div className="highlight icon" onClick={() => this.highlight()} title="Highlight this control">
                     {isActiveElement}
                 </div>
-                <div className="visibility icon" onClick={() => this.switchVisibility()} title="显示/隐藏控件">
+                <div className="visibility icon" onClick={() => this.switchVisibility()} title="Show/Hide control">
                     {visibilityElement}
                 </div>
                 <ExtensionsComponent target={control} extensibilityGroups={this.props.extensibilityGroups} />

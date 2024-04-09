@@ -104,7 +104,7 @@ export const PerformanceViewerSidebarComponent = (props: IPerformanceViewerSideb
                             </div>
                         ) : (
                             <div className="version-header sidebar-item" key={"header-version"}>
-                                <span className="category">版本:</span>
+                                <span className="category">Version:</span>
                                 <span className="value">{Engine.Version}</span>
                             </div>
                         )}

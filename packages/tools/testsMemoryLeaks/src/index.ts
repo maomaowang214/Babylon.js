@@ -26,9 +26,12 @@ export const getGlobalConfig = (overrideConfig: { root?: string; baseUrl?: strin
 };
 
 function getConfigFromRunOptions(options: RunOptions): MemLabConfig {
-    const config = MemLabConfig.resetConfigWithTransientDir();
-    // if you have issues with WebGL not supported, run it in headful mode
-    // config.puppeteerConfig.headless = false;
+    let config = MemLabConfig.getInstance();
+    // if (options.workDir) {
+    //   fileManager.initDirs(config, {workDir: options.workDir});
+    // } else {
+    config = MemLabConfig.resetConfigWithTransientDir();
+    // }
     config.isFullRun = !!options.snapshotForEachStep;
     config.oversizeObjectAsLeak = true;
     config.oversizeThreshold = 50000;
@@ -81,10 +84,7 @@ export async function takeSnapshotsLocal(options: RunOptions = {}): Promise<Brow
                     await page.click("#dispose");
                 },
                 leakFilter: (node, _snapshot, _leakedNodeIds) => {
-                    if (node.name === "FontAwesomeConfig") {
-                        return false;
-                    }
-                    if (node.retainedSize < 40000) {
+                    if (node.retainedSize < 35000) {
                         return false;
                     }
                     if (node.pathEdge?.type === "internal" || node.pathEdge?.type === "hidden") {

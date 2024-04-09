@@ -82,7 +82,7 @@ export class GradientStepComponent extends React.Component<IGradientStepComponen
                 >
                     <img className="img" src={copyIcon} />
                 </div>
-                <div className="gradient-delete" onClick={() => this.props.onDelete()} title={"删除步骤"}>
+                <div className="gradient-delete" onClick={() => this.props.onDelete()} title={"Delete Step"}>
                     <img className="img" src={deleteButton} />
                 </div>
             </div>

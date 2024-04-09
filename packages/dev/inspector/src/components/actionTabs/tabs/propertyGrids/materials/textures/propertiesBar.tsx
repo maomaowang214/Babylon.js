@@ -122,7 +122,7 @@ export class PropertiesBar extends React.PureComponent<IPropertiesBarProps, IPro
                                 <img
                                     id="resize"
                                     className="icon button"
-                                    title="调整"
+                                    title="Resize"
                                     alt="Resize"
                                     src={resizeButton}
                                     onClick={() => resizeTexture(this.state.width, this.state.height)}

@@ -43,13 +43,13 @@ export class VariantsPropertyGridComponent extends React.Component<IVariantsProp
             return { label: v, value: i + 1 };
         });
 
-        options.splice(0, 0, { label: "源语言", value: 0 });
+        options.splice(0, 0, { label: "Original", value: 0 });
 
         return (
             <div>
-                <LineContainerComponent title="变体" selection={this.props.globalState}>
+                <LineContainerComponent title="VARIANTS" selection={this.props.globalState}>
                     <OptionsLineComponent
-                        label="有源变体"
+                        label="Active variant"
                         options={options}
                         noDirectUpdate={true}
                         target={this.props.host}

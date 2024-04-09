@@ -196,7 +196,7 @@ export class TextureLinkLineComponent extends React.Component<ITextureLinkLineCo
             if (this.props.propertyName || this.props.onTextureCreated) {
                 return (
                     <FileButtonLineComponent
-                        label={`添加 ${this.props.label} 纹理`}
+                        label={`Add ${this.props.label} texture`}
                         onClick={(file) => this.updateTexture(file)}
                         accept={this.props.fileFormats ?? ".jpg, .png, .tga, .dds, .env"}
                     />
@@ -210,11 +210,11 @@ export class TextureLinkLineComponent extends React.Component<ITextureLinkLineCo
                     <>
                         <div className={this.state.isDebugSelected ? "debug selected" : "debug"}>
                             {this.props.material && (
-                                <span className="actionIcon" onClick={() => this.debugTexture()} title="渲染为主纹理">
+                                <span className="actionIcon" onClick={() => this.debugTexture()} title="Render as main texture">
                                     <FontAwesomeIcon icon={faWrench} />
                                 </span>
                             )}
-                            <span className="actionIcon" onClick={() => this.removeTexture()} title="删除纹理">
+                            <span className="actionIcon" onClick={() => this.removeTexture()} title="Remove texture">
                                 <FontAwesomeIcon icon={faTrash} />
                             </span>
                         </div>

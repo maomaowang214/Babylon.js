@@ -88,7 +88,7 @@ export const PerformanceViewerComponent: React.FC<IPerformanceViewerComponentPro
                 {
                     props: {
                         id: "performance-viewer",
-                        title: "实时性能查看器",
+                        title: "Realtime Performance Viewer",
                         onClose: onClosePerformanceViewer,
                         onResize: onResize,
                         size: initialWindowSize,
@@ -179,11 +179,11 @@ export const PerformanceViewerComponent: React.FC<IPerformanceViewerComponentPro
     }, []);
 
     return (
-        <LineContainerComponent title="性能查看器">
-            {!isOpen && <ButtonLineComponent label="打开实时性能查看器" onClick={onPerformanceButtonClick} />}
-            {!isOpen && <FileButtonLineComponent accept="csv" label="使用CSV加载性能查看器" onClick={onLoadClick} />}
+        <LineContainerComponent title="Performance Viewer">
+            {!isOpen && <ButtonLineComponent label="Open Realtime Perf Viewer" onClick={onPerformanceButtonClick} />}
+            {!isOpen && <FileButtonLineComponent accept="csv" label="Load Perf Viewer using CSV" onClick={onLoadClick} />}
             <ButtonLineComponent label="Export Perf to CSV" onClick={onExportClick} />
-            {!isOpen && <ButtonLineComponent label={performanceCollector?.isStarted ? "停止录制" : "开始录制"} onClick={onToggleRecording} />}
+            {!isOpen && <ButtonLineComponent label={performanceCollector?.isStarted ? "Stop Recording" : "Begin Recording"} onClick={onToggleRecording} />}
         </LineContainerComponent>
     );
 };

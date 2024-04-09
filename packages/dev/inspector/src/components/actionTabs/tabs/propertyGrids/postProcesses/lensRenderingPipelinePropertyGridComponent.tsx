@@ -34,10 +34,10 @@ export class LensRenderingPipelinePropertyGridComponent extends React.Component<
                     renderPipeline={renderPipeline}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="选项" selection={this.props.globalState}>
+                <LineContainerComponent title="OPTIONS" selection={this.props.globalState}>
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="边缘模糊"
+                        label="Edge blur"
                         minimum={0}
                         maximum={5}
                         step={0.1}
@@ -47,7 +47,7 @@ export class LensRenderingPipelinePropertyGridComponent extends React.Component<
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="边缘失真"
+                        label="Edge distortion"
                         minimum={0}
                         maximum={5}
                         step={0.1}
@@ -57,7 +57,7 @@ export class LensRenderingPipelinePropertyGridComponent extends React.Component<
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="粗糙数量"
+                        label="Grain amount"
                         minimum={0}
                         maximum={1}
                         step={0.1}
@@ -67,7 +67,7 @@ export class LensRenderingPipelinePropertyGridComponent extends React.Component<
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="色差"
+                        label="Chromatic aberration"
                         minimum={0}
                         maximum={5}
                         step={0.1}
@@ -77,7 +77,7 @@ export class LensRenderingPipelinePropertyGridComponent extends React.Component<
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="变暗失焦"
+                        label="Darken out of focus"
                         minimum={0}
                         maximum={5}
                         step={0.1}
@@ -86,16 +86,16 @@ export class LensRenderingPipelinePropertyGridComponent extends React.Component<
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="模糊噪点"
+                        label="Blur noise"
                         target={renderPipeline}
                         propertyName="blurNoise"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="景深" selection={this.props.globalState}>
+                <LineContainerComponent title="DEPTH OF FIELD" selection={this.props.globalState}>
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="孔径"
+                        label="Aperture"
                         minimum={0}
                         maximum={10}
                         step={0.1}
@@ -105,7 +105,7 @@ export class LensRenderingPipelinePropertyGridComponent extends React.Component<
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="失真"
+                        label="Distortion"
                         minimum={0}
                         maximum={1000}
                         step={0.1}
@@ -114,14 +114,14 @@ export class LensRenderingPipelinePropertyGridComponent extends React.Component<
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <CheckBoxLineComponent
-                        label="多边形焦外成像"
+                        label="Pentagon bokeh"
                         target={renderPipeline}
                         propertyName="pentagonBokeh"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="增加获取"
+                        label="Highlight gain"
                         minimum={0}
                         maximum={5}
                         step={0.1}
@@ -131,7 +131,7 @@ export class LensRenderingPipelinePropertyGridComponent extends React.Component<
                     />
                     <SliderLineComponent
                         lockObject={this.props.lockObject}
-                        label="增加阈值"
+                        label="Highlight threshold"
                         minimum={0}
                         maximum={5}
                         step={0.1}

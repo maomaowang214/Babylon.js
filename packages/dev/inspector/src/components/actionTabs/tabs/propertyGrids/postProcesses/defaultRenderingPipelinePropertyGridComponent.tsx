@@ -35,19 +35,19 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
         const camera = renderPipeline.scene.activeCamera!;
 
         const toneMappingOptions = [
-            { label: "标准", value: ImageProcessingConfiguration.TONEMAPPING_STANDARD },
+            { label: "Standard", value: ImageProcessingConfiguration.TONEMAPPING_STANDARD },
             { label: "ACES", value: ImageProcessingConfiguration.TONEMAPPING_ACES },
         ];
 
         const vignetteModeOptions = [
-            { label: "乘", value: ImageProcessingConfiguration.VIGNETTEMODE_MULTIPLY },
-            { label: "不透明", value: ImageProcessingConfiguration.VIGNETTEMODE_OPAQUE },
+            { label: "Multiply", value: ImageProcessingConfiguration.VIGNETTEMODE_MULTIPLY },
+            { label: "Opaque", value: ImageProcessingConfiguration.VIGNETTEMODE_OPAQUE },
         ];
 
         const depthOfFieldBlurOptions = [
-            { label: "低", value: DepthOfFieldEffectBlurLevel.Low },
-            { label: "中", value: DepthOfFieldEffectBlurLevel.Medium },
-            { label: "高", value: DepthOfFieldEffectBlurLevel.High },
+            { label: "Low", value: DepthOfFieldEffectBlurLevel.Low },
+            { label: "Medium", value: DepthOfFieldEffectBlurLevel.Medium },
+            { label: "High", value: DepthOfFieldEffectBlurLevel.High },
         ];
 
         return (
@@ -58,9 +58,9 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                     renderPipeline={renderPipeline}
                     onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                 />
-                <LineContainerComponent title="绽放" selection={this.props.globalState}>
+                <LineContainerComponent title="BLOOM" selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="启用"
+                        label="Enabled"
                         target={renderPipeline}
                         onValueChanged={() => this.forceUpdate()}
                         propertyName="bloomEnabled"
@@ -70,7 +70,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                         <div>
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="阈值"
+                                label="Threshold"
                                 minimum={0}
                                 maximum={2.0}
                                 step={0.01}
@@ -80,7 +80,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="重量"
+                                label="Weight"
                                 minimum={0}
                                 maximum={1}
                                 step={0.05}
@@ -90,7 +90,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="内核"
+                                label="Kernel"
                                 minimum={0}
                                 maximum={128}
                                 step={1}
@@ -101,7 +101,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="规模"
+                                label="Scale"
                                 minimum={0}
                                 maximum={1}
                                 step={0.25}
@@ -112,9 +112,9 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                         </div>
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="色差" selection={this.props.globalState}>
+                <LineContainerComponent title="CHROMATIC ABERRATION" selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="启用"
+                        label="Enabled"
                         target={renderPipeline}
                         onValueChanged={() => this.forceUpdate()}
                         propertyName="chromaticAberrationEnabled"
@@ -124,7 +124,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                         <div>
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="畸变量"
+                                label="aberrationAmount"
                                 minimum={0}
                                 maximum={128}
                                 step={0.1}
@@ -134,7 +134,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="径向强度"
+                                label="Radial intensity"
                                 minimum={0}
                                 maximum={1}
                                 step={0.01}
@@ -144,14 +144,14 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                             />
                             <Vector2LineComponent
                                 lockObject={this.props.lockObject}
-                                label="中心"
+                                label="Center"
                                 target={renderPipeline.chromaticAberration}
                                 propertyName="centerPosition"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <Vector2LineComponent
                                 lockObject={this.props.lockObject}
-                                label="方向"
+                                label="Direction"
                                 target={renderPipeline.chromaticAberration}
                                 propertyName="direction"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -159,9 +159,9 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                         </div>
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="景深" selection={this.props.globalState}>
+                <LineContainerComponent title="DEPTH OF FIELD" selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="启用"
+                        label="Enabled"
                         target={renderPipeline}
                         onValueChanged={() => this.forceUpdate()}
                         propertyName="depthOfFieldEnabled"
@@ -171,7 +171,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                         <div>
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="焦距"
+                                label="Focal length"
                                 minimum={0}
                                 maximum={camera.maxZ}
                                 step={0.1}
@@ -191,7 +191,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="距离"
+                                label="Distance"
                                 minimum={0}
                                 maximum={camera.maxZ}
                                 step={0.1}
@@ -201,7 +201,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="镜头尺寸"
+                                label="Lens size"
                                 minimum={0}
                                 maximum={1000}
                                 step={1}
@@ -211,7 +211,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                                 decimalCount={0}
                             />
                             <OptionsLineComponent
-                                label="模糊级别"
+                                label="Blur level"
                                 options={depthOfFieldBlurOptions}
                                 target={renderPipeline}
                                 propertyName="depthOfFieldBlurLevel"
@@ -223,15 +223,15 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                 </LineContainerComponent>
                 <LineContainerComponent title="FXAA" selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="启用"
+                        label="Enabled"
                         target={renderPipeline}
                         propertyName="fxaaEnabled"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                     />
                 </LineContainerComponent>
-                <LineContainerComponent title="发光层" selection={this.props.globalState}>
+                <LineContainerComponent title="GLOW LAYER" selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="启用"
+                        label="Enabled"
                         target={renderPipeline}
                         propertyName="glowLayerEnabled"
                         onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -240,7 +240,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                         <div>
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="模糊内核大小"
+                                label="Blur kernel size"
                                 minimum={1}
                                 maximum={128}
                                 step={1}
@@ -251,7 +251,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="强度"
+                                label="Intensity"
                                 minimum={0}
                                 maximum={10}
                                 step={0.1}
@@ -262,9 +262,9 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                         </div>
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="粗糙" selection={this.props.globalState}>
+                <LineContainerComponent title="GRAIN" selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="启用"
+                        label="Enabled"
                         target={renderPipeline}
                         onValueChanged={() => this.forceUpdate()}
                         propertyName="grainEnabled"
@@ -273,14 +273,14 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                     {renderPipeline.grainEnabled && (
                         <div>
                             <CheckBoxLineComponent
-                                label="动画"
+                                label="Animated"
                                 target={renderPipeline.grain}
                                 propertyName="animated"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="强度"
+                                label="Intensity"
                                 minimum={0}
                                 maximum={50}
                                 step={0.1}
@@ -291,9 +291,9 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                         </div>
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="图像处理" selection={this.props.globalState}>
+                <LineContainerComponent title="IMAGE PROCESSING" selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="启用"
+                        label="Enabled"
                         target={renderPipeline}
                         onValueChanged={() => this.forceUpdate()}
                         propertyName="imageProcessingEnabled"
@@ -302,13 +302,13 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                     {renderPipeline.imageProcessing && (
                         <div>
                             <ButtonLineComponent
-                                label="将透明颜色转换为线性"
+                                label="Convert clear color to linear"
                                 onClick={() =>
                                     (renderPipeline.scene.clearColor = renderPipeline.scene.clearColor.toLinearSpace(renderPipeline.scene.getEngine().useExactSrgbConversions))
                                 }
                             />
                             <ButtonLineComponent
-                                label="将透明颜色转换为伽马"
+                                label="Convert clear color to gamma"
                                 onClick={() =>
                                     (renderPipeline.scene.clearColor = renderPipeline.scene.clearColor.toGammaSpace(renderPipeline.scene.getEngine().useExactSrgbConversions))
                                 }
@@ -318,7 +318,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                                 minimum={0}
                                 maximum={4}
                                 step={0.1}
-                                label="对比"
+                                label="Contrast"
                                 target={renderPipeline.imageProcessing}
                                 propertyName="contrast"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -328,19 +328,19 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                                 minimum={0}
                                 maximum={4}
                                 step={0.1}
-                                label="曝光"
+                                label="Exposure"
                                 target={renderPipeline.imageProcessing}
                                 propertyName="exposure"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <CheckBoxLineComponent
-                                label="色调映射"
+                                label="Tone mapping"
                                 target={renderPipeline.imageProcessing}
                                 propertyName="toneMappingEnabled"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <OptionsLineComponent
-                                label="音调映射类型"
+                                label="Tone mapping type"
                                 options={toneMappingOptions}
                                 target={renderPipeline.imageProcessing}
                                 propertyName="toneMappingType"
@@ -348,7 +348,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                                 onSelect={(value) => this.setState({ mode: value })}
                             />
                             <CheckBoxLineComponent
-                                label="装饰图案"
+                                label="Vignette"
                                 target={renderPipeline.imageProcessing}
                                 propertyName="vignetteEnabled"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -358,7 +358,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                                 minimum={0}
                                 maximum={4}
                                 step={0.1}
-                                label="装饰图案的重量"
+                                label="Vignette weight"
                                 target={renderPipeline.imageProcessing}
                                 propertyName="vignetteWeight"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -368,7 +368,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                                 minimum={0}
                                 maximum={1}
                                 step={0.1}
-                                label="装饰图案延伸"
+                                label="Vignette stretch"
                                 target={renderPipeline.imageProcessing}
                                 propertyName="vignetteStretch"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -378,7 +378,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                                 minimum={0}
                                 maximum={Math.PI}
                                 step={0.1}
-                                label="装饰图案视场"
+                                label="Vignette FOV"
                                 target={renderPipeline.imageProcessing}
                                 propertyName="vignetteCameraFov"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -388,7 +388,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                                 minimum={0}
                                 maximum={1}
                                 step={0.1}
-                                label="装饰图案中心 X"
+                                label="Vignette center X"
                                 target={renderPipeline.imageProcessing}
                                 propertyName="vignetteCenterX"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -398,20 +398,20 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                                 minimum={0}
                                 maximum={1}
                                 step={0.1}
-                                label="装饰图案中心 Y"
+                                label="Vignette center Y"
                                 target={renderPipeline.imageProcessing}
                                 propertyName="vignetteCenterY"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <Color3LineComponent
                                 lockObject={this.props.lockObject}
-                                label="装饰图案的颜色"
+                                label="Vignette color"
                                 target={renderPipeline.imageProcessing}
                                 propertyName="vignetteColor"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
                             />
                             <OptionsLineComponent
-                                label="装饰图案混合模式"
+                                label="Vignette blend mode"
                                 options={vignetteModeOptions}
                                 target={renderPipeline.imageProcessing}
                                 propertyName="vignetteBlendMode"
@@ -419,7 +419,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                                 onSelect={(value) => this.setState({ mode: value })}
                             />
                             <CheckBoxLineComponent
-                                label="混色"
+                                label="Dithering"
                                 target={renderPipeline.imageProcessing}
                                 propertyName="ditheringEnabled"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -429,7 +429,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                                 minimum={0}
                                 maximum={1}
                                 step={0.5 / 255.0}
-                                label="混色强度"
+                                label="Dithering intensity"
                                 target={renderPipeline.imageProcessing}
                                 propertyName="ditheringIntensity"
                                 onPropertyChangedObservable={this.props.onPropertyChangedObservable}
@@ -437,9 +437,9 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                         </div>
                     )}
                 </LineContainerComponent>
-                <LineContainerComponent title="锐化" selection={this.props.globalState}>
+                <LineContainerComponent title="SHARPEN" selection={this.props.globalState}>
                     <CheckBoxLineComponent
-                        label="启用"
+                        label="Enabled"
                         target={renderPipeline}
                         onValueChanged={() => this.forceUpdate()}
                         propertyName="sharpenEnabled"
@@ -449,7 +449,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                         <div>
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="颜色数量"
+                                label="Color amount"
                                 minimum={0}
                                 maximum={1}
                                 step={0.05}
@@ -459,7 +459,7 @@ export class DefaultRenderingPipelinePropertyGridComponent extends React.Compone
                             />
                             <SliderLineComponent
                                 lockObject={this.props.lockObject}
-                                label="边量"
+                                label="Edge amount"
                                 minimum={0}
                                 maximum={5}
                                 step={0.05}

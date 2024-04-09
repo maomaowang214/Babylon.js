@@ -79,7 +79,7 @@ export class RenderGridPropertyGridComponent extends React.Component<IRenderGrid
     render() {
         return (
             <div>
-                <CheckBoxLineComponent label="渲染网格" isSelected={() => this.state.isEnabled} onSelect={() => this.addOrRemoveGrid()} />
+                <CheckBoxLineComponent label="Render grid" isSelected={() => this.state.isEnabled} onSelect={() => this.addOrRemoveGrid()} />
             </div>
         );
     }
