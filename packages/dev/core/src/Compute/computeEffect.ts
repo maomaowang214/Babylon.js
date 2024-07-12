@@ -3,12 +3,13 @@ import type { Nullable } from "../types";
 import { Observable } from "../Misc/observable";
 import type { IComputePipelineContext } from "./IComputePipelineContext";
 import { GetDOMTextContent, IsWindowObjectExist } from "../Misc/domManagement";
-import { ShaderProcessor } from "../Engines/Processors/shaderProcessor";
+import { Finalize, Initialize, PreProcess } from "../Engines/Processors/shaderProcessor";
 import type { ProcessingOptions } from "../Engines/Processors/shaderProcessingOptions";
 import { ShaderStore } from "../Engines/shaderStore";
 import { ShaderLanguage } from "../Materials/shaderLanguage";
 
-import type { Engine } from "../Engines/engine";
+import type { AbstractEngine } from "../Engines/abstractEngine";
+import type { ComputeCompilationMessages } from "../Engines/Extensions/engine.computeShader";
 
 /**
  * Defines the route to the shader code. The priority is as follows:
@@ -109,7 +110,7 @@ export class ComputeEffect {
      */
     public _wasPreviouslyReady = false;
 
-    private _engine: Engine;
+    private _engine: AbstractEngine;
     private _isReady = false;
     private _compilationError = "";
     /** @internal */
@@ -133,7 +134,7 @@ export class ComputeEffect {
      * @param engine The engine the effect is created for
      * @param key Effect Key identifying uniquely compiled shader variants
      */
-    constructor(baseName: IComputeShaderPath | string, options: IComputeEffectCreationOptions, engine: Engine, key = "") {
+    constructor(baseName: IComputeShaderPath | string, options: IComputeEffectCreationOptions, engine: AbstractEngine, key = "") {
         this.name = baseName;
         this._key = key;
 
@@ -177,19 +178,37 @@ export class ComputeEffect {
             processingContext: null,
             isNDCHalfZRange: this._engine.isNDCHalfZRange,
             useReverseDepthBuffer: this._engine.useReverseDepthBuffer,
+            processCodeAfterIncludes: (shaderType: string, code: string, defines?: string[]) => {
+                if (!defines) {
+                    return code;
+                }
+                // We need to convert #define key value to a const
+                for (const define of defines) {
+                    const keyValue = define.replace("#define", "").replace(";", "").trim();
+                    const split = keyValue.split(" ");
+                    if (split.length === 2) {
+                        const key = split[0];
+                        const value = split[1];
+                        if (!isNaN(parseInt(value)) || !isNaN(parseFloat(value))) {
+                            code = `const ${key} = ${value};\n` + code;
+                        }
+                    }
+                }
+                return code;
+            },
         };
 
         this._loadShader(computeSource, "Compute", "", (computeCode) => {
-            ShaderProcessor.Initialize(processorOptions);
-            ShaderProcessor.PreProcess(
+            Initialize(processorOptions);
+            PreProcess(
                 computeCode,
                 processorOptions,
-                (migratedCommputeCode) => {
+                (migratedComputeCode) => {
                     this._rawComputeSourceCode = computeCode;
                     if (options.processFinalCode) {
-                        migratedCommputeCode = options.processFinalCode(migratedCommputeCode);
+                        migratedComputeCode = options.processFinalCode(migratedComputeCode);
                     }
-                    const finalShaders = ShaderProcessor.Finalize(migratedCommputeCode, "", processorOptions);
+                    const finalShaders = Finalize(migratedComputeCode, "", processorOptions);
                     this._useFinalCode(finalShaders.vertexCode, baseName);
                 },
                 this._engine
@@ -241,7 +260,7 @@ export class ComputeEffect {
      * The engine the effect was initialized with.
      * @returns the engine.
      */
-    public getEngine(): Engine {
+    public getEngine(): AbstractEngine {
         return this._engine;
     }
 

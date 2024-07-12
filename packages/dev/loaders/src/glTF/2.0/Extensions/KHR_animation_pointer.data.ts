@@ -148,7 +148,7 @@ const materialsTree = {
                 anisotropyRotation: [new MaterialAnimationPropertyInfo(Animation.ANIMATIONTYPE_FLOAT, "anisotropy.angle", getFloat, () => 1)],
                 anisotropyTexture: {
                     extensions: {
-                        KHR_texture_transform: getTextureTransformTree("anisotropyTexture"),
+                        KHR_texture_transform: getTextureTransformTree("anisotropy.texture"),
                     },
                 },
             },
@@ -240,6 +240,20 @@ const materialsTree = {
                 thicknessTexture: {
                     extensions: {
                         KHR_texture_transform: getTextureTransformTree("subSurface.thicknessTexture"),
+                    },
+                },
+            },
+            KHR_materials_diffuse_transmission: {
+                diffuseTransmissionFactor: [new MaterialAnimationPropertyInfo(Animation.ANIMATIONTYPE_FLOAT, "subSurface.translucencyIntensity", getFloat, () => 1)],
+                diffuseTransmissionTexture: {
+                    extensions: {
+                        KHR_texture_transform: getTextureTransformTree("subSurface.translucencyIntensityTexture"),
+                    },
+                },
+                diffuseTransmissionColorFactor: [new MaterialAnimationPropertyInfo(Animation.ANIMATIONTYPE_COLOR3, "subSurface.translucencyColor", getColor3, () => 3)],
+                diffuseTransmissionColorTexture: {
+                    extensions: {
+                        KHR_texture_transform: getTextureTransformTree("subSurface.translucencyColorTexture"),
                     },
                 },
             },

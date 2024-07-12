@@ -2,6 +2,43 @@
     "root": "https://cdn.babylonjs.com",
     "tests": [
         {
+            "title": "BoundingInfo Helper",
+            "playgroundId": "#BCNJD4#42",
+            "referenceImage": "bbhelper.png",
+            "excludedEngines": ["webgl1"]
+        },
+        {
+            "title": "NME Shadow Map",
+            "playgroundId": "#M3QR7E#83",
+            "referenceImage": "nmeshadowmap.png",
+            "excludedEngines": ["webgl1"]
+        },
+        {
+            "title": "NMEGLTF",
+            "playgroundId": "#WGZLGJ#10320",
+            "referenceImage": "nmegltf.png"
+        },
+        {
+            "title": "GPUPicker",
+            "playgroundId": "#1RWFMT#2",
+            "renderCount": 20,
+            "referenceImage": "gpuPicker.png"
+        },
+        {
+            "title": "Trailmesh - tapered and untapered",
+            "playgroundId": "#XGGSWJ#1",
+            "renderCount": 100,
+            "referenceImage": "trailMesh.png"
+        },
+        {
+            "title": "3D Procedural Textures",
+            "playgroundId": "#AYZY4Q#7",
+            "renderCount": 5,
+            "referenceImage": "procedural-textures-3d.png",
+            "excludedEngines": ["webgl1", "webgpu"],
+            "excludeFromAutomaticTesting": true
+        },
+        {
             "title": "GUI Input Text Area with Placeholder",
             "playgroundId": "#NVAEWD#364",
             "referenceImage": "gui-inputtextarea-withplaceholder.png"
@@ -206,7 +243,7 @@
         },
         {
             "title": "Dynamic Texture context clip",
-            "playgroundId": "#FU0ES5#37",
+            "playgroundId": "#FU0ES5#47",
             "referenceImage": "dynamicTextureClip.png"
         },
         {
@@ -519,17 +556,23 @@
         },
         {
             "title": "Draco Mesh Compression (decodeMeshAsync, numWorkers = 1)",
-            "playgroundId": "#22MFU2#4",
+            "playgroundId": "#22MFU2#77",
             "referenceImage": "draco.png"
         },
         {
             "title": "Draco Mesh Compression (decodeMeshToGeometryAsync, numWorkers = 0)",
-            "playgroundId": "#22MFU2#65",
+            "playgroundId": "#22MFU2#78",
             "referenceImage": "draco.png"
         },
         {
             "title": "Draco Mesh Compression (decodeMeshToGeometryAsync, numWorkers = 1)",
-            "playgroundId": "#22MFU2#65",
+            "playgroundId": "#22MFU2#78",
+            "replace": "numWorkers = 0, numWorkers = 1",
+            "referenceImage": "draco.png"
+        },
+        {
+            "title": "Draco Mesh Compression (fallback)",
+            "playgroundId": "#22MFU2#75",
             "replace": "numWorkers = 0, numWorkers = 1",
             "referenceImage": "draco.png"
         },
@@ -781,12 +824,14 @@
         {
             "title": "GLTF Serializer Morph Target Animation Group",
             "playgroundId": "#T087A8#29",
-            "referenceImage": "gltfSerializerMorphTargetAnimationGroup.png"
+            "referenceImage": "gltfSerializerMorphTargetAnimationGroup.png",
+            "excludedEngines": ["webgl1"]
         },
         {
             "title": "GLTF Serializer KHR materials clearcoat",
             "playgroundId": "#9N6CLU#23",
-            "referenceImage": "glTFSerializerKhrMaterialsClearcoat.png"
+            "referenceImage": "glTFSerializerKhrMaterialsClearcoat.png",
+            "excludedEngines": ["webgl1"]
         },
         {
             "title": "GLTF Serializer KHR gpu instancing",
@@ -931,17 +976,17 @@
         },
         {
             "title": "PBR shader code coverage 1",
-            "playgroundId": "#QI7TL3#16",
+            "playgroundId": "#QI7TL3#55",
             "referenceImage": "pbr-codecoverage1.png"
         },
         {
             "title": "PBR shader code coverage 2",
-            "playgroundId": "#QI7TL3#17",
+            "playgroundId": "#QI7TL3#57",
             "referenceImage": "pbr-codecoverage2.png"
         },
         {
             "title": "PBR shader code coverage 3",
-            "playgroundId": "#QI7TL3#18",
+            "playgroundId": "#QI7TL3#56",
             "referenceImage": "pbr-codecoverage3.png"
         },
         {
@@ -976,6 +1021,12 @@
             "title": "Up Vector",
             "playgroundId": "#2FNBTG#27",
             "referenceImage": "upVector.png"
+        },
+        {
+            "title": "Procedural textures playground",
+            "playgroundId": "#24C4KC#67",
+            "referenceImage": "proceduralTexturePlayground.png",
+            "excludedEngines": ["webgl1", "webgpu"]
         },
         {
             "title": "Procedural textures",
@@ -1125,6 +1176,17 @@
             "playgroundId": "#26R8NS#6",
             "replace": "//options//, roundTrip = true; useRightHandedSystem = true;",
             "referenceImage": "objStanfordBunnyNormalsRoundTripRH.png"
+        },
+        {
+            "title": "glTF to OBJ (LH)",
+            "playgroundId": "#HYZWGK#3",
+            "referenceImage": "gltfToObjLH.png"
+        },
+        {
+            "title": "glTF to OBJ (RH)",
+            "playgroundId": "#HYZWGK#3",
+            "replace": "//options//, useRightHandedSystem = true;",
+            "referenceImage": "gltfToObjRH.png"
         },
         {
             "title": "GLTF Extension KHR_materials_variants",
@@ -2044,6 +2106,21 @@
             "title": "CesiumMan from Khronos Sample Assets",
             "playgroundId": "#4GWX8M",
             "referenceImage": "CesiumMan.png"
+        },
+        {
+            "title": "Two vertex buffers pointing to one buffer",
+            "playgroundId": "#RZNHXT#7",
+            "referenceImage": "two-vertex-buffers.png"
+        },
+        {
+            "title": "Shadows in RHS mode",
+            "playgroundId": "#RO51RT#14",
+            "referenceImage": "shadows-rhs.png"
+        },
+        {
+            "title": "Load environment from data buffer",
+            "playgroundId": "#YLI4J1#",
+            "referenceImage": "environment-from-data-buffer.png"
         }
     ]
 }

@@ -5,14 +5,13 @@ import { Mesh } from "../mesh";
 import type { Ray, TrianglePickingPredicate } from "../../Culling/ray";
 import { Buffer, VertexBuffer } from "../../Buffers/buffer";
 import { PickingInfo } from "../../Collisions/pickingInfo";
-import type { Nullable } from "../../types";
+import type { Nullable, FloatArray } from "../../types";
 import type { Node } from "../../node";
 import { DeepCopier } from "../../Misc/deepCopier";
 import { GreasedLineTools } from "../../Misc/greasedLineTools";
 import type { GreasedLineMeshOptions } from "./greasedLineBaseMesh";
 import { GreasedLineBaseMesh } from "./greasedLineBaseMesh";
 import type { VertexData } from "../mesh.vertexData";
-import type { FloatArray } from "../../types";
 
 Mesh._GreasedLineMeshParser = (parsedMesh: any, scene: Scene): Mesh => {
     return GreasedLineMesh.Parse(parsedMesh, scene);
@@ -43,7 +42,7 @@ export class GreasedLineMesh extends GreasedLineBaseMesh {
      * @param _options mesh options
      */
     constructor(
-        public readonly name: string,
+        public override readonly name: string,
         scene: Scene,
         _options: GreasedLineMeshOptions
     ) {
@@ -61,7 +60,7 @@ export class GreasedLineMesh extends GreasedLineBaseMesh {
      * "GreasedLineMesh"
      * @returns "GreasedLineMesh"
      */
-    public getClassName(): string {
+    public override getClassName(): string {
         return "GreasedLineMesh";
     }
 
@@ -81,7 +80,7 @@ export class GreasedLineMesh extends GreasedLineBaseMesh {
     }
 
     protected _updateWidths(): void {
-        super._updateWidthsWithValue(0);
+        // intentionally left blank
     }
 
     protected _setPoints(points: number[][]) {
@@ -176,20 +175,19 @@ export class GreasedLineMesh extends GreasedLineBaseMesh {
                 nextAndCounters[nextAndCountersOffset++] = lengthArray[i >> 1] / totalLength;
             }
             if (this._options.uvs) {
-                const uvs = this._options.uvs;
-                for (const uv of uvs) {
-                    uvArr[uvOffset++] = uv;
+                for (let i = 0; i < this._options.uvs.length; i++) {
+                    uvArr[uvOffset++] = this._options.uvs[i];
                 }
             } else {
                 for (let j = 0; j < l; j++) {
                     // uvs
+                    const lengthRatio = lengthArray[j] / totalLength;
                     const uvOffsetBase = uvOffset + j * 4;
-                    uvArr[uvOffsetBase + 0] = j / (l - 1);
+                    uvArr[uvOffsetBase + 0] = lengthRatio;
                     uvArr[uvOffsetBase + 1] = 0;
-                    uvArr[uvOffsetBase + 2] = j / (l - 1);
+                    uvArr[uvOffsetBase + 2] = lengthRatio;
                     uvArr[uvOffsetBase + 3] = 1;
                 }
-                uvOffset += l * 4;
             }
         });
         this._vertexPositions = vertexPositionsArr;
@@ -213,7 +211,7 @@ export class GreasedLineMesh extends GreasedLineBaseMesh {
      * @param newParent new parent node
      * @returns cloned line
      */
-    public clone(name: string = `${this.name}-cloned`, newParent?: Nullable<Node>) {
+    public override clone(name: string = `${this.name}-cloned`, newParent?: Nullable<Node>) {
         const lineOptions = this._createLineOptions();
         const deepCopiedLineOptions = {};
         DeepCopier.DeepCopy(lineOptions, deepCopiedLineOptions, ["instance"], undefined, true);
@@ -232,7 +230,7 @@ export class GreasedLineMesh extends GreasedLineBaseMesh {
      * Serializes this GreasedLineMesh
      * @param serializationObject object to write serialization to
      */
-    public serialize(serializationObject: any): void {
+    public override serialize(serializationObject: any): void {
         super.serialize(serializationObject);
         serializationObject.type = this.getClassName();
 
@@ -245,14 +243,14 @@ export class GreasedLineMesh extends GreasedLineBaseMesh {
      * @param scene the scene to create the GreasedLineMesh in
      * @returns the created GreasedLineMesh
      */
-    public static Parse(parsedMesh: any, scene: Scene): Mesh {
+    public static override Parse(parsedMesh: any, scene: Scene): Mesh {
         const lineOptions = <GreasedLineMeshOptions>parsedMesh.lineOptions;
         const name = <string>parsedMesh.name;
         const result = new GreasedLineMesh(name, scene, lineOptions);
         return result;
     }
 
-    protected _initGreasedLine() {
+    protected override _initGreasedLine() {
         super._initGreasedLine();
 
         this._previousAndSide = [];
@@ -268,7 +266,7 @@ export class GreasedLineMesh extends GreasedLineBaseMesh {
      * @param skipBoundingInfo a boolean indicating if we should skip the bounding info check
      * @returns the picking info
      */
-    public intersects(
+    public override intersects(
         ray: Ray,
         fastCheck?: boolean,
         trianglePredicate?: TrianglePickingPredicate,
@@ -362,13 +360,13 @@ export class GreasedLineMesh extends GreasedLineBaseMesh {
         return this.getBoundingInfo().boundingSphere;
     }
 
-    private static _CompareV3(positionIdx1: number, positionIdx2: number, positions: number[] | Float32Array) {
+    private static _CompareV3(positionIdx1: number, positionIdx2: number, positions: FloatArray) {
         const arrayIdx1 = positionIdx1 * 6;
         const arrayIdx2 = positionIdx2 * 6;
         return positions[arrayIdx1] === positions[arrayIdx2] && positions[arrayIdx1 + 1] === positions[arrayIdx2 + 1] && positions[arrayIdx1 + 2] === positions[arrayIdx2 + 2];
     }
 
-    protected _createVertexBuffers() {
+    protected override _createVertexBuffers() {
         const vertexData: VertexData = super._createVertexBuffers();
 
         const engine = this._scene.getEngine();
